@@ -37,3 +37,10 @@ bin
 ehthumbs.db
 Icon?
 Thumbs.db
+
+# Intellij project files #
+##########################
+*.iml
+*.ipr
+*.iws
+.idea/
