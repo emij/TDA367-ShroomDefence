@@ -1,6 +1,6 @@
 package se.chalmers.tda367.std.core;
 
-import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Represents the game highscore.
@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Highscore {
 	
-	private List<Score> highscore;
+	private SortedSet<Score> highscore;
 
 	public Highscore(){
 		
