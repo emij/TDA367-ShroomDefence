@@ -1,11 +1,8 @@
-/**
- * TDA367-ShroomDefence
- * 
- * Class explanation goes here.
- */
 package se.chalmers.tda367.std.core;
 
 /**
+ * Represents a wave item for use in the <code>Wave</code>.
+ * Contains one enemy and the spawn delay of this certain enemy.
  * @author Unchanged
  * @date Mar 22, 2012
  */

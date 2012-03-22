@@ -1,8 +1,3 @@
-/**
- * TDA367-ShroomDefence
- * 
- * Class explanation goes here.
- */
 package se.chalmers.tda367.std.core;
 
 import java.util.List;
@@ -11,6 +6,7 @@ import se.chalmers.tda367.std.utilities.Position;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
+ * Represents the whole game board in a grid system.
  * @author Unchanged
  * @date Mar 22, 2012
  */
@@ -42,5 +38,10 @@ public class GameBoard {
 	public void placeTile(IBoardTile tile, Position pos){
 		
 	}
-
+	/**
+	 * Retrieve the tile at the supplied position.
+	 */
+	public IBoardTile getTileAt(Position p){
+		return null;
+	}
 }

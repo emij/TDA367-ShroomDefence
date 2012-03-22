@@ -1,13 +1,9 @@
-/**
- * TDA367-ShroomDefence
- * 
- * Class explanation goes here.
- */
 package se.chalmers.tda367.std.core;
 
-import se.chalmers.tda367.std.utilities.ISprite;
+import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
+ * A skeleton implementation of the <code>IAttackTower</code>.
  * @author Unchanged
  * @date Mar 22, 2012
  */
@@ -71,7 +67,7 @@ public  abstract class AbstractAttackTower implements IAttackTower{
 	 * @see se.chalmers.tda367.std.core.IBoardTile#getSprite()
 	 */
 	@Override
-	public ISprite getSprite() {
+	public Sprite getSprite() {
 		// TODO Auto-generated method stub
 		return null;
 	}

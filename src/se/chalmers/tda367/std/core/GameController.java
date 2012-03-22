@@ -1,11 +1,7 @@
-/**
- * TDA367-ShroomDefence
- * 
- * Class explanation goes here.
- */
 package se.chalmers.tda367.std.core;
 
 /**
+ * The class that contains the game logic and controls the game.
  * @author Unchanged
  * @date Mar 22, 2012
  */
