@@ -2,10 +2,10 @@ package se.chalmers.tda367.std.core;
 
 /**
  * Represents a score object for use in the highscore.
- * @author Unchanged
- * @date Mar 22, 2012
+ * @author Emil Edholm
+ * @date Mar 25, 2012
  */
-public class Score implements Comparable<Score> {
+public final class Score implements Comparable<Score> {
 	
 	private String name;
 	private int score;
@@ -32,12 +32,39 @@ public class Score implements Comparable<Score> {
 	/**
 	 * Compare two scores to each other.
 	 */
-
 	@Override
 	public int compareTo(Score o) {
-		// TODO implement.
-		return 0;
+		int scoreDiff = score - o.score;
+		if(scoreDiff != 0)
+			return scoreDiff;
+		
+		return name.compareTo(o.name);
 	}
 	
-	// equals, toString and hashCode goes here.
+	@Override
+	public boolean equals(Object rhs){
+		if(this == rhs)
+			return true;
+		
+		if(!(rhs instanceof Score))
+			return false;
+		
+		// Now it is safe to cast.
+		Score s = (Score)rhs;
+		return score == s.score && name.equals(s.name);
+	}
+	
+	@Override
+	public String toString(){
+		return "Score {\n\t" + name + "\n\t" + score + "\n}";
+	}
+	
+	@Override
+	public int hashCode(){
+		int result = 17;
+		result = 31 * result + score;
+		result = 31 * result + name.hashCode();
+		
+		return result;
+	}
 }
