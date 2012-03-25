@@ -53,6 +53,8 @@ public class TestScore {
 		assertFalse(s1.equals(s2));
 		assertFalse(s2.equals(s3));
 		assertTrue(s3.equals(s4));
+		assertFalse(s3.equals(this));
+		assertTrue(s3.equals(s3));
 	}
 
 }
