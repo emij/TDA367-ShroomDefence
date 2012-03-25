@@ -1,6 +1,6 @@
 package se.chalmers.tda367.std.factories;
 
-import se.chalmers.tda367.std.core.ITower;
+import se.chalmers.tda367.std.core.towers.ITower;
 
 /**
  * A tower factory class. Used to create the different towers.

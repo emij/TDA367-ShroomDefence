@@ -1,5 +1,7 @@
 package se.chalmers.tda367.std.core;
 
+import se.chalmers.tda367.std.core.enemies.IEnemy;
+
 /**
  * Represents a wave item for use in the <code>Wave</code>.
  * Contains one enemy and the spawn delay of this certain enemy.
