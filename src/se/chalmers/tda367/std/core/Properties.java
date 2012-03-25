@@ -1,4 +1,4 @@
-package se.chalmers.tda367.std.utilities;
+package se.chalmers.tda367.std.core;
 
 import java.nio.file.Path;
 
@@ -14,5 +14,13 @@ public enum Properties {
 		return null;
 	}
 	// Some needed constants goes here
+	
+	public int getDefaultBoardWidth(){
+		return 20;
+	}
+	
+	public int getDefaultBoardHeight(){
+		return 20;
+	}
 
 }

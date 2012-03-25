@@ -1,13 +1,12 @@
 package se.chalmers.tda367.std.core;
 
-import java.util.List;
+import java.util.*;
 
 import se.chalmers.tda367.std.utilities.Position;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Represents the whole game board in a grid system.
- * @author Unchanged
+ * @author Johan Gustafsson
  * @date Mar 22, 2012
  */
 public class GameBoard {
@@ -15,33 +14,94 @@ public class GameBoard {
 	private IBoardTile[][] board;
 	
 	public GameBoard(){
-		
+		Properties p = Properties.INSTANCE;
+		board = new IBoardTile[p.getDefaultBoardWidth()][p.getDefaultBoardHeight()];
 	}
-	public GameBoard(int height, int width){
-		
+	
+	public GameBoard(int width, int height){
+		board =  new IBoardTile[width][height];
 	}
+	
 	/**
 	 * Returns a list of enemies that is inside the radius based on supplied position
+	 * @param p
+	 * @param radius
+	 * @return List of enemies.
 	 */
-	public List<IEnemy> getEnemiesInRadius(Position pos, int radius){
-		throw new NotImplementedException();
+	public List<IEnemy> getEnemiesInRadius(Position p, int radius){
+		List<IEnemy> enemies = new ArrayList<IEnemy>();
+		
+		for(int y = p.getY()-radius; y < p.getY()+radius; y++) {
+			for(int x = p.getX()-radius; x < p.getX()+radius; x++) {
+				if(posOnBoard(x, y) && getTileAt(x, y) instanceof IEnemy) {
+					enemies.add((IEnemy) getTileAt(x, y));
+				}
+			}
+		}
+		return enemies;
 	}
+
 	/**
 	 * Move the IBoardTile from the old position to the new position
+	 * @param oldP
+	 * @param newP
 	 */
 	public void moveTile(Position oldP, Position newP){
+		IBoardTile newPosTile = getTileAt(newP);
 		
+		placeTile(getTileAt(oldP), newP);
+		placeTile(newPosTile, oldP);
 	}
+	
 	/**
-	 * Place a supplied IBoardTile on given position
+	 * Place given tile on given position.
+	 * @param tile
+	 * @param p
 	 */
-	public void placeTile(IBoardTile tile, Position pos){
-		
+	public void placeTile(IBoardTile tile, Position p){
+		board[p.getX()][p.getY()] = tile;
 	}
+	
 	/**
-	 * Retrieve the tile at the supplied position.
+	 * Returns the tile from given x and y values.
+	 * @param x
+	 * @param y
+	 * @return IBoardTile from given x and y values.
+	 */
+	public IBoardTile getTileAt(int x, int y) {
+		return board[x][y];
+	}
+	
+	/**
+	 * Returns the tile from given position.
+	 * @param p
+	 * @return IBoardTile from given position.
 	 */
 	public IBoardTile getTileAt(Position p){
-		return null;
+		return getTileAt(p.getX(), p.getY());
+	}
+	
+	/**
+	 * Check if a given x and y values is inside the boundaries of the board.
+	 * @param p
+	 * @return true if given x and y values are on the game board.
+	 */
+	private boolean posOnBoard(int x, int y){
+		if(x < 0 || y < 0) {
+			return false;
+		}
+		if(x >= board[0].length || y >= board.length) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Check if a given position is inside the boundaries of the board.
+	 * @param p
+	 * @return true if position is on the game board.
+	 */
+	private boolean posOnBoard(Position p){
+		return posOnBoard(p.getX(), p.getY());
 	}
 }
