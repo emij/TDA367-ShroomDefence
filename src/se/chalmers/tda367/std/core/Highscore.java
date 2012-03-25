@@ -1,30 +1,98 @@
 package se.chalmers.tda367.std.core;
 
-import java.util.SortedSet;
+import java.util.*;
 
 /**
- * Represents the game highscore.
- * @author Unchanged
- * @date Mar 22, 2012
+ * Represents the game high score.
+ * Implements {@code Iterable<Score> } which means that 
+ * can be used in a for-loop.
+ * @author Emil Edholm
+ * @date Mar 25, 2012
  */
-public class Highscore {
+public final class Highscore implements Iterable<Score> {
 	
 	private SortedSet<Score> highscore;
 
 	public Highscore(){
-		
-	}
-	/**
-	 * Adds a score to the list of highscores
-	 */
-	public void addHighscore(Score score){
-		
-	}
-	/**
-	 * Resets the list of highscores
-	 */
-	public void resetHighscore(){
+		highscore = new TreeSet<Score>();
 	}
 	
-	// toString(), equals and hashCode goes here.
+	/**
+	 * Adds a score to the high score.
+	 * @param score the score to add. Must be null separated
+	 * @return true if the score did not already exist in the high score.
+	 * @throws NullPointerException if {@code score} is null
+	 */
+	public boolean addScore(Score score){
+		if(score == null)
+			throw new NullPointerException("Supplied score is null");
+		return highscore.add(score);
+	}
+	
+	/**
+	 * Get the (first) score with the supplied name.
+	 * @param name the name to search for. Not that the search is case insensitive.
+	 * @return the score if found, else null.
+	 * @throws NullPointerException if {@code name} is null
+	 */
+	public Score getScore(String name){
+		if(name == null)
+			throw new NullPointerException("Supplied name is null");
+		
+		for(Score s : highscore){
+			if(s.getName().equals(name))
+				return s;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Returns the highest score in the high score.
+	 * @return the highest score.
+	 * @throws NoSuchElementException if the high score is empty.
+	 */
+	public Score getHighestScore(){
+		return highscore.last();
+	}
+	
+	/**
+	 * Returns the lowest score in the high score.
+	 * @return the lowest score.
+	 * @throws NoSuchElementException if the high score is empty.
+	 */
+	public Score getLowestScore(){
+		return highscore.first();
+	}
+	
+	/**
+	 * Resets the high score.
+	 * The high score will be empty after this
+	 */
+	public void resetHighscore(){
+		highscore.clear();
+	}
+	
+	/**
+	 * Returns the number of scores in the high score.
+	 * @return the high score size.
+	 */
+	public int size(){
+		return highscore.size();
+	}
+	
+	@Override
+	public String toString(){
+		return Arrays.toString(highscore.toArray());
+	}
+
+	/**
+	 * Returns an iterator over the elements in this set. 
+	 * The elements are returned in ascending order.
+	 * @return an iterator over the elements in this set.
+	 */
+	@Override
+	public Iterator<Score> iterator() {
+		return highscore.iterator();
+	}
 }
