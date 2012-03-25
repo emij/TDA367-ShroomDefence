@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core;
 
 /**
  * Represents a score object for use in the highscore.
+ * @see {@link se.chalmers.tda367.std.core.Highscore}
  * @author Emil Edholm
  * @date Mar 25, 2012
  */
@@ -56,7 +57,7 @@ public final class Score implements Comparable<Score> {
 	
 	@Override
 	public String toString(){
-		return "Score {\n\t" + name + "\n\t" + score + "\n}";
+		return "Score {" + name + ", " + score + "}";
 	}
 	
 	@Override
