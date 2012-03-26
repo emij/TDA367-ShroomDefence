@@ -2,9 +2,9 @@ package se.chalmers.tda367.std.core;
 
 import java.util.*;
 
-import se.chalmers.tda367.std.core.tiles.IBoardTile;
+import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
-import se.chalmers.tda367.std.utilities.Position;
+import se.chalmers.tda367.std.utilities.*;
 
 /**
  * Represents the whole game board in a grid system.
@@ -22,16 +22,17 @@ public class GameBoard {
 		width = p.getDefaultBoardWidth();
 		height = p.getDefaultBoardHeight();
 		board = new IBoardTile[width][height];
+		IBoardTile tile = new TerrainTile(new Sprite());
+		initBoard(tile);
 		
-		initBoard(new TerrainTile());
 	}
 	
 	public GameBoard(int width, int height){
 		this.width = width;
 		this.height = height;
 		board =  new IBoardTile[this.width][this.height];
-		
-		initBoard(new TerrainTile());
+		IBoardTile tile = new TerrainTile(new Sprite());
+		initBoard(tile);
 		
 	}
 	
@@ -131,7 +132,17 @@ public class GameBoard {
 	 * @return a string representation of the game board.
 	 */
 	public String toString() {
-		return Arrays.toString(board);
+		StringBuilder str = new StringBuilder();
+		for (int y = 0; y < board.length; y++) {
+			for (int x = 0; x < board[y].length; x++) {
+				str.append('[');
+				str.append(board[x][y].toString());
+				str.append(']');
+			}
+			str.append("\n");
+		}
+		return str.toString();
+		
 	}
 	
 	public int getWidth() {
