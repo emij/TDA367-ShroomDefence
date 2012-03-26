@@ -34,7 +34,7 @@ public final class Main {
 	 */
 	private static void placePath(GameBoard board) {
 		IBoardTile pathTile = new PathTile(new Sprite());
-		int y = (board.getHeigth()/2)-1
+		int y = (board.getHeigth()/2)-1;
 		for (int i = 0; i < board.getWidth()-1; i++) {
 			board.placeTile(pathTile, new Position(i,y));
 			board.placeTile(pathTile, new Position(i,y+1));
