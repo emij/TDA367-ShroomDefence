@@ -14,14 +14,25 @@ import se.chalmers.tda367.std.utilities.Position;
 public class GameBoard {
 	
 	private IBoardTile[][] board;
+	private final int width;
+	private final int height;
 	
 	public GameBoard(){
 		Properties p = Properties.INSTANCE;
-		board = new IBoardTile[p.getDefaultBoardWidth()][p.getDefaultBoardHeight()];
+		width = p.getDefaultBoardWidth();
+		height = p.getDefaultBoardHeight();
+		board = new IBoardTile[width][height];
+		
+		initBoard(new TerrainTile());
 	}
 	
 	public GameBoard(int width, int height){
-		board =  new IBoardTile[width][height];
+		this.width = width;
+		this.height = height;
+		board =  new IBoardTile[this.width][this.height];
+		
+		initBoard(new TerrainTile());
+		
 	}
 	
 	/**
@@ -105,5 +116,29 @@ public class GameBoard {
 	 */
 	private boolean posOnBoard(Position p){
 		return posOnBoard(p.getX(), p.getY());
+	}
+	
+	private void initBoard(IBoardTile tile){
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++) {
+				board[x][y] = tile;
+			}
+		}
+	}
+	
+	/**
+	 * Overrides toString
+	 * @return a string representation of the game board.
+	 */
+	public String toString() {
+		return Arrays.toString(board);
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
 	}
 }
