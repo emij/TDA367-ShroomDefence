@@ -1,4 +1,4 @@
-package se.chalmers.tda367.std.core.towers;
+package se.chalmers.tda367.std.core.tiles.towers;
 
 import se.chalmers.tda367.std.utilities.Sprite;
 

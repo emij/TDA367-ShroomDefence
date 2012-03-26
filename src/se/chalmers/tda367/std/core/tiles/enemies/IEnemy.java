@@ -1,8 +1,8 @@
-package se.chalmers.tda367.std.core.enemies;
+package se.chalmers.tda367.std.core.tiles.enemies;
 
 import java.beans.PropertyChangeListener;
 
-import se.chalmers.tda367.std.core.IBoardTile;
+import se.chalmers.tda367.std.core.tiles.IBoardTile;
 
 /**
  * Represents a killable enemy.

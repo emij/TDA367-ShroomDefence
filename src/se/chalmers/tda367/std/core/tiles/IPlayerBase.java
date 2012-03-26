@@ -1,4 +1,5 @@
-package se.chalmers.tda367.std.core;
+package se.chalmers.tda367.std.core.tiles;
+
 
 /**
  * Represents the player base. 

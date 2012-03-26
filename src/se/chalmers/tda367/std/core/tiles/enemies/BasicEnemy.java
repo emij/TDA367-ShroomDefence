@@ -1,4 +1,4 @@
-package se.chalmers.tda367.std.core.enemies;
+package se.chalmers.tda367.std.core.tiles.enemies;
 
 import se.chalmers.tda367.std.utilities.Sprite;
 

@@ -1,8 +1,8 @@
-package se.chalmers.tda367.std.core.towers;
+package se.chalmers.tda367.std.core.tiles.towers;
 
 import java.beans.PropertyChangeSupport;
 
-import se.chalmers.tda367.std.core.enemies.IEnemy;
+import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**

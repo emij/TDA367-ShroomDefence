@@ -1,6 +1,6 @@
-package se.chalmers.tda367.std.core.towers;
+package se.chalmers.tda367.std.core.tiles.towers;
 
-import se.chalmers.tda367.std.core.enemies.IEnemy;
+import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
 
 /**
  * Represents a type of tower that is able to attack enemies.

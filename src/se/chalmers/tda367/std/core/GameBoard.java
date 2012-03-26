@@ -2,7 +2,8 @@ package se.chalmers.tda367.std.core;
 
 import java.util.*;
 
-import se.chalmers.tda367.std.core.enemies.IEnemy;
+import se.chalmers.tda367.std.core.tiles.IBoardTile;
+import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
 import se.chalmers.tda367.std.utilities.Position;
 
 /**

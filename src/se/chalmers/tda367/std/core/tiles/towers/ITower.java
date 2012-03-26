@@ -1,6 +1,6 @@
-package se.chalmers.tda367.std.core.towers;
+package se.chalmers.tda367.std.core.tiles.towers;
 
-import se.chalmers.tda367.std.core.IBoardTile;
+import se.chalmers.tda367.std.core.tiles.IBoardTile;
 
 /**
  * Represents a general tower.
