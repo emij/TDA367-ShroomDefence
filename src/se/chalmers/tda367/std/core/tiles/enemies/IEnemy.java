@@ -9,11 +9,12 @@ import se.chalmers.tda367.std.core.tiles.IBoardTile;
  * Implements the PropertyChangeListener interface.
  * This is called when an enemy is in range of a tower and is shot on, or otherwise damaged.
  * @author Emil Edholm
+ * @modified Emil Johansson
  * @date Mar 25, 2012
  */
 public interface IEnemy extends IBoardTile, PropertyChangeListener{
 	/**
-	 * Returns the health of the enemy
+	 * Returns the health of the enemy.
 	 * @return the current health of the enemy.
 	 */
 	public int getHealth();
@@ -27,6 +28,10 @@ public interface IEnemy extends IBoardTile, PropertyChangeListener{
 	 * @param dmg the base damage a tower does.
 	 */
 	public void decreaseHealth(int dmg);
-	
+	/**
+	 * Returns the amount of gold you get for killing an enemy.
+	 * @return the lootValue of the enemy.
+	 */
+	public int getLootValue();
 
 }

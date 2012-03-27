@@ -6,22 +6,29 @@ import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * A skeleton implementation of the IEnemy.
- * @author Unchanged
+ * @author Emil Edholm
+ * @modified Emil Johansson
  * @date Mar 22, 2012
  */
 public abstract class AbstractEnemy implements IEnemy{
 
 	private int currentHealth;
 	private final Sprite sprite;
+	private final int lootValue;
 	
-	public AbstractEnemy(int startHealth, Sprite sprite){
+	public AbstractEnemy(int startHealth, int lootValue, Sprite sprite){
 		this.currentHealth = startHealth;
 		this.sprite        = sprite;
+		this.lootValue     = lootValue;
 	}
 	
 	@Override
 	public int getHealth() {
 		return currentHealth;
+	}
+	@Override
+	public int getLootValue(){
+		return lootValue;
 	}
 
 	@Override
