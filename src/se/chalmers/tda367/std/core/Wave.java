@@ -16,10 +16,55 @@ public class Wave {
 	private Queue<WaveItem> items;
 	
 	public Wave(Queue<WaveItem> items){
-		throw new NotImplementedException();
+		this.items = items;
 	}
-	public WaveItem getNext(){
-		throw new NotImplementedException();
+	
+	
+	/** Gets the next enemy in line.
+	 * 
+	 * @return - enemy in line.
+	 * @throws Exception - if there's no enemy.
+	 */
+	public WaveItem getNext() throws Exception{
+		WaveItem item = items.poll();
+		if(item != null){
+			return item;
+		} else {
+			//TODO: Look over the exception type.
+			throw new Exception("No more itemzzz");
+		}
+	}
+	
+	/** Gets the number of enemies.
+	 * 
+	 * @return - the number of enemies in the wave.
+	 */
+	public int getNumberOfEnemies(){
+		return items.size();
+	}
+	
+	/** Gets the total loot value of the wave.
+	 * 
+	 * @return - the total loot value;
+	 */
+	public int getWaveLootValue(){
+		int total = 0;
+		for (WaveItem wi: items) {
+			total += wi.getEnemy().getLootValue();
+		}
+		return total;
+	}
+	
+	/** Gets the total health value of the wave.
+	 * 
+	 * @return - the total health value;
+	 */
+	public int getHealthValue(){
+		int total = 0;
+		for (WaveItem wi: items) {
+			total += wi.getEnemy().getHealth();
+		}
+		return total;
 	}
 
 }
