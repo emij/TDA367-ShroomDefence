@@ -34,4 +34,21 @@ public interface IEnemy extends IBoardTile, PropertyChangeListener{
 	 */
 	public int getLootValue();
 
+	/**
+	 * Returns the speed of the enemy.
+	 * @return the speed of the enemy
+	 */
+	public int getSpeed();
+	/**
+	 * Increase speed of the enemy with the specified value
+	 * @param inc
+	 * @return current speed
+	 */
+	public int increaseSpeed(int inc);
+	/**
+	 * Decrease speed of the enemy with the specified value
+	 * @param inc
+	 * @return current speed
+	 */
+	public int decreaseSpeed(int inc);
 }

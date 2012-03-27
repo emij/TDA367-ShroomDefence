@@ -15,11 +15,13 @@ public abstract class AbstractEnemy implements IEnemy{
 	private int currentHealth;
 	private final Sprite sprite;
 	private final int lootValue;
+	private int speed;
 	
-	public AbstractEnemy(int startHealth, int lootValue, Sprite sprite){
+	public AbstractEnemy(int startHealth, int speed, int lootValue, Sprite sprite){
 		this.currentHealth = startHealth;
-		this.sprite        = sprite;
+		this.speed         = speed;
 		this.lootValue     = lootValue;
+		this.sprite        = sprite;
 	}
 	
 	@Override
@@ -29,6 +31,20 @@ public abstract class AbstractEnemy implements IEnemy{
 	@Override
 	public int getLootValue(){
 		return lootValue;
+	}
+	@Override
+	public int getSpeed(){
+		return speed;
+	}
+	@Override
+	public int increaseSpeed(int inc){
+		speed = speed + inc;
+		return speed;
+	}
+	@Override
+	public int decreaseSpeed(int inc){
+		speed = speed - inc;
+		return speed;
 	}
 
 	@Override
