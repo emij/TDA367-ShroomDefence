@@ -73,7 +73,9 @@ public class GameBoard {
 	 * @param p
 	 */
 	public void placeTile(IBoardTile tile, Position p){
-		board[p.getX()][p.getY()] = tile;
+		if(posOnBoard(p)) {
+			board[p.getX()][p.getY()] = tile;
+		}
 	}
 	
 	/**
