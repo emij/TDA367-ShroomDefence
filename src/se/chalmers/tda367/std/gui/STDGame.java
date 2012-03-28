@@ -1,17 +1,10 @@
 package se.chalmers.tda367.std.gui;
 
-import java.net.URL;
-import java.util.Random;
-
 import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SpriteSheet;
 
 import se.chalmers.tda367.std.core.GameBoard;

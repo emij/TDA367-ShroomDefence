@@ -3,6 +3,8 @@ package se.chalmers.tda367.std;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
+import se.chalmers.tda367.std.gui.STDGame;
+
 /**
  * Contains the main method. The entrance to the game.
  * @author Unchanged
