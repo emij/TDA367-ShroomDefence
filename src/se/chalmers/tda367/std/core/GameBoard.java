@@ -75,6 +75,8 @@ public class GameBoard {
 	public void placeTile(IBoardTile tile, Position p){
 		if(posOnBoard(p)) {
 			board[p.getX()][p.getY()] = tile;
+		} else {
+			System.out.println("Bad coordinates");
 		}
 	}
 	
