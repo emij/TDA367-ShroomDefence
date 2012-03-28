@@ -34,6 +34,7 @@ public final class Main {
 		int yCord;
 		Scanner scn = new Scanner(System.in);
 		System.out.println(board);
+		System.out.println("Type b to build a tower or q to quit the game: ");
 		while(scn.hasNext()){
 			str = scn.nextLine();
 			if (str.equals("quit") || str.equals("q")){
@@ -60,9 +61,16 @@ public final class Main {
 						System.out.println("only integers please!");
 					}
 				}
-				IBoardTile tower = new BasicAttackTower();
-				board.placeTile(tower, new Position(xCord,yCord));
-				System.out.println(board);
+				Position tmp = new Position(xCord, yCord);
+				if(board.canBuildAt(tmp)) {
+					IBoardTile tower = new BasicAttackTower();
+					board.placeTile(tower, tmp);
+					System.out.println(board);
+				}
+				else {
+					System.out.println("Cannot build on given position");
+				}
+				System.out.println("Type b to build a tower or q to quit the game: ");
 			}
 		}
 		
