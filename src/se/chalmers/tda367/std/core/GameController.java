@@ -115,12 +115,16 @@ public class GameController {
 	}
 
 	/**
-	 * Updates the list of enemies that is inside the towers radius.
+	 * Towers fires at enemies in range.
 	 */
-	public void updateEnemiesInRange(){
+	public void shootAtEnemiesInRange(){
 		for(TowerOnBoard tob : towersOnBoard){
-			tob.getTower().updateTargetList(board.getEnemiesInRadius(tob.getPos(), tob.getTower().getRadius()));
+			shootAtEnemyClosestToBase(tob, board.getEnemiesInRadius(tob.getPos(), tob.getTower().getRadius())));
 		}
+	}
+	
+	private void shootAtEnemyClosestToBase(TowerOnBoard tob, List<IEnemy> list){
+		list.get(0).decreaseHealth(tob.getTower().getDmg());
 	}
 	
 	/**
@@ -153,7 +157,8 @@ public class GameController {
 		AbstractAttackTower tower;
 		Position pos;
 		
-		public ITower getTower() {
+		
+		public AbstractAttackTower getTower() {
 			return tower;
 		}
 		
