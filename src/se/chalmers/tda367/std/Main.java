@@ -3,6 +3,9 @@ package se.chalmers.tda367.std;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.SlickException;
+
 
 import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.core.tiles.BuildableTile;
@@ -10,6 +13,7 @@ import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
 import se.chalmers.tda367.std.core.tiles.towers.BasicAttackTower;
+import se.chalmers.tda367.std.gui.STDGame;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
@@ -25,48 +29,70 @@ public final class Main {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
-		GameBoard board = new GameBoard(20,20);
-		randomPlaceTile(board);
-		placePath(board);
-		String str = "";
-		String strCord = "";
-		int xCord;
-		int yCord;
-		Scanner scn = new Scanner(System.in);
-		System.out.println(board);
-		while(scn.hasNext()){
-			str = scn.nextLine();
-			if (str.equals("quit") || str.equals("q")){
-				System.out.println("Thanks for playing!");
-				System.exit(0);
-			} else if (str.equals("build") || str.equals("b")){
-				System.out.println("Build: please choose x-cordinate");
-				while(true){
-					strCord = scn.nextLine();
-					try {
-						xCord = Integer.parseInt(strCord);
-						break;
-					} catch(NumberFormatException e) {
-						System.out.println("only integers please!");
+		String line = null;
+		if(args.length == 0) {
+			System.out.print("Start 'gui' or console? (gui/console): ");
+			line = askInput();
+		}
+		else{
+			line = args[0];
+		}
+		if(line.equalsIgnoreCase("gui")){
+			try {
+	            AppGameContainer app = new AppGameContainer(new STDGame(), 1024, 720, false);
+	            app.start();
+	        } catch (SlickException e) {
+	            e.printStackTrace();
+	        }
+		}
+		else{
+			GameBoard board = new GameBoard(20,20);
+			randomPlaceTile(board);
+			placePath(board);
+			String str = "";
+			String strCord = "";
+			int xCord;
+			int yCord;
+			Scanner scn = new Scanner(System.in);
+			System.out.println(board);
+			while(scn.hasNext()){
+				str = scn.nextLine();
+				if (str.equals("quit") || str.equals("q")){
+					System.out.println("Thanks for playing!");
+					System.exit(0);
+				} else if (str.equals("build") || str.equals("b")){
+					System.out.println("Build: please choose x-cordinate");
+					while(true){
+						strCord = scn.nextLine();
+						try {
+							xCord = Integer.parseInt(strCord);
+							break;
+						} catch(NumberFormatException e) {
+							System.out.println("only integers please!");
+						}
 					}
-				}
-				System.out.println("Build: please choose y-cordinate");
-				while(true){
-					strCord = scn.nextLine();
-					try {
-						yCord = Integer.parseInt(strCord);
-						break;
-					} catch(NumberFormatException e) {
-						System.out.println("only integers please!");
+					System.out.println("Build: please choose y-cordinate");
+					while(true){
+						strCord = scn.nextLine();
+						try {
+							yCord = Integer.parseInt(strCord);
+							break;
+						} catch(NumberFormatException e) {
+							System.out.println("only integers please!");
+						}
 					}
+					IBoardTile tower = new BasicAttackTower();
+					board.placeTile(tower, new Position(xCord,yCord));
+					System.out.println(board);
 				}
-				IBoardTile tower = new BasicAttackTower();
-				board.placeTile(tower, new Position(xCord,yCord));
-				System.out.println(board);
 			}
 		}
-		
 
+	}
+	
+	private static String askInput(){
+		Scanner scan = new Scanner(System.in);
+		return scan.nextLine();
 	}
 
 	/**
