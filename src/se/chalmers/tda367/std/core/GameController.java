@@ -70,7 +70,7 @@ public class GameController {
 		if(board.getTileAt(board.getStartPos()) instanceof IWalkableTile && nextEnemy != null){
 			//TODO Look over the if-statement above, cleaner solution?
 			board.placeTile(nextEnemy.getEnemy(), board.getStartPos());
-			enemiesOnBoard.add(nextEnemy);
+			enemiesOnBoard.add(new EnemyOnBoard(nextEnemy));
 			placeSuccessful = true;
 		} else {
 			placeSuccessful = false;
@@ -137,6 +137,10 @@ public class GameController {
 		IEnemy enemy;
 		Position pos;
 		
+		public EnemyOnBoard(WaveItem nextEnemy) {
+			enemy = nextEnemy.getEnemy();
+		}
+
 		public Position getPos() {
 			return pos;
 		}
