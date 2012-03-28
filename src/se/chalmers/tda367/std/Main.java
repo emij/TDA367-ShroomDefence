@@ -25,7 +25,7 @@ public final class Main {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
-		GameBoard board = new GameBoard(20,20);
+		GameBoard board = new GameBoard(20, 20, new Position(0,10));
 		randomPlaceTile(board);
 		placePath(board);
 		String str = "";

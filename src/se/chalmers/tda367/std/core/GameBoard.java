@@ -14,23 +14,25 @@ import se.chalmers.tda367.std.utilities.*;
 public class GameBoard {
 	
 	private IBoardTile[][] board;
+	private Position startPos;
 	private final int width;
 	private final int height;
 	
-	public GameBoard(){
-		Properties p = Properties.INSTANCE;
-		width = p.getDefaultBoardWidth();
-		height = p.getDefaultBoardHeight();
-		board = new IBoardTile[width][height];
-		IBoardTile tile = new TerrainTile(new Sprite());
-		initBoard(tile);
-		
+	public GameBoard(Position startPos){	
+		this(Properties.INSTANCE.getDefaultBoardWidth(), Properties.INSTANCE.getDefaultBoardHeight(), startPos);
 	}
 	
-	public GameBoard(int width, int height){
+	public GameBoard(int width, int height, Position startPos){
+		if(width <= 0 || height <= 0) {
+			throw new IllegalArgumentException("Width and/or height cannot be equal to or smaller than zero");
+		}
 		this.width = width;
 		this.height = height;
 		board =  new IBoardTile[this.width][this.height];
+		if(!posOnBoard(startPos)) {
+			throw new IllegalArgumentException("Start position is not on the board.");
+		}
+		this.startPos = startPos;
 		IBoardTile tile = new TerrainTile(new Sprite());
 		initBoard(tile);
 		
@@ -149,11 +151,49 @@ public class GameBoard {
 		
 	}
 	
+	/**
+	 * @return the width of the game board.
+	 */
 	public int getWidth() {
 		return width;
 	}
 	
+	/**
+	 * @return the height of the game board.
+	 */
 	public int getHeight() {
 		return height;
+	}
+	
+	/**
+	 * Method to get the enemy's starting position on the game board.
+	 * @return a position containing the coordinates of the enemy starting position.
+	 */
+	public Position getStartPos() {
+		return startPos;
+	}
+	
+	/**
+	 * Method for checking if a given position on the game board is buildable.
+	 * @param p position to check if buildable.
+	 * @return true if given position is buildable. Returns false if the position isn't buildable or on the game board.
+	 */
+	public boolean canBuildAt(Position p) {
+		if(!posOnBoard(p)) {
+			return false;
+		}
+		return getTileAt(p) instanceof IBuildableTile;
+	}
+	
+	/**
+	 * Method for checking if there is an enemy on a given position.
+	 * @param p position to check for an enemy.
+	 * @return true if an enemy is on the given position. Returns false if given position is outside the board or no enemy is at the position.
+	 */
+	public boolean isEnemyAt(Position p) {
+		if(!posOnBoard(p)) {
+			return false;
+		}
+		return getTileAt(p) instanceof IEnemy;
 	}
 }
