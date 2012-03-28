@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.Timer;
-
-
 import se.chalmers.tda367.std.core.GameController.EnemyOnBoard;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
@@ -23,7 +21,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * The class that contains the game logic and controls the game.
- * @author Unchanged
+ * @author Johan Andersson
  * @date Mar 22, 2012
  */
 public class GameController {
