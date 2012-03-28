@@ -117,7 +117,7 @@ public class GameController {
 	 */
 	public void shootAtEnemiesInRange(){
 		for(TowerOnBoard tob : towersOnBoard){
-			shootAtEnemyClosestToBase(tob, board.getEnemiesInRadius(tob.getPos(), tob.getTower().getRadius())));
+			shootAtEnemyClosestToBase(tob, board.getEnemiesInRadius(tob.getPos(), tob.getTower().getRadius()));
 		}
 	}
 	
