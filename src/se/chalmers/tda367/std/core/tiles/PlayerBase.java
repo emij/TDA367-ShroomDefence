@@ -1,42 +1,47 @@
-package se.chalmers.tda367.std.core;
+package se.chalmers.tda367.std.core.tiles;
 
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * A concrete player base implementation.
- * @author Unchanged
+ * @author Emil Johansson
  * @date Mar 22, 2012
  */
 public class PlayerBase implements IPlayerBase {
+	
+	private int health;
+	private static final Sprite sprite = new Sprite();
+	
+	public PlayerBase(int health){
+		this.health = health;
+	}
 
 	@Override
 	public Sprite getSprite() {
-		// TODO Auto-generated method stub
-		return null;
+		return sprite;
 	}
 
 	@Override
 	public int getHealth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return health;
 	}
 
 	@Override
 	public int increaseHealth(int inc) {
-		// TODO Auto-generated method stub
-		return 0;
+		health = health + inc;
+		return health;
 	}
 
 	@Override
 	public int decreaseHealth() {
-		// TODO Auto-generated method stub
-		return 0;
+		health--;
+		return health;
 	}
 
 	@Override
 	public int decreaseHealth(int dmg) {
-		// TODO Auto-generated method stub
-		return 0;
+		health = health - dmg;
+		return health;
 	}
 
 }

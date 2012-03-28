@@ -2,7 +2,8 @@ package se.chalmers.tda367.std.utilities;
 
 /**
  * Represents a position/coordinate on the game board.
- * @author Emil Edholm
+ * @author Emil Johansson
+ * @modified Emil Edholm
  * @date Mar 22, 2012
  */
 public final class Position {
