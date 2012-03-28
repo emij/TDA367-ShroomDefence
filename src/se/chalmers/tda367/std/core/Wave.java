@@ -11,7 +11,6 @@ import java.util.Queue;
  */
 public class Wave {
 	
-	// Maybe some type of node implementation or some iterator of some kind instead?
 	private Queue<WaveItem> items;
 	
 	public Wave(Queue<WaveItem> items){
@@ -19,19 +18,13 @@ public class Wave {
 	}
 	
 	
-	/** Gets the next enemy in line.
+	/** 
+	 * Gets the next enemy in line.
 	 * 
-	 * @return - enemy in line.
-	 * @throws Exception - if there's no enemy.
+	 * @return the next enemy in line or null if queue, empty.
 	 */
-	public WaveItem getNext() throws Exception{
-		WaveItem item = items.poll();
-		if(item != null){
-			return item;
-		} else {
-			//TODO: Look over the exception type.
-			throw new Exception("No more itemzzz");
-		}
+	public WaveItem getNext() {
+		return items.poll();
 	}
 	
 	/** Gets the number of enemies.
