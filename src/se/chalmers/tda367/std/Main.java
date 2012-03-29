@@ -1,6 +1,5 @@
 package se.chalmers.tda367.std;
 
-import java.util.Random;
 import java.util.Scanner;
 
 
@@ -93,7 +92,6 @@ public final class Main {
 	 * @param board
 	 */
 	private static void randomPlaceTile(GameBoard board) {
-		Random rnd = new Random();
 		IBoardTile buildTile = new BuildableTile(new Sprite());
 		for (int y = 4; y < 17; y++) {
 			for (int x = 0; x < 20; x++) {

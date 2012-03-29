@@ -1,9 +1,11 @@
 package se.chalmers.tda367.std.core.tiles.towers;
 
 import java.beans.PropertyChangeSupport;
+import java.util.List;
 
 import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
 import se.chalmers.tda367.std.utilities.Sprite;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * A skeleton implementation of the {@code IAttackTower}
@@ -83,7 +85,11 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	public void removeFromTargetList(IEnemy enemy) {
 		targetList.removePropertyChangeListener(enemy);
 	}
-	
+	@Override
+	public void updateTargetList(List<IEnemy> enemies){
+		//TODO
+		throw new NotImplementedException();		
+	}
 	/**
 	 * Notifies the enemies in the target list of the damage done to them.
 	 * Sends the base damage as the {@code oldValue}.
