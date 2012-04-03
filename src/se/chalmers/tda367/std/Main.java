@@ -4,11 +4,15 @@ import java.util.Scanner;
 
 
 import se.chalmers.tda367.std.core.GameBoard;
+import se.chalmers.tda367.std.core.GameController;
+import se.chalmers.tda367.std.core.Player;
 import se.chalmers.tda367.std.core.tiles.BuildableTile;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
+import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.BasicAttackTower;
+import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
@@ -25,6 +29,7 @@ public final class Main {
 	 */
 	public static void main(String[] args) {
 		GameBoard board = new GameBoard(20, 20, new Position(0,10));
+		GameController control = new GameController(new Player("Horv"), board);
 		randomPlaceTile(board);
 		placePath(board);
 		String str = "";
@@ -64,15 +69,24 @@ public final class Main {
 				if(board.canBuildAt(tmp)) {
 					IBoardTile tower = new BasicAttackTower();
 					board.placeTile(tower, tmp);
+					if(tower instanceof ITower){
+						control.buildTower((ITower)tower, tmp);
+					}
 					System.out.println(board);
 				}
 				else {
 					System.out.println("Cannot build on given position");
 				}
 				System.out.println("Type b to build a tower or q to quit the game: ");
+			} else if(str.equals("update") || str.equals("u")){
+				control.updateGame();
+			} else if(str.equals("start") || str.equals("s")){
+				control.startGame();
+			} else if(str.equals("end") || str.equals("e")){
+				control.endGame();
 			}
 		}
-		
+
 
 	}
 
@@ -97,9 +111,9 @@ public final class Main {
 			for (int x = 0; x < 20; x++) {
 				board.placeTile(buildTile, new Position(x,y));
 			}
-			
+
 		}
 	}
-	
+
 
 }
