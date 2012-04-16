@@ -107,7 +107,7 @@ public class GameBoard {
 	 * @param p
 	 * @return true if given x and y values are on the game board.
 	 */
-	private boolean posOnBoard(int x, int y){
+	public boolean posOnBoard(int x, int y){
 		if(x < 0 || y < 0) {
 			return false;
 		}
@@ -122,7 +122,7 @@ public class GameBoard {
 	 * @param p
 	 * @return true if position is on the game board.
 	 */
-	private boolean posOnBoard(Position p){
+	public boolean posOnBoard(Position p){
 		return posOnBoard(p.getX(), p.getY());
 	}
 	

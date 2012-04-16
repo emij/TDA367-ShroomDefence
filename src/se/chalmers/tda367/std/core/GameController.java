@@ -12,6 +12,8 @@ import javax.swing.Timer;
 import se.chalmers.tda367.std.core.GameController.EnemyOnBoard;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
+import se.chalmers.tda367.std.core.tiles.PlayerBase;
+import se.chalmers.tda367.std.core.tiles.TerrainTile;
 import se.chalmers.tda367.std.core.tiles.enemies.BasicEnemy;
 import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
@@ -31,6 +33,7 @@ public class GameController {
 	private Player player;
 	private Wave wave;
 	private GameBoard board;
+	private PlayerBase base;
 	private Timer gameLoop;
 	private Timer releaseTimer;
 	private WaveItem nextEnemy;
@@ -50,14 +53,14 @@ public class GameController {
 		releaseTimer = new Timer(1500, new ReleaseTimerListener());
 		//dummywave
 		this.wave = createBasicWave(5);
-		
+		base = new PlayerBase(2);
 	}
 	
 	//Method to create a dummywave
 	private Wave createBasicWave(int n){
 		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();
 		for(int i = 0; i<n; i++){
-			q.add(new WaveItem(new BasicEnemy(), i*2000));
+			q.add(new WaveItem(new BasicEnemy(), i*1000));
 		}
 		return new Wave(q);
 	}
@@ -95,10 +98,10 @@ public class GameController {
 			board.placeTile(nextEnemy.getEnemy(), board.getStartPos());
 			enemiesOnBoard.add(new EnemyOnBoard(nextEnemy, board.getStartPos()));
 			nextEnemy =  wave.getNext();
+			paint();
 			if(nextEnemy != null){
 				releaseTimer.setInitialDelay(nextEnemy.getDelay());
 				releaseTimer.restart();
-				System.out.println("Next enemy in: "+nextEnemy.getDelay());
 			}
 		} 
 	}
@@ -126,22 +129,32 @@ public class GameController {
 	}
 	
 	private void moveEnemy(EnemyOnBoard eob) {
-		Position tmp = eob.getPos().move(1, 0);
-		if(board.getTileAt(tmp) instanceof IWalkableTile){
-			placeEnemyOnBoard(eob, tmp);
-			eob.setPos(tmp);
-		} else if(board.getTileAt(tmp = eob.getPos().move(1, 1)) instanceof IWalkableTile){
-			placeEnemyOnBoard(eob, tmp);
-			eob.setPos(tmp);
-		} else if(board.getTileAt(tmp = eob.getPos().move(1, -1)) instanceof IWalkableTile){
-			placeEnemyOnBoard(eob, tmp);
-			eob.setPos(tmp);
+		Position tmp = (eob.getPos()).move(1, 0);
+		if(board.posOnBoard(tmp)){
+			if(board.getTileAt(tmp) instanceof IWalkableTile){
+				placeEnemyOnBoard(eob, tmp);
+				eob.setPos(tmp);
+			} else if(board.getTileAt(tmp = eob.getPos().move(1, 1)) instanceof IWalkableTile){
+				placeEnemyOnBoard(eob, tmp);
+				eob.setPos(tmp);
+			} else if(board.getTileAt(tmp = eob.getPos().move(1, -1)) instanceof IWalkableTile){
+				placeEnemyOnBoard(eob, tmp);
+				eob.setPos(tmp);
+			}
+		} else {
+			enemyEnteredBase(eob);
 		}
 	}
 	
 	//Moves the enemy a step.
 	private void placeEnemyOnBoard(EnemyOnBoard eob, Position pos){
 		board.placeTile(eob.getEnemy(), pos);
+		board.placeTile(new PathTile(new Sprite()), eob.getPos());
+	}
+	
+	private void enemyEnteredBase(EnemyOnBoard eob){
+		//TODO, different loss in health?
+		base.decreaseHealth();
 		board.placeTile(new PathTile(new Sprite()), eob.getPos());
 	}
 
@@ -171,6 +184,18 @@ public class GameController {
 		moveEnemies();
 		shootAtEnemiesInRange();
 		removeDeadEnemies();
+		paint();
+		checkIfPlayerAlive();
+	}
+	
+	private void checkIfPlayerAlive(){
+		if(base.getHealth() <= 0){
+			System.out.println("Player dead, game over");
+			endGame();
+		}
+	}
+	
+	private void paint(){
 		System.out.println(board);
 		System.out.println(player.getName() +": "+player.getMoney());
 	}
@@ -243,7 +268,6 @@ public class GameController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			updateGame();
-			
 		}
 	}
 
