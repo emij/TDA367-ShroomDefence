@@ -51,7 +51,7 @@ public class GameController {
 		gameLoop = new Timer(1000, new GameLoopListener());
 		releaseTimer = new Timer(1500, new ReleaseTimerListener());
 		//dummywave
-		this.wave = createBasicWave(5);
+		this.wave = createBasicWave(2);
 		
 	}
 	
@@ -59,7 +59,7 @@ public class GameController {
 	private Wave createBasicWave(int n){
 		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();
 		for(int i = 0; i<n; i++){
-			q.add(new WaveItem(new BasicEnemy(), i*2000));
+			q.add(new WaveItem(new BasicEnemy(), i*5000));
 		}
 		return new Wave(q);
 	}
@@ -146,27 +146,28 @@ public class GameController {
 	private void moveEnemy(EnemyOnBoard eob){
 		ArrayList<PathTile> pathList = new ArrayList<PathTile>();
 		IBoardTile[] tiles = new IBoardTile[8];
-		tiles[0] = board.getTileAt(eob.getPos().move(1, 0));
-		tiles[1] = board.getTileAt(eob.getPos().move(1, 1));
-		tiles[2] = board.getTileAt(eob.getPos().move(1, -1));
+		tiles[0] = board.getTileAt(eob.getPos().move(1, 0)); 
+		tiles[1] = board.getTileAt(eob.getPos().move(0, -1));
+		tiles[2] = board.getTileAt(eob.getPos().move(-1, 0));
 		tiles[3] = board.getTileAt(eob.getPos().move(0, 1));
 		
-		tiles[4] = board.getTileAt(eob.getPos().move(0, -1));
-		tiles[5] = board.getTileAt(eob.getPos().move(-1, 0));
-		tiles[6] = board.getTileAt(eob.getPos().move(-1, 1));
-		tiles[7] = board.getTileAt(eob.getPos().move(-1, -1));
-		for(int i = 1; i < 8;i++){
+		tiles[4] = board.getTileAt(eob.getPos().move(1, -1));
+		tiles[5] = board.getTileAt(eob.getPos().move(-1, -1));
+		tiles[6] = board.getTileAt(eob.getPos().move(1, 1));
+		tiles[7] = board.getTileAt(eob.getPos().move(-1, 1));
+		for(int i = 0; i < 8;i++){
 			if(tiles[i] instanceof IWalkableTile){
 				PathTile tmp = (PathTile)tiles[i];
 				pathList.add(tmp);
 			}
 		}
 		Collections.sort(pathList);
-		int compareValue;
-		for(int i = 0;i < pathList.size();i++){
+		for(int i = pathList.size()-1;i >= 0;i--){
+			System.out.println(pathList.get(i).getTileValue()+" "+board.getMap().getValueAtPos(eob.getPos()));
 			if( (pathList.get(i).getTileValue() - board.getMap().getValueAtPos(eob.getPos())) == 1){
-				placeEnemyOnBoard(eob, pathList.get(i).);
-				eob.setPos(tmp);
+				placeEnemyOnBoard(eob, pathList.get(i).getPos());
+				eob.setPos(pathList.get(i).getPos());
+				break;
 			}
 		}
 		

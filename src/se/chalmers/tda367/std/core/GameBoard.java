@@ -35,7 +35,7 @@ public class GameBoard {
 		this.startPos = startPos;
 		//IBoardTile tile = new TerrainTile(new Sprite());
 		//initBoard(tile);
-		//initBoard();
+		initBoard();
 		
 	}
 	
@@ -123,24 +123,26 @@ public class GameBoard {
 	 * @return true if position is on the game board.
 	 */
 	private boolean posOnBoard(Position p){
+		if(p == null){
+			System.out.println("HALLLOOOO");
+		}
 		return posOnBoard(p.getX(), p.getY());
 	}
-	/*
+	
 	private void initBoard(){
 		int[][] map = testMap.getMap();
 		IBoardTile buildableTile = new BuildableTile(new Sprite());
-		IBoardTile pathTile = new PathTile(new Sprite());
 		for(int i = 0; i < map.length;i++){
 			for(int j = 0; j < map[i].length;j++){
 				if(map[i][j] == 0){
 					board[i][j] = buildableTile; 
 				} else {
-					board[i][j] = pathTile;
+					board[i][j] = new PathTile(new Sprite(), testMap.getValueAtPos(new Position(i,j)), new Position(i,j));
 				}
 			}
 			
 		}
-	}*/
+	}
 	
 	/**
 	 * Overrides toString

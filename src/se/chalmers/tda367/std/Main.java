@@ -28,7 +28,7 @@ public final class Main {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
-		GameBoard board = new GameBoard(20, 20, new Position(0,12));
+		GameBoard board = new GameBoard(20, 20, new Position(1,12));
 		GameController control = new GameController(new Player("Horv"), board);
 		String str = "";
 		String strCord = "";
@@ -90,7 +90,7 @@ public final class Main {
 
 	/**
 	 * @param board
-	 */
+	 
 	private static void placePath(GameBoard board) {
 		IBoardTile pathTile = new PathTile(new Sprite());
 		int y = (board.getHeight()/2)-1;
@@ -99,7 +99,7 @@ public final class Main {
 			board.placeTile(pathTile, new Position(i,y+1));
 		}
 	}
-
+	*/
 	/**
 	 * @param board
 	 */

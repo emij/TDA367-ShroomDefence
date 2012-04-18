@@ -1,5 +1,6 @@
 package se.chalmers.tda367.std.core.tiles;
 
+import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -10,6 +11,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
 public class PathTile extends AbstractTile implements IWalkableTile, Comparable<PathTile>{
 
 	//TODO modified to test pathfinding
+	Position pos;
 	int tileValue;
 	/**
 	 * @param sprite
@@ -18,6 +20,10 @@ public class PathTile extends AbstractTile implements IWalkableTile, Comparable<
 	public PathTile(Sprite sprite, int tileValue) {
 		super(sprite);
 		this.tileValue = tileValue;
+	}
+	public PathTile(Sprite sprite, int tileValue, Position pos) {
+		this(sprite, tileValue);
+		this.pos = pos;
 	}
 	
 	@Override
@@ -40,6 +46,12 @@ public class PathTile extends AbstractTile implements IWalkableTile, Comparable<
 		} else {
 			return 0;
 		}
+	}
+	/**
+	 * @return the pos
+	 */
+	public Position getPos() {
+		return pos;
 	}
 	
 
