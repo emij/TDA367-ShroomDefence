@@ -10,6 +10,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.Timer;
 import se.chalmers.tda367.std.core.GameController.EnemyOnBoard;
+import se.chalmers.tda367.std.core.tiles.AbstractTile;
+import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
 import se.chalmers.tda367.std.core.tiles.enemies.BasicEnemy;
@@ -124,7 +126,7 @@ public class GameController {
 			moveEnemy(eob);
 		}
 	}
-	
+	/*
 	private void moveEnemy(EnemyOnBoard eob) {
 		Position tmp = eob.getPos().move(1, 0);
 		if(board.getTileAt(tmp) instanceof IWalkableTile){
@@ -137,12 +139,44 @@ public class GameController {
 			placeEnemyOnBoard(eob, tmp);
 			eob.setPos(tmp);
 		}
+	}*/
+	/**
+	 * Writing a new moveEnemy to try some pathfinding
+	 */
+	private void moveEnemy(EnemyOnBoard eob){
+		ArrayList<PathTile> pathList = new ArrayList<PathTile>();
+		IBoardTile[] tiles = new IBoardTile[8];
+		tiles[0] = board.getTileAt(eob.getPos().move(1, 0));
+		tiles[1] = board.getTileAt(eob.getPos().move(1, 1));
+		tiles[2] = board.getTileAt(eob.getPos().move(1, -1));
+		tiles[3] = board.getTileAt(eob.getPos().move(0, 1));
+		
+		tiles[4] = board.getTileAt(eob.getPos().move(0, -1));
+		tiles[5] = board.getTileAt(eob.getPos().move(-1, 0));
+		tiles[6] = board.getTileAt(eob.getPos().move(-1, 1));
+		tiles[7] = board.getTileAt(eob.getPos().move(-1, -1));
+		for(int i = 1; i < 8;i++){
+			if(tiles[i] instanceof IWalkableTile){
+				PathTile tmp = (PathTile)tiles[i];
+				pathList.add(tmp);
+			}
+		}
+		Collections.sort(pathList);
+		int compareValue;
+		for(int i = 0;i < pathList.size();i++){
+			if( (pathList.get(i).getTileValue() - board.getMap().getValueAtPos(eob.getPos())) == 1){
+				placeEnemyOnBoard(eob, pathList.get(i).);
+				eob.setPos(tmp);
+			}
+		}
+		
 	}
+	
 	
 	//Moves the enemy a step.
 	private void placeEnemyOnBoard(EnemyOnBoard eob, Position pos){
 		board.placeTile(eob.getEnemy(), pos);
-		board.placeTile(new PathTile(new Sprite()), eob.getPos());
+		board.placeTile(new PathTile(new Sprite(), board.getMap().getValueAtPos(eob.getPos())), eob.getPos());
 	}
 
 	/**
@@ -178,7 +212,7 @@ public class GameController {
 	private void removeDeadEnemies(){
 		for(EnemyOnBoard eob:enemiesOnBoard){
 			if(eob.getEnemy().getHealth() <= 0){
-				board.placeTile(new PathTile(new Sprite()), eob.getPos());
+				board.placeTile(new PathTile(new Sprite(), board.getMap().getValueAtPos(eob.getPos())), eob.getPos());
 			}
 		}
 	}

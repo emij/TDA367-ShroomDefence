@@ -35,7 +35,7 @@ public class GameBoard {
 		this.startPos = startPos;
 		//IBoardTile tile = new TerrainTile(new Sprite());
 		//initBoard(tile);
-		initBoard();
+		//initBoard();
 		
 	}
 	
@@ -125,7 +125,7 @@ public class GameBoard {
 	private boolean posOnBoard(Position p){
 		return posOnBoard(p.getX(), p.getY());
 	}
-	
+	/*
 	private void initBoard(){
 		int[][] map = testMap.getMap();
 		IBoardTile buildableTile = new BuildableTile(new Sprite());
@@ -140,7 +140,7 @@ public class GameBoard {
 			}
 			
 		}
-	}
+	}*/
 	
 	/**
 	 * Overrides toString
@@ -204,5 +204,8 @@ public class GameBoard {
 			return false;
 		}
 		return getTileAt(p) instanceof IEnemy;
+	}
+	public Map getMap(){
+		return testMap;
 	}
 }
