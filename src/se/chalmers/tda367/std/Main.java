@@ -28,10 +28,8 @@ public final class Main {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
-		GameBoard board = new GameBoard(20, 20, new Position(0,10));
+		GameBoard board = new GameBoard(20, 20, new Position(0,12));
 		GameController control = new GameController(new Player("Horv"), board);
-		randomPlaceTile(board);
-		placePath(board);
 		String str = "";
 		String strCord = "";
 		int xCord;

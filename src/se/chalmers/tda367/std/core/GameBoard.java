@@ -12,7 +12,7 @@ import se.chalmers.tda367.std.utilities.*;
  * @date Mar 22, 2012
  */
 public class GameBoard {
-	
+	private Map testMap = new Map();
 	private IBoardTile[][] board;
 	private Position startPos;
 	private final int width;
@@ -33,8 +33,9 @@ public class GameBoard {
 			throw new IllegalArgumentException("Start position is not on the board.");
 		}
 		this.startPos = startPos;
-		IBoardTile tile = new TerrainTile(new Sprite());
-		initBoard(tile);
+		//IBoardTile tile = new TerrainTile(new Sprite());
+		//initBoard(tile);
+		initBoard();
 		
 	}
 	
@@ -125,11 +126,19 @@ public class GameBoard {
 		return posOnBoard(p.getX(), p.getY());
 	}
 	
-	private void initBoard(IBoardTile tile){
-		for(int y = 0; y < height; y++){
-			for(int x = 0; x < width; x++) {
-				board[x][y] = tile;
+	private void initBoard(){
+		int[][] map = testMap.getMap();
+		IBoardTile buildableTile = new BuildableTile(new Sprite());
+		IBoardTile pathTile = new PathTile(new Sprite());
+		for(int i = 0; i < map.length;i++){
+			for(int j = 0; j < map[i].length;j++){
+				if(map[i][j] == 0){
+					board[i][j] = buildableTile; 
+				} else {
+					board[i][j] = pathTile;
+				}
 			}
+			
 		}
 	}
 	
