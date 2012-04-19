@@ -5,6 +5,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
 /**
  * Represents a very basic enemy for use in a text based game.
  * <p>Start health: <b>100</b>
+ * <p>Speed: <b>5</b>
  * <p>Gold received: <b>5</b>
  * @author Emil Edholm
  * @modified Emil Johansson
