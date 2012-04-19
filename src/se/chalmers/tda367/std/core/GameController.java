@@ -41,10 +41,14 @@ public class GameController {
 	private ArrayList<TowerOnBoard> towersOnBoard = new ArrayList<TowerOnBoard>();
 	
 	
-	
-	public GameController(Player p, GameBoard b){
-		this.player = p;
-		this.board = b;
+	/** Constructor for the GameController, requires a player and a board to work.
+	 * 
+	 * @param player - player playing the game.
+	 * @param board - board to play the game on.
+	 */
+	public GameController(Player player, GameBoard board){
+		this.player = player;
+		this.board = board;
 		init();
 	}
 	
@@ -60,7 +64,7 @@ public class GameController {
 	private Wave createBasicWave(int n){
 		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();
 		for(int i = 0; i<n; i++){
-			q.add(new WaveItem(new BasicEnemy(), i*1000));
+			q.add(new WaveItem(new BasicEnemy(), i*0));
 		}
 		return new Wave(q);
 	}
@@ -76,6 +80,7 @@ public class GameController {
 		gameLoop.start();
 		releaseTimer.start();
 	}
+	
 	/**
 	 * Ends the running game
 	 */
@@ -95,15 +100,19 @@ public class GameController {
 		
 		if(board.getTileAt(board.getStartPos()) instanceof IWalkableTile && nextEnemy != null){
 			//TODO Look over the if-statement above, cleaner solution?
-			board.placeTile(nextEnemy.getEnemy(), board.getStartPos());
-			enemiesOnBoard.add(new EnemyOnBoard(nextEnemy, board.getStartPos()));
+			placeEnemy(nextEnemy);
 			nextEnemy =  wave.getNext();
 			paint();
 			if(nextEnemy != null){
 				releaseTimer.setInitialDelay(nextEnemy.getDelay());
 				releaseTimer.restart();
 			}
-		} 
+		}
+	}
+	
+	private void placeEnemy(WaveItem wi){
+		board.placeTile(wi.getEnemy(), board.getStartPos());
+		enemiesOnBoard.add(new EnemyOnBoard(wi, board.getStartPos()));
 	}
 	
 	/**
@@ -152,6 +161,7 @@ public class GameController {
 		board.placeTile(new PathTile(new Sprite()), eob.getPos());
 	}
 	
+	//Method for enemies entering a base, playerbase losing health.
 	private void enemyEnteredBase(EnemyOnBoard eob){
 		//TODO, different loss in health?
 		base.decreaseHealth();
@@ -167,6 +177,7 @@ public class GameController {
 		}
 	}
 	
+	
 	private void shootAtEnemyClosestToBase(TowerOnBoard tob, List<IEnemy> list){
 		if(list.size() > 0){
 		IEnemy enemy = list.get(0);
@@ -176,6 +187,7 @@ public class GameController {
 			}
 		}
 	}
+	
 	
 	/**
 	 * The loop that updates the whole game
@@ -190,9 +202,13 @@ public class GameController {
 	
 	private void checkIfPlayerAlive(){
 		if(base.getHealth() <= 0){
-			System.out.println("Player dead, game over");
-			endGame();
+			playerDead();
 		}
+	}
+	
+	private void playerDead(){
+		System.out.println("Player dead, game over");
+		endGame();
 	}
 	
 	private void paint(){
