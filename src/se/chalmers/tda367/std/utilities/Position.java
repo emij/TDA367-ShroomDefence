@@ -1,9 +1,10 @@
 package se.chalmers.tda367.std.utilities;
 
 /**
- * Represents a position/coordinate on the game board.
+ * Represents a position/coordinate on the game board. 
+ * Position coordniates ranging from {@code Integer.MIN_VALUE} to {@code Integer.MAX_VALUE}
  * @author Emil Johansson
- * @modified Emil Edholm
+ * @modified Emil Edholm, Johan Andersson
  * @date Mar 22, 2012
  */
 public final class Position {
@@ -12,6 +13,7 @@ public final class Position {
 	public Position(int x, int y){
 		this.x = x;
 		this.y = y;
+		
 	}
 	
 	public Position(Position copyFrom){
@@ -51,6 +53,10 @@ public final class Position {
 		// Safe to cast.
 		Position p = (Position)rhs;
 		return x == p.x && y == p.y;
+	}
+	
+	public Position move(int dx, int dy){
+		return new Position(getX()+dx, getY()+dy);
 	}
 
 }

@@ -1,5 +1,7 @@
 package se.chalmers.tda367.std.core.tiles.towers;
 
+import java.util.List;
+
 import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
 
 /**
@@ -53,5 +55,13 @@ public interface IAttackTower extends ITower{
 	 * @param enemy the enemy to remove.
 	 */
 	public void removeFromTargetList(IEnemy enemy);
+	
+	/**
+	 * Method for updating the list of enemies in range.
+	 * I.e. first clear all the enemies from the target list,
+	 * then add all new enemies from the supplied list.
+	 * @param enemies the enemies to add, if list is null, the list is cleared.
+	 */
+	public void updateTargetList(List<IEnemy> enemies);
 	
 }
