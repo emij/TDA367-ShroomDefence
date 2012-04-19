@@ -5,7 +5,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
 /**
  * Represents a very basic enemy for use in a text based game.
  * <p>Start health: <b>100</b>
- * <p>Speed: <b>5</b>
+ * <p>Speed: <b>2</b>
  * <p>Gold received: <b>5</b>
  * @author Emil Edholm
  * @modified Emil Johansson
@@ -17,7 +17,7 @@ public final class BasicEnemy extends AbstractEnemy {
 	 * Creates a basic enemy.
 	 */
 	public BasicEnemy() {
-		super(100, 5, 5, new Sprite());
+		super(100, 2, 5, new Sprite());
 	}
 	
 	/**
@@ -26,6 +26,12 @@ public final class BasicEnemy extends AbstractEnemy {
 	@Override
 	public String toString(){
 		return "e";
+	}
+
+	@Override
+	public Sprite getSprite() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
