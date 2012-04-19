@@ -51,7 +51,7 @@ public class GameController {
 		gameLoop = new Timer(1000, new GameLoopListener());
 		releaseTimer = new Timer(1500, new ReleaseTimerListener());
 		//dummywave
-		this.wave = createBasicWave(2);
+		this.wave = createBasicWave(1);
 		
 	}
 	
