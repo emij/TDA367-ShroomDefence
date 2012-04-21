@@ -1,5 +1,8 @@
 package se.chalmers.tda367.std.core.tiles.enemies;
 
+import java.util.List;
+
+import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -16,8 +19,8 @@ public final class BasicEnemy extends AbstractEnemy {
 	/**
 	 * Creates a basic enemy.
 	 */
-	public BasicEnemy() {
-		super(100, 2, 5, new Sprite());
+	public BasicEnemy(List<Position> waypoints, Position startPos) {
+		super(100, 2, 5, new Sprite(), waypoints, startPos);
 	}
 	
 	/**

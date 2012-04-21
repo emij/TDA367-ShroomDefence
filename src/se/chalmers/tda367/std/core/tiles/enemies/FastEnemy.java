@@ -1,5 +1,8 @@
 package se.chalmers.tda367.std.core.tiles.enemies;
 
+import java.util.List;
+
+import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -15,8 +18,8 @@ public class FastEnemy extends AbstractEnemy {
 	/**
 	 *  Creates a fast enemy.
 	 */
-	public FastEnemy() {
-		super(50, 3, 5, new Sprite());
+	public FastEnemy(List<Position> waypoints, Position startPos) {
+		super(50, 3, 5, new Sprite(), waypoints, startPos);
 	}
 	
 	/**

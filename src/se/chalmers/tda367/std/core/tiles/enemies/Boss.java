@@ -1,5 +1,8 @@
 package se.chalmers.tda367.std.core.tiles.enemies;
 
+import java.util.List;
+
+import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -15,8 +18,8 @@ public class Boss extends AbstractEnemy {
 	/**
 	 *  Creates a boss enemy.
 	 */
-	public Boss() {
-		super(1000, 2, 50, new Sprite());
+	public Boss(List<Position> waypoints, Position startPos) {
+		super(1000, 2, 50, new Sprite(), waypoints, startPos);
 	}
 	
 	/**

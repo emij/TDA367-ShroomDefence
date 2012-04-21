@@ -64,7 +64,7 @@ public class GameController {
 	private Wave createBasicWave(int n){
 		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();
 		for(int i = 0; i<n; i++){
-			q.add(new WaveItem(new BasicEnemy(), i*0));
+			q.add(new WaveItem(new BasicEnemy(board.getWaypoints(), new Position(board.getStartPos().getX()*16+8, board.getStartPos().getY()*16+8)), i*0));
 		}
 		return new Wave(q);
 	}
@@ -111,7 +111,6 @@ public class GameController {
 	}
 	
 	private void placeEnemy(WaveItem wi){
-		board.placeTile(wi.getEnemy(), board.getStartPos());
 		enemiesOnBoard.add(new EnemyOnBoard(wi, board.getStartPos()));
 	}
 	
@@ -133,7 +132,8 @@ public class GameController {
 	public void moveEnemies(){
 		Collections.sort(enemiesOnBoard);
 		for (EnemyOnBoard eob : enemiesOnBoard) {
-			moveEnemy(eob);
+			eob.getEnemy().moveEnemy();
+			//moveEnemy(eob);
 		}
 	}
 	
@@ -157,8 +157,6 @@ public class GameController {
 	
 	//Moves the enemy a step.
 	private void placeEnemyOnBoard(EnemyOnBoard eob, Position pos){
-		board.placeTile(eob.getEnemy(), pos);
-		board.placeTile(new PathTile(new Sprite()), eob.getPos());
 	}
 	
 	//Method for enemies entering a base, playerbase losing health.

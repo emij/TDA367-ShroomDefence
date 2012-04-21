@@ -3,6 +3,7 @@ package se.chalmers.tda367.std.core.tiles.enemies;
 import java.beans.PropertyChangeListener;
 
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
+import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * Represents a killable enemy.
@@ -12,7 +13,7 @@ import se.chalmers.tda367.std.core.tiles.IBoardTile;
  * @modified Emil Johansson
  * @date Mar 25, 2012
  */
-public interface IEnemy extends IBoardTile, PropertyChangeListener{
+public interface IEnemy extends PropertyChangeListener{
 	/**
 	 * Returns the health of the enemy.
 	 * @return the current health of the enemy.
@@ -51,4 +52,12 @@ public interface IEnemy extends IBoardTile, PropertyChangeListener{
 	 * @return current speed
 	 */
 	public int decreaseSpeed(int inc);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Sprite getSprite();
+	
+	public void moveEnemy();
 }

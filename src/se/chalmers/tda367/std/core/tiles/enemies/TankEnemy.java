@@ -1,5 +1,8 @@
 package se.chalmers.tda367.std.core.tiles.enemies;
 
+import java.util.List;
+
+import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -15,8 +18,8 @@ public class TankEnemy extends AbstractEnemy {
 	/**
 	 *  Creates a tank enemy.
 	 */
-	public TankEnemy() {
-		super(200, 1, 5, new Sprite());
+	public TankEnemy(List<Position> waypoints, Position startPos) {
+		super(200, 1, 5, new Sprite(), waypoints, startPos);
 	}
 	
 	/**

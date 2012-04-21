@@ -18,6 +18,7 @@ public class GameBoard {
 	private Position endPos;
 	private final int width;
 	private final int height;
+	private List<Position> waypoints;
 	
 	public GameBoard(Position startPos, Position endPos){	
 		this(Properties.INSTANCE.getDefaultBoardWidth(), Properties.INSTANCE.getDefaultBoardHeight(), startPos, endPos);
@@ -35,6 +36,7 @@ public class GameBoard {
 		}
 		this.startPos = startPos;
 		this.endPos = endPos;
+		this.waypoints = new ArrayList<Position>();
 		IBoardTile tile = new TerrainTile(new Sprite());
 		initBoard(tile);
 	}
@@ -77,6 +79,10 @@ public class GameBoard {
 	 */
 	public void placeTile(IBoardTile tile, Position p){
 		if(posOnBoard(p)) {
+			if(tile instanceof WaypointTile) {
+				Position tmp = new Position(p.getX()*16+8, p.getY()*16+8);
+				waypoints.add(tmp);
+			}
 			board[p.getX()][p.getY()] = tile;
 		} else {
 			System.out.println("Bad coordinates");
@@ -180,6 +186,13 @@ public class GameBoard {
 	 */
 	public Position getEndPos() {
 		return endPos;
+	}
+	
+	/**
+	 * TODO: Fix javadoc
+	 */
+	public List<Position> getWaypoints() { 
+		return waypoints;
 	}
 	
 	/**

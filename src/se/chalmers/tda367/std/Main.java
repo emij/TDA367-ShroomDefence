@@ -10,6 +10,7 @@ import se.chalmers.tda367.std.core.tiles.BuildableTile;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
+import se.chalmers.tda367.std.core.tiles.WaypointTile;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
@@ -32,6 +33,7 @@ public final class Main {
 		GameController control = new GameController(new Player("Horv"), board);
 		randomPlaceTile(board);
 		placePath(board);
+		placeWaypoint(board);
 		String str = "";
 		String strCord = "";
 		int xCord;
@@ -113,6 +115,12 @@ public final class Main {
 			}
 
 		}
+	}
+	
+	private static void placeWaypoint(GameBoard board) {
+		board.placeTile(new WaypointTile(new Sprite()), new Position(5, 10));
+		board.placeTile(new WaypointTile(new Sprite()), new Position(5, 9));
+		board.placeTile(new WaypointTile(new Sprite()), new Position(19, 9));
 	}
 
 

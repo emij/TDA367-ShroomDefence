@@ -21,7 +21,7 @@ public class TestWave {
 	private Wave createBasicWave(int n){
 		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();
 		for(int i = 0; i<n; i++){
-			q.add(new WaveItem(new BasicEnemy(), i+1));
+			//q.add(new WaveItem(new BasicEnemy(), i+1));
 		}
 		return new Wave(q);
 	}
