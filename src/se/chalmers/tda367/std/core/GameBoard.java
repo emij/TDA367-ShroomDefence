@@ -9,6 +9,7 @@ import se.chalmers.tda367.std.utilities.*;
 /**
  * Represents the whole game board in a grid system.
  * @author Johan Gustafsson
+ * @modified Emil Johansson
  * @date Mar 22, 2012
  */
 public class GameBoard {
@@ -45,9 +46,8 @@ public class GameBoard {
 	 * @param radius
 	 * @return List of enemies.
 	 */
-	public List<IEnemy> getEnemiesInRadius(Position p, int radius){
-		List<IEnemy> enemies = new ArrayList<IEnemy>();
-		
+	public ArrayList<IEnemy> getEnemiesInRadius(Position p, int radius){
+		ArrayList<IEnemy> enemies = new ArrayList<IEnemy>();
 		for(int y = p.getY()-radius; y < p.getY()+radius; y++) {
 			for(int x = p.getX()-radius; x < p.getX()+radius; x++) {
 				if(posOnBoard(x, y) && getTileAt(x, y) instanceof IEnemy) {
@@ -55,6 +55,7 @@ public class GameBoard {
 				}
 			}
 		}
+		Collections.sort(enemies);
 		return enemies;
 	}
 
