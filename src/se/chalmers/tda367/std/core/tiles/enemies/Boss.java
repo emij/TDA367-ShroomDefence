@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core.tiles.enemies;
 
 import java.util.List;
 
+import se.chalmers.tda367.std.core.anno.Enemy;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
@@ -13,6 +14,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Johan Gustafsson
  * @date   19 apr 2012
  */
+@Enemy(name = "El Jefe", description = "Represents a boss enemy.", enemyStrength = 2)
 public class Boss extends AbstractEnemy {
 	
 	/**

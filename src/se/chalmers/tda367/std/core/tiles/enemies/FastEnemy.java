@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core.tiles.enemies;
 
 import java.util.List;
 
+import se.chalmers.tda367.std.core.anno.Enemy;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
@@ -13,6 +14,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Johan Gustafsson
  * @date   19 apr 2012
  */
+@Enemy(name = "Speedy gonzales", description = "Represents an enemy slightly faster than usual.", enemyStrength = 1)
 public class FastEnemy extends AbstractEnemy {
 	
 	/**
