@@ -4,6 +4,7 @@ import java.util.*;
 
 import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
+import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.*;
 
 /**
@@ -214,6 +215,24 @@ public class GameBoard {
 			return false;
 		}
 		return getTileAt(p) instanceof IBuildableTile;
+	}
+	
+	/**
+	 * Retrieves all the towers currently on the game board.
+	 * @return a list of towers currently placed on the game board.
+	 */
+	public List<ITower> getTowersOnBoard(){
+		List<ITower> towers = new ArrayList<ITower>();
+		
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				if(getTileAt(x, y) instanceof ITower){
+					towers.add((ITower) getTileAt(x, y));
+				}
+			}
+		}
+		
+		return towers;
 	}
 	
 	/**
