@@ -45,7 +45,7 @@ public class BuildController {
 	 * @return - True if position is buildable on board.
 	 */
 	public boolean isBuildableSpot(Position pos) {
-		return board.getTileAt(pos) instanceof BuildableTile;
+		return board.canBuildAt(pos);
 	}
 
 	/** Tells if a player can afford a tower.
