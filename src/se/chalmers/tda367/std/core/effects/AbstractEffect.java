@@ -24,6 +24,11 @@ public abstract class AbstractEffect implements IEffect {
 		return duration;
 	}
 	
+	@Override 
+	public void decrementDuration() {
+		duration -= 1;
+	}
+	
 	@Override
 	public int getSpeedModifier() {
 		return speedMod;
