@@ -123,7 +123,7 @@ public class GameBoard {
 	 * @return true if position is on the game board.
 	 */
 	private boolean posOnBoard(Position p){
-		if(p == null){
+		if(p == null){ //TODO remove this if-statement
 			System.out.println("HALLLOOOO");
 		}
 		return posOnBoard(p.getX(), p.getY());
@@ -136,7 +136,7 @@ public class GameBoard {
 			for(int j = 0; j < map[i].length;j++){
 				if(map[i][j] == 0){
 					board[i][j] = buildableTile; 
-				} else {
+				} else { //TODO should probably change PathTile-creation
 					board[i][j] = new PathTile(new Sprite(), testMap.getValueAtPos(new Position(i,j)), new Position(i,j));
 				}
 			}
