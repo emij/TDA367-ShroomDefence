@@ -51,4 +51,15 @@ public interface IEnemy extends IBoardTile, PropertyChangeListener{
 	 * @return current speed
 	 */
 	public int decreaseSpeed(int inc);
+	/**
+	 * Returns the current boardValue of the enemy.
+	 * Higher value means closer to playerBase
+	 * @return current boardValue
+	 */
+	public int getBoardValue();
+	/**
+	 * Sets the boardValue of the enemy
+	 * @param boardValue
+	 */
+	public void setBoardValue(int boardValue);
 }
