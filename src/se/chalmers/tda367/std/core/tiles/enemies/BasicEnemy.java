@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core.tiles.enemies;
 
 import java.util.List;
 
+import se.chalmers.tda367.std.core.anno.Enemy;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
@@ -14,6 +15,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @modified Emil Johansson
  * @date   25 mar 2012
  */
+@Enemy(name = "Basic enemy", description = "Represents the most common enemy.", enemyStrength = 1)
 public final class BasicEnemy extends AbstractEnemy {
 
 	/**
