@@ -39,7 +39,7 @@ public class BuildController {
 		}
 	}
 
-	/** Tells if a spot is buildable or not.
+	/** Tells if a spot is buildable.
 	 * 
 	 * @param pos - Position to test buildability on.
 	 * @return - True if position is buildable on board.
@@ -48,7 +48,12 @@ public class BuildController {
 		return board.getTileAt(pos) instanceof BuildableTile;
 	}
 
-	private boolean playerCanAffordTower(ITower tower) {
+	/** Tells if a player can afford a tower.
+	 * 
+	 * @param tower - Tower to test affordability on.
+	 * @return - True if player can afford upgrade.
+	 */
+	public boolean playerCanAffordTower(ITower tower) {
 		return player.getMoney() >= tower.getBaseCost();
 	}
 	
