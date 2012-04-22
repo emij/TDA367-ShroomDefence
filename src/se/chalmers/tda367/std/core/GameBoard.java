@@ -137,7 +137,7 @@ public class GameBoard {
 				if(map[i][j] == 0){
 					board[i][j] = buildableTile; 
 				} else { //TODO should probably change PathTile-creation
-					board[i][j] = new PathTile(new Sprite(), testMap.getValueAtPos(new Position(i,j)), new Position(i,j));
+					board[i][j] = new PathTile(new Sprite(), testMap.getBoardValueAtPos(new Position(i,j)), new Position(i,j));
 				}
 			}
 			

@@ -90,5 +90,14 @@ public abstract class AbstractEnemy implements IEnemy{
 	public void setBoardValue(int boardValue){
 		this.boardValue = boardValue;
 	}
-
+	@Override
+	public int compareTo(IEnemy enemy){
+		if (this.getBoardValue() < enemy.getBoardValue()){
+			return -1;
+		} else if (this.getBoardValue() > enemy.getBoardValue()){
+			return 1;
+		} else {
+			return 0;
+		}
+	}
 }

@@ -3,6 +3,7 @@ package se.chalmers.tda367.std.core.tiles.enemies;
 import java.beans.PropertyChangeListener;
 
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
+import se.chalmers.tda367.std.core.tiles.PathTile;
 
 /**
  * Represents a killable enemy.
@@ -12,7 +13,7 @@ import se.chalmers.tda367.std.core.tiles.IBoardTile;
  * @modified Emil Johansson
  * @date Mar 25, 2012
  */
-public interface IEnemy extends IBoardTile, PropertyChangeListener{
+public interface IEnemy extends IBoardTile, PropertyChangeListener, Comparable<IEnemy>{
 	/**
 	 * Returns the health of the enemy.
 	 * @return the current health of the enemy.
@@ -62,4 +63,11 @@ public interface IEnemy extends IBoardTile, PropertyChangeListener{
 	 * @param boardValue
 	 */
 	public void setBoardValue(int boardValue);
+	/**
+	 * Compares the enemies boardValue to check
+	 * which is closer to playerBase.
+	 * Returns 1 
+	 */
+	@Override
+	public int compareTo(IEnemy enemy);
 }

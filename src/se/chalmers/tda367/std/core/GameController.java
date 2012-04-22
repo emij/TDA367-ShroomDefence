@@ -168,8 +168,8 @@ public class GameController {
 		}
 		Collections.sort(pathList);
 		for(int i = 0;i < pathList.size();i++){
-			System.out.println(pathList.get(i).getTileValue()+" "+board.getMap().getValueAtPos(eob.getPos()));
-			if( (pathList.get(i).getTileValue() - board.getMap().getValueAtPos(eob.getPos())) == 1){
+			System.out.println(pathList.get(i).getBoardValue()+" "+board.getMap().getBoardValueAtPos(eob.getPos()));
+			if( (pathList.get(i).getBoardValue() - board.getMap().getBoardValueAtPos(eob.getPos())) == 1){
 				placeEnemyOnBoard(eob, pathList.get(i).getPos());
 				eob.setPos(pathList.get(i).getPos());
 				break;
@@ -184,7 +184,7 @@ public class GameController {
 	//Moves the enemy a step.
 	private void placeEnemyOnBoard(EnemyOnBoard eob, Position pos){
 		board.placeTile(eob.getEnemy(), pos);
-		board.placeTile(new PathTile(new Sprite(), board.getMap().getValueAtPos(eob.getPos())), eob.getPos());
+		board.placeTile(new PathTile(new Sprite(), board.getMap().getBoardValueAtPos(eob.getPos())), eob.getPos());
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class GameController {
 	private void removeDeadEnemies(){
 		for(EnemyOnBoard eob:enemiesOnBoard){
 			if(eob.getEnemy().getHealth() <= 0){
-				board.placeTile(new PathTile(new Sprite(), board.getMap().getValueAtPos(eob.getPos())), eob.getPos());
+				board.placeTile(new PathTile(new Sprite(), board.getMap().getBoardValueAtPos(eob.getPos())), eob.getPos());
 			}
 		}
 	}

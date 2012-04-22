@@ -12,14 +12,14 @@ public class PathTile extends AbstractTile implements IWalkableTile, Comparable<
 
 	//TODO modified to test pathfinding
 	Position pos;
-	int tileValue;
+	int boardValue;
 	/**
 	 * @param sprite
 	 * @param tileValue
 	 */
 	public PathTile(Sprite sprite, int tileValue) {
 		super(sprite);
-		this.tileValue = tileValue;
+		this.boardValue = tileValue;
 	}
 	public PathTile(Sprite sprite, int tileValue, Position pos) {
 		this(sprite, tileValue);
@@ -30,8 +30,8 @@ public class PathTile extends AbstractTile implements IWalkableTile, Comparable<
 	public String toString(){
 		return "_";
 	}
-	public int getTileValue(){
-		return this.tileValue;
+	public int getBoardValue(){
+		return this.boardValue;
 	}
 
 	/* (non-Javadoc)
@@ -39,9 +39,9 @@ public class PathTile extends AbstractTile implements IWalkableTile, Comparable<
 	 */
 	@Override
 	public int compareTo(PathTile tile) {
-		if (this.getTileValue() < tile.getTileValue()){
+		if (this.getBoardValue() < tile.getBoardValue()){
 			return -1;
-		} else if (this.getTileValue() > tile.getTileValue()){
+		} else if (this.getBoardValue() > tile.getBoardValue()){
 			return 1;
 		} else {
 			return 0;
