@@ -39,7 +39,7 @@ public class GameBoard {
 		this.endPos = endPos;
 		this.waypoints = new ArrayList<Position>();
 		IBoardTile tile = new TerrainTile(new Sprite());
-		initBoard(tile);
+		initBoard();
 	}
 	
 	/**
@@ -201,7 +201,7 @@ public class GameBoard {
 	 * TODO: Fix javadoc
 	 */
 	public List<Position> getWaypoints() { 
-		return waypoints;
+		return new ArrayList<Position>(waypoints);
 	}
 	
 	/**
