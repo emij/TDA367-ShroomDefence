@@ -4,12 +4,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.swing.Timer;
 
+import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.PlayerBase;
 import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
+import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
+import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.utilities.Position;
 
 
 /**
@@ -98,10 +103,22 @@ public class WaveController {
 	 * Towers fires at enemies in range.
 	 */
 	public void shootAtEnemiesInRange(){
-		//		for(TowerOnBoard tob : towersOnBoard){
-		//			shootAtEnemyClosestToBase(tob, board.getEnemiesInRadius(tob.getPos(), tob.getTower().getRadius()));
-		//		}
-		//TODO, fix this.
+		for(int x = 0; x < board.getWidth(); x++){
+			for(int y = 0; y <board.getHeight(); y++){
+				IBoardTile tile = board.getTileAt(x, y);
+				if(tile instanceof AbstractAttackTower){
+					shoot((AbstractAttackTower)tile, new Position(x, y));
+				}
+			}
+		}
+	}
+	
+	
+	//Tower shoot at enemies in range.
+	private void shoot(AbstractAttackTower attackTower, Position pos) {
+		List<IEnemy> enemies = board.getEnemiesInRadius(pos, attackTower.getRadius());
+		//TODO, make more advance logic.
+		enemies.get(0).decreaseHealth(attackTower.getDmg());
 	}
 
 	/**
