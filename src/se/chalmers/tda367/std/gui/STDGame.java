@@ -53,8 +53,8 @@ public final class STDGame extends BasicGame {
 		towerTile = new Image(getResourcePath("/tower_tile1.png"));
 		
 		board = new GameBoard(25,20, new Position(0,12), new Position (19,12));
-		randomPlaceTile(board);
-		placePath(board);
+		//randomPlaceTile(board);
+		//placePath(board);
 	}
 
     @Override
