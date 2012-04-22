@@ -26,6 +26,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
 /**
  * The class that contains the game logic and controls the game.
  * @author Johan Andersson
+ * @modified 
  * @date Mar 22, 2012
  */
 public class GameController {
@@ -122,8 +123,11 @@ public class GameController {
 	 */
 	public void moveEnemies(){
 		Collections.sort(enemiesOnBoard);
+		int test=0;
 		for (EnemyOnBoard eob : enemiesOnBoard) {
 			moveEnemy(eob);
+			test++;
+			System.out.println("fiende nr: " + test);
 		}
 	}
 	/*
@@ -142,6 +146,7 @@ public class GameController {
 	}*/
 	/**
 	 * Writing a new moveEnemy to try some pathfinding
+	 * TODO Bugcheck, p == null on second enemy
 	 */
 	private void moveEnemy(EnemyOnBoard eob){
 		ArrayList<PathTile> pathList = new ArrayList<PathTile>();
@@ -162,7 +167,7 @@ public class GameController {
 			}
 		}
 		Collections.sort(pathList);
-		for(int i = pathList.size()-1;i >= 0;i--){
+		for(int i = 0;i < pathList.size();i++){
 			System.out.println(pathList.get(i).getTileValue()+" "+board.getMap().getValueAtPos(eob.getPos()));
 			if( (pathList.get(i).getTileValue() - board.getMap().getValueAtPos(eob.getPos())) == 1){
 				placeEnemyOnBoard(eob, pathList.get(i).getPos());
@@ -172,6 +177,8 @@ public class GameController {
 		}
 		
 	}
+	
+	
 	
 	
 	//Moves the enemy a step.
@@ -241,7 +248,7 @@ public class GameController {
 
 		@Override
 		public int compareTo(EnemyOnBoard o) {
-			return Integer.compare(pos.getX(), o.pos.getX());
+			return Integer.compare(o.pos.getX(),pos.getX() );
 		}
 	}
 	
