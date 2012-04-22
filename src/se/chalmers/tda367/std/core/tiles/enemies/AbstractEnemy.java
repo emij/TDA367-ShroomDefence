@@ -18,6 +18,7 @@ public abstract class AbstractEnemy implements IEnemy{
 	private final Sprite sprite;
 	private final int lootValue;
 	private int speed;
+	private int boardValue;
 	private List<Position> waypoints;
 	private Position position;
 	
@@ -120,5 +121,22 @@ public abstract class AbstractEnemy implements IEnemy{
 		}
 		System.out.println("X= " + position.getX() + "   Y= " + position.getY());
 	}
-
+	@Override
+	public int getBoardValue(){
+		return this.boardValue;
+	}
+	@Override
+	public void setBoardValue(int boardValue){
+		this.boardValue = boardValue;
+	}
+	@Override
+	public int compareTo(IEnemy enemy){
+		if (this.getBoardValue() < enemy.getBoardValue()){
+			return -1;
+		} else if (this.getBoardValue() > enemy.getBoardValue()){
+			return 1;
+		} else {
+			return 0;
+		}
+	}
 }

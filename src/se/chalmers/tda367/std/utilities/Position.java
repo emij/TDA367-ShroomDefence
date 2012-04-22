@@ -6,6 +6,7 @@ package se.chalmers.tda367.std.utilities;
  * @author Emil Johansson
  * @modified Emil Edholm, Johan Andersson
  * @date Mar 22, 2012
+ * @modifiedDate Mar 28, 2012
  */
 public class Position {
 	private int x, y;
@@ -21,11 +22,29 @@ public class Position {
 		this.y = copyFrom.y;
 	}
 
-	public int getX() {
+	/**
+	 * A static factory method for creating positions.
+	 * @param x the x coordinate/position
+	 * @param y the y coordinate/position
+	 * @return a position with the specified values.
+	 */
+	public static Position valueOf(int x, int y){
+		return new Position(x, y);
+	}
+	
+	/**
+	 * Get the x-value of the position.
+	 * @return the position x-value.
+	 */
+	public final int getX() {
 		return x;
 	}
 
-	public int getY() {
+	/**
+	 * Get the y-value of the position.
+	 * @return the y value of the position.
+	 */
+	public final int getY() {
 		return y;
 	}
 	

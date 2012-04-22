@@ -9,10 +9,11 @@ import se.chalmers.tda367.std.utilities.*;
 /**
  * Represents the whole game board in a grid system.
  * @author Johan Gustafsson
+ * @modified Emil Johansson
  * @date Mar 22, 2012
  */
 public class GameBoard {
-	
+	private Map testMap = new Map();
 	private IBoardTile[][] board;
 	private Position startPos;
 	private Position endPos;
@@ -57,6 +58,7 @@ public class GameBoard {
 				}
 			}
 		}
+		Collections.sort(enemies);
 		return enemies;
 	}
 
@@ -132,11 +134,18 @@ public class GameBoard {
 		return posOnBoard(p.getX(), p.getY());
 	}
 	
-	private void initBoard(IBoardTile tile){
-		for(int y = 0; y < height; y++){
-			for(int x = 0; x < width; x++) {
-				board[x][y] = tile;
+	private void initBoard(){
+		int[][] map = testMap.getMap();
+		IBoardTile buildableTile = new BuildableTile(new Sprite());
+		for(int i = 0; i < map.length;i++){
+			for(int j = 0; j < map[i].length;j++){
+				if(map[i][j] == 0){
+					board[i][j] = buildableTile; 
+				} else { //TODO should probably change PathTile-creation
+					board[i][j] = new PathTile(new Sprite(), testMap.getBoardValueAtPos(new Position(i,j)), new Position(i,j));
+				}
 			}
+			
 		}
 	}
 	
@@ -146,8 +155,8 @@ public class GameBoard {
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		for (int y = 0; y < board.length; y++) {
-			for (int x = 0; x < board[y].length; x++) {
+		for (int x = 0; x < board.length; x++) {
+			for (int y = 0; y < board[x].length; y++) {
 				str.append('[');
 				str.append(board[x][y].toString());
 				str.append(']');
@@ -217,5 +226,8 @@ public class GameBoard {
 			return false;
 		}
 		return getTileAt(p) instanceof IEnemy;
+	}
+	public Map getMap(){
+		return testMap;
 	}
 }

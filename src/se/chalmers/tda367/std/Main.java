@@ -1,5 +1,6 @@
 package se.chalmers.tda367.std;
 
+/*<<<<<<< HEAD
 import java.util.Scanner;
 
 
@@ -16,23 +17,17 @@ import se.chalmers.tda367.std.core.tiles.towers.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
+*/
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.SlickException;
 
-/**
- * Contains the main method. The entrance to the game.
- * @author Unchanged
- * @date Mar 22, 2012
- */
-public final class Main {
+import se.chalmers.tda367.std.gui.STDGame;
 
-	/**
-	 * The main method. Used to start the game.
-	 * @param args the command line arguments.
-	 */
-	public static void main(String[] args) {
-		GameBoard board = new GameBoard(20, 20, new Position(0,10), new Position(19,10));
+
+	/*<<<<<<< HEAD
+		GameBoard board = new GameBoard(25, 20, new Position(1,12), new Position(18,12));
+
 		GameController control = new GameController(new Player("Horv"), board);
-		randomPlaceTile(board);
-		placePath(board);
 		placeWaypoint(board);
 		String str = "";
 		String strCord = "";
@@ -94,7 +89,7 @@ public final class Main {
 
 	/**
 	 * @param board
-	 */
+	 
 	private static void placePath(GameBoard board) {
 		IBoardTile pathTile = new PathTile(new Sprite());
 		int y = (board.getHeight()/2)-1;
@@ -103,10 +98,10 @@ public final class Main {
 			board.placeTile(pathTile, new Position(i,y+1));
 		}
 	}
-
+	*/
 	/**
 	 * @param board
-	 */
+	 *//*
 	private static void randomPlaceTile(GameBoard board) {
 		IBoardTile buildTile = new BuildableTile(new Sprite());
 		for (int y = 4; y < 17; y++) {
@@ -115,12 +110,26 @@ public final class Main {
 			}
 
 		}
-	}
-	
-	private static void placeWaypoint(GameBoard board) {
-		board.placeTile(new WaypointTile(new Sprite()), new Position(5, 10));
-		board.placeTile(new WaypointTile(new Sprite()), new Position(5, 9));
-		board.placeTile(new WaypointTile(new Sprite()), new Position(19, 9));
+======= */
+/**
+ * Contains the main method. The entrance to the game.
+ * @author Unchanged
+ * @date Mar 22, 2012
+ */
+public final class Main {
+
+	/**
+	 * The main method. Used to start the game.
+	 * @param args the command line arguments.
+	 */
+	public static void main(String[] args) {
+
+	try {
+	            AppGameContainer app = new AppGameContainer(new STDGame(), 1024, 720, false);
+	            app.start();
+	        } catch (SlickException e) {
+	            e.printStackTrace();
+	        }
 	}
 
 
