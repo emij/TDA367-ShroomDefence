@@ -123,14 +123,12 @@ public final class Main {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
-
-	try {
-	            AppGameContainer app = new AppGameContainer(new STDGame(), 1024, 720, false);
-	            app.start();
-	        } catch (SlickException e) {
-	            e.printStackTrace();
-	        }
+		try {
+            AppGameContainer app = new AppGameContainer(new STDGame(), 1024, 720, false);
+            app.start();
+	    } catch (SlickException e) {
+	        e.printStackTrace();
+	    }
 	}
-
 
 }
