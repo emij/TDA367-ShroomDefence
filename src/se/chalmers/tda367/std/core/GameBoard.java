@@ -16,28 +16,27 @@ public class GameBoard {
 	private Map testMap = new Map();
 	private IBoardTile[][] board;
 	private Position startPos;
+	private Position endPos;
 	private final int width;
 	private final int height;
 	
-	public GameBoard(Position startPos){	
-		this(Properties.INSTANCE.getDefaultBoardWidth(), Properties.INSTANCE.getDefaultBoardHeight(), startPos);
+	public GameBoard(Position startPos, Position endPos){	
+		this(Properties.INSTANCE.getDefaultBoardWidth(), Properties.INSTANCE.getDefaultBoardHeight(), startPos, endPos);
 	}
 	
-	public GameBoard(int width, int height, Position startPos){
+	public GameBoard(int width, int height, Position startPos, Position endPos){
 		if(width <= 0 || height <= 0) {
 			throw new IllegalArgumentException("Width and/or height cannot be equal to or smaller than zero");
 		}
 		this.width = width;
 		this.height = height;
 		board =  new IBoardTile[this.width][this.height];
-		if(!posOnBoard(startPos)) {
-			throw new IllegalArgumentException("Start position is not on the board.");
+		if(!posOnBoard(startPos) || !posOnBoard(endPos)) {
+			throw new IllegalArgumentException("Start and/or end position is not on the board.");
 		}
 		this.startPos = startPos;
-		//IBoardTile tile = new TerrainTile(new Sprite());
-		//initBoard(tile);
+		this.endPos = endPos;
 		initBoard();
-		
 	}
 	
 	/**
@@ -108,7 +107,7 @@ public class GameBoard {
 	 * @param p
 	 * @return true if given x and y values are on the game board.
 	 */
-	private boolean posOnBoard(int x, int y){
+	public boolean posOnBoard(int x, int y){
 		if(x < 0 || y < 0) {
 			return false;
 		}
@@ -123,10 +122,7 @@ public class GameBoard {
 	 * @param p
 	 * @return true if position is on the game board.
 	 */
-	private boolean posOnBoard(Position p){
-		if(p == null){ //TODO remove this if-statement
-			System.out.println("HALLLOOOO");
-		}
+	public boolean posOnBoard(Position p){
 		return posOnBoard(p.getX(), p.getY());
 	}
 	
@@ -151,8 +147,8 @@ public class GameBoard {
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		for (int y = 0; y < board.length; y++) {
-			for (int x = 0; x < board[y].length; x++) {
+		for (int x = 0; x < board.length; x++) {
+			for (int y = 0; y < board[x].length; y++) {
 				str.append('[');
 				str.append(board[x][y].toString());
 				str.append(']');
@@ -183,6 +179,14 @@ public class GameBoard {
 	 */
 	public Position getStartPos() {
 		return startPos;
+	}
+	
+	/**
+	 * Method to get the end/goal position on the game board.
+	 * @return a position containing the coordinates of the end/goal position.
+	 */
+	public Position getEndPos() {
+		return endPos;
 	}
 	
 	/**

@@ -14,6 +14,8 @@ import se.chalmers.tda367.std.core.tiles.AbstractTile;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
+import se.chalmers.tda367.std.core.tiles.PlayerBase;
+import se.chalmers.tda367.std.core.tiles.TerrainTile;
 import se.chalmers.tda367.std.core.tiles.enemies.BasicEnemy;
 import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
@@ -34,6 +36,7 @@ public class GameController {
 	private Player player;
 	private Wave wave;
 	private GameBoard board;
+	private PlayerBase base;
 	private Timer gameLoop;
 	private Timer releaseTimer;
 	private WaveItem nextEnemy;
@@ -41,10 +44,14 @@ public class GameController {
 	private ArrayList<TowerOnBoard> towersOnBoard = new ArrayList<TowerOnBoard>();
 	
 	
-	
-	public GameController(Player p, GameBoard b){
-		this.player = p;
-		this.board = b;
+	/** Constructor for the GameController, requires a player and a board to work.
+	 * 
+	 * @param player - player playing the game.
+	 * @param board - board to play the game on.
+	 */
+	public GameController(Player player, GameBoard board){
+		this.player = player;
+		this.board = board;
 		init();
 	}
 	
@@ -53,14 +60,14 @@ public class GameController {
 		releaseTimer = new Timer(1500, new ReleaseTimerListener());
 		//dummywave
 		this.wave = createBasicWave(1);
-		
+		base = new PlayerBase(2);
 	}
 	
 	//Method to create a dummywave
 	private Wave createBasicWave(int n){
 		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();
 		for(int i = 0; i<n; i++){
-			q.add(new WaveItem(new BasicEnemy(), i*5000));
+			q.add(new WaveItem(new BasicEnemy(), i*500));
 		}
 		return new Wave(q);
 	}
@@ -76,6 +83,7 @@ public class GameController {
 		gameLoop.start();
 		releaseTimer.start();
 	}
+	
 	/**
 	 * Ends the running game
 	 */
@@ -95,15 +103,19 @@ public class GameController {
 		
 		if(board.getTileAt(board.getStartPos()) instanceof IWalkableTile && nextEnemy != null){
 			//TODO Look over the if-statement above, cleaner solution?
-			board.placeTile(nextEnemy.getEnemy(), board.getStartPos());
-			enemiesOnBoard.add(new EnemyOnBoard(nextEnemy, board.getStartPos()));
+			placeEnemy(nextEnemy);
 			nextEnemy =  wave.getNext();
+			paint();
 			if(nextEnemy != null){
 				releaseTimer.setInitialDelay(nextEnemy.getDelay());
 				releaseTimer.restart();
-				System.out.println("Next enemy in: "+nextEnemy.getDelay());
 			}
-		} 
+		}
+	}
+	
+	private void placeEnemy(WaveItem wi){
+		board.placeTile(wi.getEnemy(), board.getStartPos());
+		enemiesOnBoard.add(new EnemyOnBoard(wi, board.getStartPos()));
 	}
 	
 	/**
@@ -132,16 +144,20 @@ public class GameController {
 	}
 	/*
 	private void moveEnemy(EnemyOnBoard eob) {
-		Position tmp = eob.getPos().move(1, 0);
-		if(board.getTileAt(tmp) instanceof IWalkableTile){
-			placeEnemyOnBoard(eob, tmp);
-			eob.setPos(tmp);
-		} else if(board.getTileAt(tmp = eob.getPos().move(1, 1)) instanceof IWalkableTile){
-			placeEnemyOnBoard(eob, tmp);
-			eob.setPos(tmp);
-		} else if(board.getTileAt(tmp = eob.getPos().move(1, -1)) instanceof IWalkableTile){
-			placeEnemyOnBoard(eob, tmp);
-			eob.setPos(tmp);
+		Position tmp = (eob.getPos()).move(1, 0);
+		if(board.posOnBoard(tmp)){
+			if(board.getTileAt(tmp) instanceof IWalkableTile){
+				placeEnemyOnBoard(eob, tmp);
+				eob.setPos(tmp);
+			} else if(board.getTileAt(tmp = eob.getPos().move(1, 1)) instanceof IWalkableTile){
+				placeEnemyOnBoard(eob, tmp);
+				eob.setPos(tmp);
+			} else if(board.getTileAt(tmp = eob.getPos().move(1, -1)) instanceof IWalkableTile){
+				placeEnemyOnBoard(eob, tmp);
+				eob.setPos(tmp);
+			}
+		} else {
+			enemyEnteredBase(eob);
 		}
 	}*/
 	/**
@@ -186,6 +202,13 @@ public class GameController {
 		board.placeTile(eob.getEnemy(), pos);
 		board.placeTile(new PathTile(new Sprite(), board.getMap().getBoardValueAtPos(eob.getPos())), eob.getPos());
 	}
+	
+	//Method for enemies entering a base, playerbase losing health.
+	private void enemyEnteredBase(EnemyOnBoard eob){
+		//TODO, different loss in health?
+		base.decreaseHealth();
+		board.placeTile(new PathTile(new Sprite()), eob.getPos());
+	}
 
 	/**
 	 * Towers fires at enemies in range.
@@ -195,6 +218,7 @@ public class GameController {
 			shootAtEnemyClosestToBase(tob, board.getEnemiesInRadius(tob.getPos(), tob.getTower().getRadius()));
 		}
 	}
+	
 	
 	private void shootAtEnemyClosestToBase(TowerOnBoard tob, List<IEnemy> list){
 		if(list.size() > 0){
@@ -206,6 +230,7 @@ public class GameController {
 		}
 	}
 	
+	
 	/**
 	 * The loop that updates the whole game
 	 */
@@ -213,6 +238,22 @@ public class GameController {
 		moveEnemies();
 		shootAtEnemiesInRange();
 		removeDeadEnemies();
+		paint();
+		checkIfPlayerAlive();
+	}
+	
+	private void checkIfPlayerAlive(){
+		if(base.getHealth() <= 0){
+			playerDead();
+		}
+	}
+	
+	private void playerDead(){
+		System.out.println("Player dead, game over");
+		endGame();
+	}
+	
+	private void paint(){
 		System.out.println(board);
 		System.out.println(player.getName() +": "+player.getMoney());
 	}
@@ -273,6 +314,7 @@ public class GameController {
 	
 	
 	
+	
 	class ReleaseTimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -285,7 +327,6 @@ public class GameController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			updateGame();
-			
 		}
 	}
 

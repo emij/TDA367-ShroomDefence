@@ -17,8 +17,11 @@ public class PathTile extends AbstractTile implements IWalkableTile, Comparable<
 	 * @param sprite
 	 * @param tileValue
 	 */
-	public PathTile(Sprite sprite, int tileValue) {
+	public PathTile(Sprite sprite){
 		super(sprite);
+	}
+	public PathTile(Sprite sprite, int tileValue) {
+		this(sprite);
 		this.boardValue = tileValue;
 	}
 	public PathTile(Sprite sprite, int tileValue, Position pos) {
