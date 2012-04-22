@@ -247,7 +247,7 @@ public class GameController {
 
 		@Override
 		public int compareTo(EnemyOnBoard o) {
-			return Integer.compare(pos.getX(), o.pos.getX());
+			return  Integer.compare(o.pos.getX(), pos.getX());
 		}
 	}
 	
@@ -269,6 +269,7 @@ public class GameController {
 			return pos;
 		}
 	}
+	
 	
 	
 	
