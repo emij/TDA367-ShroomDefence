@@ -8,7 +8,7 @@ import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
  * @author Emil Johansson
  * @date Mar 22, 2012
  */
-public class WaveItem {
+public class WaveItem implements Comparable<WaveItem> {
 	private IEnemy enemy;
 	private int delay;
 	
@@ -29,6 +29,13 @@ public class WaveItem {
 	 */
 	public int getDelay() {
 		return delay;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(WaveItem waveItem) {
+		return this.enemy.compareTo(waveItem.enemy);
 	}
 	
 	
