@@ -1,10 +1,12 @@
 package se.chalmers.tda367.std.utilities;
 
 /**
- * Represents a position/coordinate on the game board.
+ * Represents a position/coordinate on the game board. 
+ * Position coordniates ranging from {@code Integer.MIN_VALUE} to {@code Integer.MAX_VALUE}
  * @author Emil Johansson
- * @modified Emil Edholm
+ * @modified Emil Edholm, Johan Andersson
  * @date Mar 22, 2012
+ * @modifiedDate Mar 28, 2012
  */
 public final class Position {
 	private int x, y;
@@ -12,6 +14,7 @@ public final class Position {
 	public Position(int x, int y){
 		this.x = x;
 		this.y = y;
+		
 	}
 	
 	public Position(Position copyFrom){
@@ -19,10 +22,28 @@ public final class Position {
 		this.y = copyFrom.y;
 	}
 
+	/**
+	 * A static factory method for creating positions.
+	 * @param x the x coordinate/position
+	 * @param y the y coordinate/position
+	 * @return a position with the specified values.
+	 */
+	public static Position valueOf(int x, int y){
+		return new Position(x, y);
+	}
+	
+	/**
+	 * Get the x-value of the position.
+	 * @return the position x-value.
+	 */
 	public final int getX() {
 		return x;
 	}
 
+	/**
+	 * Get the y-value of the position.
+	 * @return the y value of the position.
+	 */
 	public final int getY() {
 		return y;
 	}
@@ -51,6 +72,10 @@ public final class Position {
 		// Safe to cast.
 		Position p = (Position)rhs;
 		return x == p.x && y == p.y;
+	}
+	
+	public Position move(int dx, int dy){
+		return new Position(getX()+dx, getY()+dy);
 	}
 
 }

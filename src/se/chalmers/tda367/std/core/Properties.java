@@ -16,7 +16,7 @@ public enum Properties {
 	// Some needed constants goes here
 	
 	public int getDefaultBoardWidth(){
-		return 20;
+		return 25;
 	}
 	
 	public int getDefaultBoardHeight(){

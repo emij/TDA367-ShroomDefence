@@ -16,6 +16,7 @@ public abstract class AbstractEnemy implements IEnemy{
 	private final Sprite sprite;
 	private final int lootValue;
 	private int speed;
+	private int boardValue;
 	
 	public AbstractEnemy(int startHealth, int speed, int lootValue, Sprite sprite){
 		this.currentHealth = startHealth;
@@ -81,5 +82,22 @@ public abstract class AbstractEnemy implements IEnemy{
 		// concrete implementation to do that and add their specific values.
 		
 	}
-
+	@Override
+	public int getBoardValue(){
+		return this.boardValue;
+	}
+	@Override
+	public void setBoardValue(int boardValue){
+		this.boardValue = boardValue;
+	}
+	@Override
+	public int compareTo(IEnemy enemy){
+		if (this.getBoardValue() < enemy.getBoardValue()){
+			return -1;
+		} else if (this.getBoardValue() > enemy.getBoardValue()){
+			return 1;
+		} else {
+			return 0;
+		}
+	}
 }

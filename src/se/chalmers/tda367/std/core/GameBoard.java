@@ -9,31 +9,34 @@ import se.chalmers.tda367.std.utilities.*;
 /**
  * Represents the whole game board in a grid system.
  * @author Johan Gustafsson
+ * @modified Emil Johansson
  * @date Mar 22, 2012
  */
 public class GameBoard {
-	
+	private Map testMap = new Map();
 	private IBoardTile[][] board;
+	private Position startPos;
+	private Position endPos;
 	private final int width;
 	private final int height;
 	
-	public GameBoard(){
-		Properties p = Properties.INSTANCE;
-		width = p.getDefaultBoardWidth();
-		height = p.getDefaultBoardHeight();
-		board = new IBoardTile[width][height];
-		IBoardTile tile = new TerrainTile(new Sprite());
-		initBoard(tile);
-		
+	public GameBoard(Position startPos, Position endPos){	
+		this(Properties.INSTANCE.getDefaultBoardWidth(), Properties.INSTANCE.getDefaultBoardHeight(), startPos, endPos);
 	}
 	
-	public GameBoard(int width, int height){
+	public GameBoard(int width, int height, Position startPos, Position endPos){
+		if(width <= 0 || height <= 0) {
+			throw new IllegalArgumentException("Width and/or height cannot be equal to or smaller than zero");
+		}
 		this.width = width;
 		this.height = height;
 		board =  new IBoardTile[this.width][this.height];
-		IBoardTile tile = new TerrainTile(new Sprite());
-		initBoard(tile);
-		
+		if(!posOnBoard(startPos) || !posOnBoard(endPos)) {
+			throw new IllegalArgumentException("Start and/or end position is not on the board.");
+		}
+		this.startPos = startPos;
+		this.endPos = endPos;
+		initBoard();
 	}
 	
 	/**
@@ -42,9 +45,8 @@ public class GameBoard {
 	 * @param radius
 	 * @return List of enemies.
 	 */
-	public List<IEnemy> getEnemiesInRadius(Position p, int radius){
-		List<IEnemy> enemies = new ArrayList<IEnemy>();
-		
+	public ArrayList<IEnemy> getEnemiesInRadius(Position p, int radius){
+		ArrayList<IEnemy> enemies = new ArrayList<IEnemy>();
 		for(int y = p.getY()-radius; y < p.getY()+radius; y++) {
 			for(int x = p.getX()-radius; x < p.getX()+radius; x++) {
 				if(posOnBoard(x, y) && getTileAt(x, y) instanceof IEnemy) {
@@ -52,6 +54,7 @@ public class GameBoard {
 				}
 			}
 		}
+		Collections.sort(enemies);
 		return enemies;
 	}
 
@@ -104,7 +107,7 @@ public class GameBoard {
 	 * @param p
 	 * @return true if given x and y values are on the game board.
 	 */
-	private boolean posOnBoard(int x, int y){
+	public boolean posOnBoard(int x, int y){
 		if(x < 0 || y < 0) {
 			return false;
 		}
@@ -119,15 +122,22 @@ public class GameBoard {
 	 * @param p
 	 * @return true if position is on the game board.
 	 */
-	private boolean posOnBoard(Position p){
+	public boolean posOnBoard(Position p){
 		return posOnBoard(p.getX(), p.getY());
 	}
 	
-	private void initBoard(IBoardTile tile){
-		for(int y = 0; y < height; y++){
-			for(int x = 0; x < width; x++) {
-				board[x][y] = tile;
+	private void initBoard(){
+		int[][] map = testMap.getMap();
+		IBoardTile buildableTile = new BuildableTile(new Sprite());
+		for(int i = 0; i < map.length;i++){
+			for(int j = 0; j < map[i].length;j++){
+				if(map[i][j] == 0){
+					board[i][j] = buildableTile; 
+				} else { //TODO should probably change PathTile-creation
+					board[i][j] = new PathTile(new Sprite(), testMap.getBoardValueAtPos(new Position(i,j)), new Position(i,j));
+				}
 			}
+			
 		}
 	}
 	
@@ -137,8 +147,8 @@ public class GameBoard {
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		for (int y = 0; y < board.length; y++) {
-			for (int x = 0; x < board[y].length; x++) {
+		for (int x = 0; x < board.length; x++) {
+			for (int y = 0; y < board[x].length; y++) {
 				str.append('[');
 				str.append(board[x][y].toString());
 				str.append(']');
@@ -149,11 +159,60 @@ public class GameBoard {
 		
 	}
 	
+	/**
+	 * @return the width of the game board.
+	 */
 	public int getWidth() {
 		return width;
 	}
 	
+	/**
+	 * @return the height of the game board.
+	 */
 	public int getHeight() {
 		return height;
+	}
+	
+	/**
+	 * Method to get the enemy's starting position on the game board.
+	 * @return a position containing the coordinates of the enemy starting position.
+	 */
+	public Position getStartPos() {
+		return startPos;
+	}
+	
+	/**
+	 * Method to get the end/goal position on the game board.
+	 * @return a position containing the coordinates of the end/goal position.
+	 */
+	public Position getEndPos() {
+		return endPos;
+	}
+	
+	/**
+	 * Method for checking if a given position on the game board is buildable.
+	 * @param p position to check if buildable.
+	 * @return true if given position is buildable. Returns false if the position isn't buildable or on the game board.
+	 */
+	public boolean canBuildAt(Position p) {
+		if(!posOnBoard(p)) {
+			return false;
+		}
+		return getTileAt(p) instanceof IBuildableTile;
+	}
+	
+	/**
+	 * Method for checking if there is an enemy on a given position.
+	 * @param p position to check for an enemy.
+	 * @return true if an enemy is on the given position. Returns false if given position is outside the board or no enemy is at the position.
+	 */
+	public boolean isEnemyAt(Position p) {
+		if(!posOnBoard(p)) {
+			return false;
+		}
+		return getTileAt(p) instanceof IEnemy;
+	}
+	public Map getMap(){
+		return testMap;
 	}
 }
