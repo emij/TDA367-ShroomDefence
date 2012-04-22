@@ -1,5 +1,6 @@
 package se.chalmers.tda367.std.core.tiles.towers;
 
+import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -14,6 +15,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Emil Edholm
  * @date   25 mar 2012
  */
+@Tower(name = "Basic attack tower", description = "The most common basic attack tower.", towerStrength = 1)
 public final class BasicAttackTower extends AbstractAttackTower {
 
 	private static final int baseCost        = 100, 
