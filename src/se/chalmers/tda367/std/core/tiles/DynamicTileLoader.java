@@ -32,7 +32,7 @@ public final class DynamicTileLoader {
 	 * @return a list of classes with specified annotation.
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Class<?>> getTileClasses(@SuppressWarnings("rawtypes") Class annotation) {
+	public static List<Class<?>> getExportedClasses(@SuppressWarnings("rawtypes") Class annotation) {
 		if(!checkInvariants()){
 			return Collections.emptyList();
 		}
