@@ -109,11 +109,4 @@ public class GameController {
 	public ArrayList<EnemyItem> getEnemies() {
 		return waveControl.getEnemies();
 	}
-	
-	
-	
-	
-	
-
-
 }

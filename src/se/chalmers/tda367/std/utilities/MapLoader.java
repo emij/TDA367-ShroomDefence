@@ -9,27 +9,29 @@ import java.util.*;
  * @date Apr 22, 2012
  */
 public class MapLoader {
-	private int[][] map;
-	private File file;
+	private static int[][] map;
+	private static File file;
 	
-	public MapLoader() throws FileNotFoundException{
-		file = new File("/maps/level1.txt");
-	    Scanner scanner = new Scanner(new FileReader(file));
-	    try {
-	      while ( scanner.hasNextLine() ){
-	        processLine( scanner.nextLine() );
-	      }
-	    }
-	    finally {
-	      scanner.close();
-	    }
+	public static int[][] loadMap(int level){
+		file = new File("maps/level" + level + ".txt");
+		Scanner scanner;
+		try {
+			scanner = new Scanner(new FileReader(file));
+			while ( scanner.hasNextLine() ){
+		        processLine( scanner.nextLine() );
+			}
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return map;
 	  }
 	
 	
-	private void processLine(String line){ 
+	private static void processLine(String line){ 
 	    Scanner scanner = new Scanner(line);
 	    scanner.useDelimiter(":");
-	    if ( scanner.hasNext() ){
+	    while ( scanner.hasNext() ){
 	    	String tileData[] = scanner.next().split(",");
 	    	String tileType = tileData[0];
 	    	int xCord = Integer.parseInt(tileData[1]);
@@ -41,13 +43,7 @@ public class MapLoader {
 	    	} else if(tileType.equals("W")){
 	    		map[xCord][yCord] = 2;
 	    	}
-	    } else {
-	      System.out.println("Empty or invalid line. Unable to process.");
-	    }
-	}
-	
-	public int[][] getMap(){
-		return map;
+	    } 
 	}
 	
 }

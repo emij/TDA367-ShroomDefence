@@ -14,7 +14,7 @@ import se.chalmers.tda367.std.utilities.*;
  * @date Mar 22, 2012
  */
 public class GameBoard {
-	private Map testMap = new Map();
+	private MapLoader map = new MapLoader();
 	private IBoardTile[][] board;
 	private Position startPos;
 	private Position endPos;
@@ -136,14 +136,16 @@ public class GameBoard {
 	}
 	
 	private void initBoard(){
-		int[][] map = testMap.getMap();
+		int[][] map = MapLoader.loadMap(1);
 		IBoardTile buildableTile = new BuildableTile(new Sprite());
 		for(int i = 0; i < map.length;i++){
 			for(int j = 0; j < map[i].length;j++){
 				if(map[i][j] == 0){
 					board[i][j] = buildableTile; 
-				} else { //TODO should probably change PathTile-creation
-					board[i][j] = new PathTile(new Sprite(), testMap.getBoardValueAtPos(new Position(i,j)), new Position(i,j));
+				} else if (map[i][j] == 1){ //TODO should probably change PathTile-creation
+					board[i][j] = new PathTile(new Sprite());
+				} else if (map[i][j] == 2){
+					board[i][j] = new WaypointTile(new Sprite());
 				}
 			}
 			
@@ -246,7 +248,5 @@ public class GameBoard {
 		}
 		return getTileAt(p) instanceof IEnemy;
 	}
-	public Map getMap(){
-		return testMap;
-	}
+	
 }
