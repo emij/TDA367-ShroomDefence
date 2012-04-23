@@ -44,7 +44,7 @@ public class MainMenuState extends BasicGameState {
 		menuY = container.getHeight()/2;
 		
 		music = new Sound(getResourcePath("/main_music.wav"));
-		music.play();
+		music.loop();
 	}
 
 	@Override
