@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,18 +66,22 @@ public final class DynamicLoader {
 	
 	
 	/**
-	 * @return Retrieves all dynamically read {@code Enemies} with a correct annotation.
+	 * @return Retrieves all dynamically read {@code Enemies} with a correct annotation sorted by enemy strength.
 	 */
 	public static List<Class<?>> getEnemies(){
-		return getExportedClasses(Enemy.class);
+		List<Class<?>> enemies = getExportedClasses(Enemy.class);
+		Collections.sort(enemies, new EnemyComparator());
+		return enemies;
 	}
 	
 	/**
 	 * 
-	 * @return Retrieves all dynamically read {@code Towers} with a correct annotation.
+	 * @return Retrieves all dynamically read {@code Towers} with a correct annotation sorted by tower strength.
 	 */
 	public static List<Class<?>> getTowers() {
-		return getExportedClasses(Tower.class);
+		List<Class<?>> towers = getExportedClasses(Tower.class);
+		Collections.sort(towers, new TowerComparator());
+		return towers;
 	}
 	
 	/**
@@ -91,5 +96,53 @@ public final class DynamicLoader {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Used to compare enemy strength. Allows for sorting of list of enemies.
+	 * @author Emil Edholm
+	 * @date   Apr 23, 2012
+	 */
+	private static class EnemyComparator implements Comparator<Class<?>> {
+
+		@Override
+		public int compare(Class<?> o1, Class<?> o2) {
+			Enemy e1 = o1.getAnnotation(Enemy.class);
+			Enemy e2 = o2.getAnnotation(Enemy.class);
+			if(e1 != null && e2 != null){
+				int strengthDiff = Double.compare(e1.enemyStrength(), e2.enemyStrength());
+				if(strengthDiff != 0){
+					return strengthDiff;
+				}
+				
+				return e1.name().compareTo(e2.name());
+			}
+			return 0;
+		}
+		
+	}
+	
+	/**
+	 * Used to compare Tower-strength and tower name.
+	 * Allows for sorting of lists of towers.
+	 * @author Emil Edholm
+	 * @date   Apr 23, 2012
+	 */
+	private static class TowerComparator implements Comparator<Class<?>> {
+
+		@Override
+		public int compare(Class<?> o1, Class<?> o2) {
+			Tower t1 = o1.getAnnotation(Tower.class);
+			Tower t2 = o2.getAnnotation(Tower.class);
+			if(t1 != null && t2 != null){
+				int strengthDiff = Double.compare(t1.towerStrength(), t2.towerStrength());
+				if(strengthDiff != 0){
+					return strengthDiff;
+				}
+				
+				return t1.name().compareTo(t2.name());
+			}
+			return 0;
+		}
 	}
 }
