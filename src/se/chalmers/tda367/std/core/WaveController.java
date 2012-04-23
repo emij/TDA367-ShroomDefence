@@ -33,7 +33,7 @@ public class WaveController {
 	private WaveItem nextEnemy;
 	private PlayerBase base; //TODO where to place base in code.
 	private Wave wave;
-	private ArrayList<IEnemy> enemies = new ArrayList<IEnemy>();
+	private ArrayList<EnemyItem> enemies = new ArrayList<EnemyItem>();
 
 	public WaveController(GameBoard board, Player player) {
 		this.board = board;
@@ -85,7 +85,7 @@ public class WaveController {
 	}
 
 	private void addEnemy(WaveItem wi){
-		enemies.add(wi.getEnemy());
+		enemies.add(new EnemyItem(wi.getEnemy(), board.getStartPos());
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class WaveController {
 	 */
 	public void moveEnemies(){
 		Collections.sort(enemies);
-		for (IEnemy enemy : enemies) {
-			enemy.moveEnemy();
+		for (EnemyItem ei : enemies) {
+			ei.getEnemy().moveEnemy();
 			//moveEnemy(eob);
 		}
 	}
@@ -150,7 +150,7 @@ public class WaveController {
 
 	private void removeDeadEnemies(){
 		for(int i = enemies.size(); 0 < i; i--)
-			if(enemies.get(i).getHealth() <= 0){
+			if(enemies.get(i).getEnemy().getHealth() <= 0){
 				enemies.remove(i);
 			}
 	}
