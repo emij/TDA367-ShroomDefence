@@ -15,6 +15,10 @@ public enum Properties {
 	}
 	// Some needed constants goes here
 	
+	public int getTileScale() {
+		return 32;
+	}
+	
 	public int getDefaultBoardWidth(){
 		return 25;
 	}
