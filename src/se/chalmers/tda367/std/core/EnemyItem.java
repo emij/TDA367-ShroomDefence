@@ -11,12 +11,12 @@ import se.chalmers.tda367.std.utilities.Position;
 class EnemyItem {
 	private IEnemy enemy;
 	private Position enemyPos;
-	private int distanceToGoal;
+	private double distanceTraveled;
 	
-	public EnemyItem(IEnemy enemy, Position enemyPos, int distanceToGoal) {
+	public EnemyItem(IEnemy enemy, Position enemyPos) {
 		this.enemy = enemy;
 		this.enemyPos = enemyPos;
-		this.distanceToGoal = distanceToGoal;
+		this.distanceTraveled = 0;
 	}
 	
 	/**
@@ -36,7 +36,7 @@ class EnemyItem {
 	/**
 	 * @return the shortest distance between the enemy and the end position.
 	 */
-	public int getDistanceToGoal() {
-		return distanceToGoal;
+	public double getDistanceTraveled() {
+		return distanceTraveled;
 	}
 }
