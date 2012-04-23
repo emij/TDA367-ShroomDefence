@@ -8,12 +8,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import se.chalmers.tda367.std.core.GameBoard;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
+import se.chalmers.tda367.std.core.exported.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.BuildableTile;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
-import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
-import se.chalmers.tda367.std.core.tiles.towers.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;

@@ -1,6 +1,7 @@
-package se.chalmers.tda367.std.core.tiles.towers;
+package se.chalmers.tda367.std.core.exported;
 
 import se.chalmers.tda367.std.core.anno.Tower;
+import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**

@@ -1,4 +1,4 @@
-package se.chalmers.tda367.std.core.tiles.enemies;
+package se.chalmers.tda367.std.core.enemies;
 
 import java.beans.PropertyChangeListener;
 

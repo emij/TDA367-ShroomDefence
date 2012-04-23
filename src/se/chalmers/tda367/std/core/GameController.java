@@ -10,14 +10,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.Timer;
 import se.chalmers.tda367.std.core.GameController.EnemyOnBoard;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
+import se.chalmers.tda367.std.core.exported.BasicEnemy;
 import se.chalmers.tda367.std.core.tiles.AbstractTile;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
 import se.chalmers.tda367.std.core.tiles.PlayerBase;
 import se.chalmers.tda367.std.core.tiles.TerrainTile;
-import se.chalmers.tda367.std.core.tiles.enemies.BasicEnemy;
-import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.Position;

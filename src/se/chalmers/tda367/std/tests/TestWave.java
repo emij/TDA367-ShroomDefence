@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import se.chalmers.tda367.std.core.Wave;
 import se.chalmers.tda367.std.core.WaveItem;
-import se.chalmers.tda367.std.core.tiles.enemies.BasicEnemy;
+import se.chalmers.tda367.std.core.exported.BasicEnemy;
 
 
 /**
