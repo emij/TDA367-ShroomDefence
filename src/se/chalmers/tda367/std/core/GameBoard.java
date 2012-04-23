@@ -122,7 +122,7 @@ public class GameBoard {
 		if(x < 0 || y < 0) {
 			return false;
 		}
-		if(x >= board[0].length || y >= board.length) {
+		if(x >= width || y >= height) {
 			return false;
 		}
 		return true;

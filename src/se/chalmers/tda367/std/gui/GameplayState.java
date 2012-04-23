@@ -17,9 +17,11 @@ import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.Position;
+import sun.swing.BakedArrayList;
 
 public class GameplayState extends BasicGameState {
 	private int stateID;
+	private Image background;
 	private Image pathTile;
 	private Image buildableTile;
 	private Image towerTile;
@@ -38,6 +40,7 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame state)
 			throws SlickException {
+		background = new Image(getResourcePath("/gameplay_background.png"));
 		pathTile = new Image(getResourcePath("/path_tile.jpg"));
 		buildableTile = new Image(getResourcePath("/buildable_tile.png"));
 		towerTile = new Image(getResourcePath("/tower_tile2.png"));
@@ -64,7 +67,9 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame state, Graphics g)
 			throws SlickException {
-        int w = board.getWidth();
+        background.draw(0, 0);
+		
+		int w = board.getWidth();
         int h = board.getHeight();
         for(int y = 0; y < h; y++){
         	for(int x = 0; x < w; x++){
