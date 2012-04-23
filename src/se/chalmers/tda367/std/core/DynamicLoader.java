@@ -1,4 +1,4 @@
-package se.chalmers.tda367.std.core.tiles;
+package se.chalmers.tda367.std.core;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -9,22 +9,24 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import se.chalmers.tda367.std.core.anno.Enemy;
+import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.ExtendedClassLoader;
 import se.chalmers.tda367.std.utilities.FileScanner;
 
 /**
- * A class used to load tiles (mostly enemies and towers) from a previously
+ * A class used to load exported classes from a previously
  * specified location dynamically.
  * @author Emil Edholm
  * @date   Apr 22, 2012
  */
-public final class DynamicTileLoader {
+public final class DynamicLoader {
 	private static final Path exportedFolderPath = Paths.get("data", "tiles");
 	
 	// No need to be able to create an instance.
-	private DynamicTileLoader() {}
+	private DynamicLoader() {}
 	
 	/**
 	 * Get a list of tiles with the specified annotation.
@@ -61,21 +63,20 @@ public final class DynamicTileLoader {
 		return classList;
 	}
 	
+	
 	/**
 	 * @return Retrieves all dynamically read {@code Enemies} with a correct annotation.
 	 */
-	public static List<? extends IEnemy> getEnemies(){
-		// TODO: Implement correctly.
-		return Collections.emptyList();
+	public static List<Class<?>> getEnemies(){
+		return getExportedClasses(Enemy.class);
 	}
 	
 	/**
 	 * 
 	 * @return Retrieves all dynamically read {@code Towers} with a correct annotation.
 	 */
-	public static List<? extends ITower> getTowers() {
-		// TODO: Implement correctly.
-		return Collections.emptyList();
+	public static List<Class<?>> getTowers() {
+		return getExportedClasses(Tower.class);
 	}
 	
 	/**
