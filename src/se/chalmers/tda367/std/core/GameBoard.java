@@ -4,6 +4,7 @@ import java.util.*;
 
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.*;
+import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.*;
 
 /**
@@ -13,7 +14,7 @@ import se.chalmers.tda367.std.utilities.*;
  * @date Mar 22, 2012
  */
 public class GameBoard {
-	private Map testMap = new Map();
+	private MapLoader map = new MapLoader();
 	private IBoardTile[][] board;
 	private Position startPos;
 	private Position endPos;
@@ -37,9 +38,10 @@ public class GameBoard {
 		}
 		this.startPos = startPos;
 		this.endPos = endPos;
-		this.waypoints = new ArrayList<Position>();
-		IBoardTile tile = new TerrainTile(new Sprite());
-		initBoard();
+		MapLoader.setLevel(1);
+		board = MapLoader.getMap();
+		this.waypoints = MapLoader.getWayPointList();
+		
 	}
 	
 	/**
@@ -134,20 +136,6 @@ public class GameBoard {
 		return posOnBoard(p.getX(), p.getY());
 	}
 	
-	private void initBoard(){
-		int[][] map = testMap.getMap();
-		IBoardTile buildableTile = new BuildableTile(new Sprite());
-		for(int i = 0; i < map.length;i++){
-			for(int j = 0; j < map[i].length;j++){
-				if(map[i][j] == 0){
-					board[i][j] = buildableTile; 
-				} else { //TODO should probably change PathTile-creation
-					board[i][j] = new PathTile(new Sprite(), testMap.getBoardValueAtPos(new Position(i,j)), new Position(i,j));
-				}
-			}
-			
-		}
-	}
 	
 	/**
 	 * Overrides toString
@@ -217,6 +205,24 @@ public class GameBoard {
 	}
 	
 	/**
+	 * Retrieves all the towers currently on the game board.
+	 * @return a list of towers currently placed on the game board.
+	 */
+	public List<ITower> getTowersOnBoard(){
+		List<ITower> towers = new ArrayList<ITower>();
+		
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				if(getTileAt(x, y) instanceof ITower){
+					towers.add((ITower) getTileAt(x, y));
+				}
+			}
+		}
+		
+		return towers;
+	}
+	
+	/**
 	 * Method for checking if there is an enemy on a given position.
 	 * @param p position to check for an enemy.
 	 * @return true if an enemy is on the given position. Returns false if given position is outside the board or no enemy is at the position.
@@ -227,7 +233,5 @@ public class GameBoard {
 		}
 		return getTileAt(p) instanceof IEnemy;
 	}
-	public Map getMap(){
-		return testMap;
-	}
+	
 }

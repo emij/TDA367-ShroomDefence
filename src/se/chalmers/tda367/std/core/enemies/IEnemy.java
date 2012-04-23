@@ -1,7 +1,9 @@
 package se.chalmers.tda367.std.core.enemies;
 
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
+import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.utilities.Sprite;
 import se.chalmers.tda367.std.core.tiles.PathTile;
@@ -11,10 +13,11 @@ import se.chalmers.tda367.std.core.tiles.PathTile;
  * Implements the PropertyChangeListener interface.
  * This is called when an enemy is in range of a tower and is shot on, or otherwise damaged.
  * @author Emil Edholm
- * @modified Emil Johansson
+ * @modified Emil Johansson, Johan Andersson
  * @date Mar 25, 2012
  */
 public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
+	
 	/**
 	 * Returns the health of the enemy.
 	 * @return the current health of the enemy.
@@ -59,6 +62,29 @@ public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
 	 * @return current boardValue
 	 */
 	public int getBoardValue();
+	
+	/** 
+	 *  Add an effect to an enemy.
+	 * @param effect - Effect to be added.
+	 */
+	public void addEffect(IEffect effect);
+	
+	/** 
+	 *  Remove an effect from the enemy.
+	 *  Remvoves the first instance found of the effect,
+	 *  if the enemy is affected by multiple effects of the
+	 *  same type only the first one will be removed.
+	 * @param effect - Effect to be removed.
+	 */
+	public void removeEffect(IEffect effect);
+	
+	/**
+	 * Returns the effect of the enemy.
+	 * @return - List of effects on the enemy.
+	 */
+	public List<IEffect> getEffects();
+	
+	
 	/**
 	 * Sets the boardValue of the enemy
 	 * @param boardValue
@@ -77,6 +103,5 @@ public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
 	 * @return
 	 */
 	public Sprite getSprite();
-	
-	public void moveEnemy();
+
 }

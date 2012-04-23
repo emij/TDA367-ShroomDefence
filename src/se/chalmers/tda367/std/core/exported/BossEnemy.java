@@ -21,8 +21,8 @@ public class BossEnemy extends AbstractEnemy {
 	/**
 	 *  Creates a boss enemy.
 	 */
-	public BossEnemy(List<Position> waypoints, Position startPos) {
-		super(1000, 2, 50, new Sprite(), waypoints, startPos);
+	public BossEnemy() {
+		super(1000, 2, 50, new Sprite());
 	}
 	
 	/**

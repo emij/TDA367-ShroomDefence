@@ -1,20 +1,24 @@
 package se.chalmers.tda367.std.core.tiles.towers;
 
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.List;
 
-import se.chalmers.tda367.std.core.enemies.IEnemy;
+import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
 import se.chalmers.tda367.std.utilities.Sprite;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * A skeleton implementation of the {@code IAttackTower}
  * @author Emil Edholm
+ * @modifed Johan Andersson.
  * @date Mar 25, 2012
  */
 public abstract class AbstractAttackTower implements IAttackTower{
 	private int baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed;
 	private final Sprite sprite;
+	private List<IEffect> effects = new ArrayList<IEffect>();
 	
 	private final PropertyChangeSupport targetList;
 	
@@ -29,6 +33,12 @@ public abstract class AbstractAttackTower implements IAttackTower{
 		
 		targetList = new PropertyChangeSupport(this);
 	}
+	
+	@Override
+	public List<IEffect> getEffects() {
+		return effects;
+	}
+	
 	
 	@Override
 	public abstract void upgrade();

@@ -21,8 +21,8 @@ public class FastEnemy extends AbstractEnemy {
 	/**
 	 *  Creates a fast enemy.
 	 */
-	public FastEnemy(List<Position> waypoints, Position startPos) {
-		super(50, 3, 5, new Sprite(), waypoints, startPos);
+	public FastEnemy() {
+		super(50, 3, 5, new Sprite());
 	}
 	
 	/**
