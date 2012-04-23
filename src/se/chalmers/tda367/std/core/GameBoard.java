@@ -38,9 +38,10 @@ public class GameBoard {
 		}
 		this.startPos = startPos;
 		this.endPos = endPos;
-		this.waypoints = new ArrayList<Position>();
-		IBoardTile tile = new TerrainTile(new Sprite());
-		initBoard();
+		MapLoader.setLevel(1);
+		board = MapLoader.getMap();
+		this.waypoints = MapLoader.getWayPointList();
+		
 	}
 	
 	/**
@@ -135,22 +136,6 @@ public class GameBoard {
 		return posOnBoard(p.getX(), p.getY());
 	}
 	
-	private void initBoard(){
-		int[][] map = MapLoader.loadMap(1);
-		IBoardTile buildableTile = new BuildableTile(new Sprite());
-		for(int i = 0; i < map.length;i++){
-			for(int j = 0; j < map[i].length;j++){
-				if(map[i][j] == 0){
-					board[i][j] = buildableTile; 
-				} else if (map[i][j] == 1){ //TODO should probably change PathTile-creation
-					board[i][j] = new PathTile(new Sprite());
-				} else if (map[i][j] == 2){
-					board[i][j] = new WaypointTile(new Sprite());
-				}
-			}
-			
-		}
-	}
 	
 	/**
 	 * Overrides toString
