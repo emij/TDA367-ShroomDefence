@@ -15,12 +15,12 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @date   19 apr 2012
  */
 @Enemy(name = "El Jefe", description = "Represents a boss enemy.", enemyStrength = 2)
-public class Boss extends AbstractEnemy {
+public class BossEnemy extends AbstractEnemy {
 	
 	/**
 	 *  Creates a boss enemy.
 	 */
-	public Boss(List<Position> waypoints, Position startPos) {
+	public BossEnemy(List<Position> waypoints, Position startPos) {
 		super(1000, 2, 50, new Sprite(), waypoints, startPos);
 	}
 	
