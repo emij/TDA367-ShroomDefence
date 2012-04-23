@@ -103,6 +103,5 @@ public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
 	 * @return
 	 */
 	public Sprite getSprite();
-	
-	public void moveEnemy();
+
 }

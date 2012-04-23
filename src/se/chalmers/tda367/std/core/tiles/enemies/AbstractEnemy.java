@@ -21,17 +21,13 @@ public abstract class AbstractEnemy implements IEnemy{
 	private final int lootValue;
 	private int speed;
 	private int boardValue;
-	private List<Position> waypoints;
-	private Position position;
 	private List<IEffect> effects = new ArrayList<IEffect>();
 	
-	public AbstractEnemy(int startHealth, int speed, int lootValue, Sprite sprite, List<Position> waypoints, Position startPos){
+	public AbstractEnemy(int startHealth, int speed, int lootValue, Sprite sprite){
 		this.currentHealth = startHealth;
 		this.speed         = speed;
 		this.lootValue     = lootValue;
 		this.sprite        = sprite;
-		this.waypoints     = waypoints;
-		this.position      = startPos;
 	}
 	
 	@Override
@@ -107,38 +103,7 @@ public abstract class AbstractEnemy implements IEnemy{
 		
 	}
 	
-	public void moveEnemy() {
-		if(waypoints == null || waypoints.size() == 0) {
-			return;
-		}
-		else if(!waypoints.get(0).equals(position)) {
-			for(int i = 0; i < speed; i++) {
-				if(waypoints.get(0).getX() != position.getX()) {
-					if(waypoints.get(0).getX() > position.getX()) {
-						position.incrementX();
-					}
-					else {
-						position.decrementX();
-					}
-					if (waypoints.get(0).equals(position)) {
-						waypoints.remove(0);
-					}
-				}
-				else if(waypoints.get(0).getY() != position.getY()) {
-					if(waypoints.get(0).getY() > position.getY()) {
-						position.incrementY();
-					}
-					else {
-						position.decrementY();
-					}
-					if (waypoints.get(0).equals(position)) {
-						waypoints.remove(0);
-					}
-				}
-			}
-		}
-		System.out.println("X= " + position.getX() + "   Y= " + position.getY());
-	}
+
 	@Override
 	public int getBoardValue(){
 		return this.boardValue;

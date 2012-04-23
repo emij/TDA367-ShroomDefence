@@ -18,8 +18,8 @@ public class TankEnemy extends AbstractEnemy {
 	/**
 	 *  Creates a tank enemy.
 	 */
-	public TankEnemy(List<Position> waypoints, Position startPos) {
-		super(200, 1, 5, new Sprite(), waypoints, startPos);
+	public TankEnemy() {
+		super(200, 1, 5, new Sprite());
 	}
 	
 	/**

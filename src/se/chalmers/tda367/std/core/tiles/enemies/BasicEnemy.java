@@ -19,8 +19,8 @@ public final class BasicEnemy extends AbstractEnemy {
 	/**
 	 * Creates a basic enemy.
 	 */
-	public BasicEnemy(List<Position> waypoints, Position startPos) {
-		super(100, 2, 5, new Sprite(), waypoints, startPos);
+	public BasicEnemy() {
+		super(100, 2, 5, new Sprite());
 	}
 	
 	/**
