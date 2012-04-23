@@ -43,8 +43,8 @@ public class WaveController {
 	}
 
 	private void init(){
-		gameLoop = new Timer(1000, new GameLoopListener());
-		releaseTimer = new Timer(1500, new ReleaseTimerListener());
+		gameLoop = new Timer(100, new GameLoopListener());
+		releaseTimer = new Timer(5000, new ReleaseTimerListener());
 		base = new PlayerBase(2); //TODO, where to place base in code?
 	}
 
@@ -131,7 +131,7 @@ public class WaveController {
 		moveEnemies();
 		shootAtEnemiesInRange();
 		applyEffects();
-		removeDeadEnemies();
+		//removeDeadEnemies(); TODO: Fix because causing crash atm.
 		checkIfPlayerAlive();
 	}
 

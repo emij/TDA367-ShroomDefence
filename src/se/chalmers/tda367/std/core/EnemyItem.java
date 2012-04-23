@@ -10,15 +10,16 @@ import se.chalmers.tda367.std.utilities.Position;
  * @author Johan Gustafsson
  * @date April 15, 2012
  */
-class EnemyItem {
+public class EnemyItem {
 	private IEnemy enemy;
 	private Position enemyPos;
 	private double distanceTraveled;
 	private List<Position> waypoints;
+	private Properties p = Properties.INSTANCE;
 	
 	public EnemyItem(IEnemy enemy, Position enemyPos, List<Position> waypoints) {
 		this.enemy = enemy;
-		this.enemyPos = enemyPos;
+		this.enemyPos = new Position(enemyPos.getX()*p.getTileScale(), enemyPos.getY()*p.getTileScale());
 		this.distanceTraveled = 0;
 		this.waypoints = waypoints;
 	}
@@ -74,6 +75,5 @@ class EnemyItem {
 				}
 			}
 		}
-		System.out.println("X= " + enemyPos.getX() + "   Y= " + enemyPos.getY());
 	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.exported.BasicEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.factories.WaveFactory;
 import se.chalmers.tda367.std.utilities.Position;
 
 
@@ -44,7 +45,7 @@ public class GameController {
 	 */
 	public void nextWave(){
 		//TODO WAveFactory create wave.
-		Wave wave = null;
+		Wave wave = new WaveFactory().create("Hej");
 		waveControl.startWave(wave);
 	}
 	

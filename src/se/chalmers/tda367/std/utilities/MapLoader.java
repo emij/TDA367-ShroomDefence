@@ -3,6 +3,7 @@ package se.chalmers.tda367.std.utilities;
 import java.io.*;
 import java.util.*;
 
+import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.tiles.*;
 
 /**
@@ -56,7 +57,8 @@ public class MapLoader {
 	    		map[xCord][yCord] = new PathTile(new Sprite());
 	    	} else if(tileType.equals("W")){
 	    		map[xCord][yCord] = new PathTile(new Sprite());
-	    		wayPointList.add(new Position(xCord,yCord));
+	    		wayPointList.add(new Position(xCord*Properties.INSTANCE.getTileScale() 
+	    				,yCord*Properties.INSTANCE.getTileScale()));
 	    	}
 	    } 
 	}
