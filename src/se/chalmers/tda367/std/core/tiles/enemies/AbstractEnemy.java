@@ -1,15 +1,17 @@
 package se.chalmers.tda367.std.core.tiles.enemies;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.List;
 
+import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * A skeleton implementation of the IEnemy.
  * @author Emil Edholm
- * @modified Emil Johansson
+ * @modified Emil Johansson, Johan Andersson
  * @date Mar 22, 2012
  */
 public abstract class AbstractEnemy implements IEnemy{
@@ -21,6 +23,7 @@ public abstract class AbstractEnemy implements IEnemy{
 	private int boardValue;
 	private List<Position> waypoints;
 	private Position position;
+	private List<IEffect> effects = new ArrayList<IEffect>();
 	
 	public AbstractEnemy(int startHealth, int speed, int lootValue, Sprite sprite, List<Position> waypoints, Position startPos){
 		this.currentHealth = startHealth;
@@ -29,6 +32,16 @@ public abstract class AbstractEnemy implements IEnemy{
 		this.sprite        = sprite;
 		this.waypoints     = waypoints;
 		this.position      = startPos;
+	}
+	
+	@Override
+	public void addEffect(IEffect effect) {
+		effects.add(effect);
+	}
+	
+	@Override
+	public void removeEffect(IEffect effect) {
+		effects.remove(effect);
 	}
 	
 	@Override
