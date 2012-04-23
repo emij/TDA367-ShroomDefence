@@ -86,16 +86,15 @@ public class WaveController {
 	}
 
 	private void addEnemy(WaveItem wi){
-		enemies.add(new EnemyItem(wi.getEnemy(), board.getStartPos()));
+		enemies.add(new EnemyItem(wi.getEnemy(), board.getStartPos(), board.getWaypoints()));
 	}
 
 	/**
 	 * Moves all the enemies on the GameBoard, towards the base.	
 	 */
 	public void moveEnemies(){
-		Collections.sort(enemies);
 		for (EnemyItem ei : enemies) {
-			ei.getEnemy().moveEnemy();
+			ei.moveEnemy();
 			//moveEnemy(eob);
 		}
 	}
@@ -120,9 +119,9 @@ public class WaveController {
 		List<IEnemy> enemies = board.getEnemiesInRadius(pos, attackTower.getRadius());
 		//TODO, make more advance logic.
 		enemies.get(0).decreaseHealth(attackTower.getDmg());
-		for(IEffect ie:attackTower.getEffects()){
-			enemies.get(0).addEffect(ie);
-		}
+//		for(IEffect ie:attackTower.getEffects()){
+//			enemies.get(0).addEffect(ie);	//TODO implements
+//		}
 	}
 
 	/**
