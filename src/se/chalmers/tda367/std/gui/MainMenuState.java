@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -20,6 +21,7 @@ public class MainMenuState extends BasicGameState {
 	private float exitButtonScale;
 	private int menuX;
 	private int menuY;
+	private Sound music;
 	
 	public MainMenuState(int stateID) {
 		this.stateID = stateID;
@@ -40,6 +42,9 @@ public class MainMenuState extends BasicGameState {
 		
 		menuX = container.getWidth()/35;
 		menuY = container.getHeight()/2;
+		
+		music = new Sound(getResourcePath("/main_music.wav"));
+		music.play();
 	}
 
 	@Override
@@ -87,6 +92,8 @@ public class MainMenuState extends BasicGameState {
 			startButtonScale = 1;
 			exitButtonScale = 1;
 		}
+		
+
 	}
 
 	@Override
