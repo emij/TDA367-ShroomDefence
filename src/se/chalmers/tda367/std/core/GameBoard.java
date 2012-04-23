@@ -1,6 +1,7 @@
 package se.chalmers.tda367.std.core;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.*;
@@ -84,12 +85,12 @@ public class GameBoard {
 	public void placeTile(IBoardTile tile, Position p){
 		if(posOnBoard(p)) {
 			if(tile instanceof WaypointTile) {
-				Position tmp = new Position(p.getX()*16+8, p.getY()*16+8);
+				Position tmp = new Position(p.getX()*16+8, p.getY()*16+8); // TODO: Remove constants. (16 + 8)
 				waypoints.add(tmp);
 			}
 			board[p.getX()][p.getY()] = tile;
 		} else {
-			System.out.println("Bad coordinates");
+			Logger.getLogger("se.chalmers.tda367.std.core").info(p + " is a bad coordinate");
 		}
 	}
 	
