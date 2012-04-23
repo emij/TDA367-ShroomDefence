@@ -154,6 +154,14 @@ public class WaveController {
 				enemies.remove(i);
 			}
 	}
+	
+	/** Return enemies that is currently active.
+	 * 
+	 * @return - List of enemies.
+	 */
+	public ArrayList<EnemyItem> getEnemies() {
+		return enemies;
+	}
 
 
 

@@ -1,25 +1,9 @@
 package se.chalmers.tda367.std.core;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.swing.Timer;
-
-import se.chalmers.tda367.std.core.tiles.BuildableTile;
-import se.chalmers.tda367.std.core.tiles.IWalkableTile;
-import se.chalmers.tda367.std.core.tiles.PathTile;
-import se.chalmers.tda367.std.core.tiles.PlayerBase;
-import se.chalmers.tda367.std.core.tiles.enemies.BasicEnemy;
-import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
-import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
-import se.chalmers.tda367.std.factories.WaveFactory;
 import se.chalmers.tda367.std.utilities.Position;
-import se.chalmers.tda367.std.utilities.Sprite;
 
 
 
@@ -116,6 +100,14 @@ public class GameController {
 	 */
 	public boolean playerCanAffordTower(ITower tower) {
 		return buildControl.playerCanAffordTower(tower);
+	}
+	
+	/** Return enemies that is currently active.
+	 * 
+	 * @return - List of enemies.
+	 */
+	public ArrayList<EnemyItem> getEnemies() {
+		return waveControl.getEnemies();
 	}
 	
 	
