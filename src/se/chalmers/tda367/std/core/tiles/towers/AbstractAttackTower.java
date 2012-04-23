@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
-import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.utilities.Sprite;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
