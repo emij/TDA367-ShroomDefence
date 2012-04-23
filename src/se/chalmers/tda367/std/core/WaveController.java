@@ -86,7 +86,7 @@ public class WaveController {
 	}
 
 	private void addEnemy(WaveItem wi){
-		enemies.add(new EnemyItem(wi.getEnemy(), board.getStartPos());
+		enemies.add(new EnemyItem(wi.getEnemy(), board.getStartPos()));
 	}
 
 	/**
