@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.Timer;
 
+import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.PlayerBase;
@@ -119,6 +120,9 @@ public class WaveController {
 		List<IEnemy> enemies = board.getEnemiesInRadius(pos, attackTower.getRadius());
 		//TODO, make more advance logic.
 		enemies.get(0).decreaseHealth(attackTower.getDmg());
+		for(IEffect ie:attackTower.getEffects()){
+			enemies.get(0).addEffect(ie);
+		}
 	}
 
 	/**
@@ -133,8 +137,17 @@ public class WaveController {
 	}
 
 	private void applyEffects() {
-		// TODO Auto-generated method stub
-		
+		for (EnemyItem ei : enemies) {
+			applyEffect(ei);
+		}
+	}
+
+	private void applyEffect(EnemyItem ei) {
+		IEnemy enemy = ei.getEnemy();
+		for (IEffect ie : enemy.getEffects()) {
+			//TODO continue this
+			
+		}
 	}
 
 	private void checkIfPlayerAlive(){
