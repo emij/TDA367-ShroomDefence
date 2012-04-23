@@ -45,6 +45,11 @@ public abstract class AbstractEnemy implements IEnemy{
 	}
 	
 	@Override
+	public List<IEffect> getEffects() {
+		return effects;
+	}
+	
+	@Override
 	public int getHealth() {
 		return currentHealth;
 	}

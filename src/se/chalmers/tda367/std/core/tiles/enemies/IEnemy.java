@@ -1,6 +1,7 @@
 package se.chalmers.tda367.std.core.tiles.enemies;
 
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
@@ -76,6 +77,12 @@ public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
 	 * @param effect - Effect to be removed.
 	 */
 	public void removeEffect(IEffect effect);
+	
+	/**
+	 * Returns the effect of the enemy.
+	 * @return - List of effects on the enemy.
+	 */
+	public List<IEffect> getEffects();
 	
 	
 	/**
