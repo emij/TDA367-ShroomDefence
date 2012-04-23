@@ -21,7 +21,8 @@ import se.chalmers.tda367.std.utilities.FileScanner;
  * @date   Apr 22, 2012
  */
 public final class DynamicTileLoader {
-	private static final Path tileFolderPath = Paths.get("data", "tiles");
+	private static final Path exportedFolderPath = Paths.get("data", "tiles");
+	
 	// No need to be able to create an instance.
 	private DynamicTileLoader() {}
 	
@@ -35,30 +36,27 @@ public final class DynamicTileLoader {
 		if(!checkInvariants()){
 			return Collections.emptyList();
 		}
-		
-		List<File> files = FileScanner.getFiles(tileFolderPath);
-		ExtendedClassLoader tileLoader = new ExtendedClassLoader("se.chalmers.tda367.std.core.tiles", tileFolderPath);
-		//TODO: Check if package management can be altered or fixed. This method probably needs some rewrites.
-		
+		ExtendedClassLoader classLoader = new ExtendedClassLoader("se.chalmers.tda367.std.core.exported", exportedFolderPath);
 		
 		List<Class<?>> classList = new ArrayList<Class<?>>();
 
 		// Iterate through each files and try to add to class list if it has correct annotation.
+		List<File> files = FileScanner.getFiles(exportedFolderPath);
 		for(File f : files){
 			String name = f.getName();
-			name = name.substring(0, name.lastIndexOf("."));
+			name = name.substring(0, name.lastIndexOf(".")); // Remove the extension from the file
 			try {
-				Class<?> tile = tileLoader.loadClass(name);
+				Class<?> export = classLoader.loadClass(name);
 				
-				if(tile.getAnnotation(annotation) != null){
-					classList.add(tile);
+				if(export.getAnnotation(annotation) != null){
+					classList.add(export);
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
 
-		// TODO: Sort before returning.
+		// TODO: Sort before returning?
 		// TODO: Test if it works.
 		return classList;
 	}
@@ -85,7 +83,7 @@ public final class DynamicTileLoader {
 	 * @return true if everything is as it should be, else false.
 	 */
 	private static boolean checkInvariants() {
-		File tileFolder = new File(tileFolderPath.toUri());
+		File tileFolder = new File(exportedFolderPath.toUri());
 		if(!tileFolder.isDirectory()){
 			Logger log = Logger.getLogger("se.chalmers.tda367.std.core");
 			log.severe("The tile folder could not be found at " + tileFolder.toString());
