@@ -118,11 +118,14 @@ public class WaveController {
 	 * Towers fires at enemies in range.
 	 */
 	public void shootAtEnemiesInRange(){
+		int tileScale = Properties.INSTANCE.getTileScale();
+		
 		for(int x = 0; x < board.getWidth(); x++){
 			for(int y = 0; y <board.getHeight(); y++){
 				IBoardTile tile = board.getTileAt(x, y);
 				if(tile instanceof IAttackTower){
-					shoot((IAttackTower)tile, new Position(x, y));
+					
+					shoot((IAttackTower)tile, new Position(x*tileScale, y*tileScale));
 				}
 			}
 		}
@@ -131,10 +134,12 @@ public class WaveController {
 	
 	//Tower shoot at enemies in range.
 	private void shoot(IAttackTower tile, Position pos) {
-		List<IEnemy> enemies = board.getEnemiesInRadius(pos, tile.getRadius());
+		int radius = tile.getRadius() * Properties.INSTANCE.getTileScale();
+		List<EnemyItem> enemies = board.getEnemiesInRadius(pos, radius);
+		
 		//TODO, make more advanced logic.
-		if(enemies.size() > 0){
-			enemies.get(0).decreaseHealth(tile.getDmg());
+		if(!enemies.isEmpty()){
+			enemies.get(0).getEnemy().decreaseHealth(tile.getDmg());
 		}
 //		for(IEffect ie:attackTower.getEffects()){
 //			enemies.get(0).addEffect(ie);	//TODO implements

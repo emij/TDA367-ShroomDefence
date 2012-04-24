@@ -56,22 +56,20 @@ public class GameBoard {
 	
 	/**
 	 * Returns a list of enemies that is inside the radius of the supplied position
-	 * @param p the center of the "circle" to check
+	 * @param center the center position of the "circle" to check
 	 * @param radius the radius to check
-	 * @return A list of the enemies inside the "circle".
+	 * @return A list of the enemies inside the "circle". Note that the order of the list is unsorted.
 	 */
-	public List<IEnemy> getEnemiesInRadius(Position p, int radius){
-		List<IEnemy> enemies = new ArrayList<IEnemy>();
+	public List<EnemyItem> getEnemiesInRadius(Position center, int radius){
+		List<EnemyItem> inRadius = new ArrayList<EnemyItem>();
+		InRadiusFilter filter = new InRadiusFilter(center, radius);
 		
-//		for(int y = p.getY()-radius; y < p.getY()+radius; y++) {
-//			for(int x = p.getX()-radius; x < p.getX()+radius; x++) {
-//				if(posOnBoard(x, y) && getTileAt(x, y) instanceof IEnemy) {
-//					enemies.add((IEnemy) getTileAt(x, y));
-//				}
-//			}
-//		}
-		Collections.sort(enemies);
-		return enemies;
+		for(EnemyItem ei : enemies){
+			if(filter.accept(ei.getEnemyPos())) {
+				inRadius.add(ei);
+			}
+		}
+		return inRadius;
 	}
 	
 	/**
@@ -251,6 +249,37 @@ public class GameBoard {
 			return false;
 		}
 		return getTileAt(p) instanceof IEnemy;
+	}
+	
+	/**
+	 * Class used for filtering enemies that are not in a specified radius from a given center position
+	 * @author Emil Edholm
+	 * @date   Apr 24, 2012
+	 */
+	private class InRadiusFilter implements Position.Filter {
+		private final Position centerPosition;
+		private final int radius;
+		
+		public InRadiusFilter(Position centerPosition, int radius) {
+			this.centerPosition = new Position(centerPosition);
+			this.radius = radius;
+		}
+		
+		
+		/**
+		 * Accepts the position if it is within the {@code radius} of {@code centerPosition}
+		 */
+		@Override
+		public boolean accept(Position p) {
+			Double distance = Position.calculateDistance(centerPosition, p);
+			
+			if(Double.compare(distance, radius) <= 0) {
+				return true;
+			}
+			
+			return false;
+		}
+		
 	}
 	
 }
