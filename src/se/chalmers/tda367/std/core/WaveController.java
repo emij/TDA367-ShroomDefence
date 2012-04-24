@@ -73,7 +73,7 @@ public class WaveController {
 		}
 
 		IBoardTile startTile = board.getTileAt(board.getStartPos());
-		if(startTile instanceof IWalkableTile){
+		if(startTile instanceof IWalkableTile  && nextEnemy != null){
 			addEnemy(nextEnemy);
 			nextEnemy = wave.getNext();
 			
@@ -81,6 +81,9 @@ public class WaveController {
 				releaseTimer.setInitialDelay(nextEnemy.getDelay());
 				releaseTimer.restart();
 			}
+		}else {
+			// Stop the timer when all enemies has been "released"
+			releaseTimer.stop();
 		}
 	}
 
