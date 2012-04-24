@@ -34,9 +34,10 @@ public class GameplayState extends BasicGameState {
 	private Image towerTile;
 	private Image enemyImage;
 	private Image startButton;
+	private Image towerThumbnail;
 	private int tileScale;
-	private int startX, startY;
-	private boolean overStart = false;
+	private int startX, startY, startGridX, startGridY;
+	private boolean overStart = false, towerChoosed = false;
 	private GameBoard board;
 	private Properties properties = Properties.INSTANCE;
 	private Player player;
@@ -56,9 +57,10 @@ public class GameplayState extends BasicGameState {
 		background = new Image(getResourcePath("/images/gameplay/background.png"));
 		pathTile = new Image(getResourcePath("/images/gameplay/path_tile.jpg"));
 		buildableTile = new Image(getResourcePath("/images/gameplay/buildable_tile.png"));
-		towerTile = new Image(getResourcePath("/images/gameplay/tower_tile2.png"));
+		towerTile = new Image(getResourcePath("/images/gameplay/tower_tile1.png"));
 		enemyImage = new Image(getResourcePath("/images/gameplay/enemy.png"));
 		startButton = new Image(getResourcePath("/images/gameplay/button_template.png"));
+		towerThumbnail = new Image(getResourcePath("/images/gameplay/tower_thumbnail1.png"));
 		
 		
 		tileScale = properties.getTileScale();
@@ -101,6 +103,7 @@ public class GameplayState extends BasicGameState {
         	g.drawString(""+health, p.getX(), p.getY()-tileScale);
         }
         startButton.draw(startX, startY);
+        towerThumbnail.draw(startGridX, startGridY);
         if(overStart) {
         	startButton.draw(startX, startY, Color.green);
         }
@@ -111,6 +114,8 @@ public class GameplayState extends BasicGameState {
 			throws SlickException {
 		startX = (int)(container.getWidth()*0.796);
 		startY = (int)(container.getHeight()*0.895);
+		startGridX = (int)(container.getWidth()*0.797);
+		startGridY = (int)(container.getHeight()*0.211);
 		
 		Input input = container.getInput();
 		int mouseX = input.getMouseX();
@@ -123,13 +128,21 @@ public class GameplayState extends BasicGameState {
 				gameControl.nextWave();
 			}
 		}
+		else if((mouseX >= startGridX && mouseX <= startGridX+towerThumbnail.getWidth()) && 
+				(mouseY >= startGridY && mouseY <= startGridY+towerThumbnail.getHeight())) {
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				towerChoosed = true;
+			}
+		}
 		else if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()) {
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 		    	int x = mouseX / tileScale;
 				int y = mouseY / tileScale;
 				Position p = Position.valueOf(x, y);
-				if(board.getTileAt(p) instanceof IBuildableTile)
+				if(board.getTileAt(p) instanceof IBuildableTile && towerChoosed) {
 					board.placeTile(new BasicAttackTower(), p);
+					towerChoosed = false;
+				}
 			}
     	}
 		else{
