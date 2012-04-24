@@ -1,5 +1,6 @@
 package se.chalmers.tda367.std.gui;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -32,12 +33,14 @@ public class GameplayState extends BasicGameState {
 	private Image buildableTile;
 	private Image towerTile;
 	private Image enemyImage;
+	private Image startButton;
 	private int tileScale;
+	private int startX, startY;
+	private boolean overStart = false;
 	private GameBoard board;
 	private Properties properties = Properties.INSTANCE;
 	private Player player;
 	private GameController gameControl;
-	private Image startButton;
 	
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
@@ -55,7 +58,8 @@ public class GameplayState extends BasicGameState {
 		buildableTile = new Image(getResourcePath("/images/gameplay/buildable_tile.png"));
 		towerTile = new Image(getResourcePath("/images/gameplay/tower_tile2.png"));
 		enemyImage = new Image(getResourcePath("/images/gameplay/enemy.png"));
-		startButton = new Image(getResourcePath("/images/main_menu/start_button.png"));
+		startButton = new Image(getResourcePath("/images/gameplay/button_template.png"));
+		
 		
 		tileScale = properties.getTileScale();
 		
@@ -63,22 +67,6 @@ public class GameplayState extends BasicGameState {
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
 	}
-	
-	//TODO: Remake this system
-    @Override
-    public void mouseClicked(int button,
-            int x,
-            int y,
-            int clickCount){
-    	if(x < tileScale*board.getWidth() && y < tileScale*board.getHeight()) {
-	    	x = x / tileScale;
-			y = y / tileScale;
-			Position p = Position.valueOf(x, y);
-			
-			if(board.getTileAt(p) instanceof IBuildableTile)
-				board.placeTile(new BasicAttackTower(), p);
-    	}
-    }
 	
 	@Override
 	public void render(GameContainer container, StateBasedGame state, Graphics g)
@@ -109,21 +97,40 @@ public class GameplayState extends BasicGameState {
         	Position p = ei.getEnemyPos();
         	enemyImage.draw(p.getX(), p.getY(), tileScale, tileScale);
         }
-        startButton.draw(container.getWidth()-startButton.getWidth(), container.getHeight()-startButton.getHeight());
+        startButton.draw(startX, startY);
+        if(overStart) {
+        	startButton.draw(startX, startY, Color.green);
+        }
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame state, int arg2)
 			throws SlickException {
+		startX = (int)(container.getWidth()*0.796);
+		startY = (int)(container.getHeight()*0.895);
+		
 		Input input = container.getInput();
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 		
-		if((mouseX >= container.getWidth()-startButton.getWidth() && mouseX <= container.getWidth()) && 
-				(mouseY >= container.getHeight()-startButton.getHeight() && mouseY <= container.getHeight())) {
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+		if((mouseX >= startX && mouseX <= startX+startButton.getWidth()) && 
+				(mouseY >= startY && mouseY <= startY+startButton.getHeight())) {
+			overStart = true;
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				gameControl.nextWave();
 			}
+		}
+		else if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()) {
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+		    	int x = mouseX / tileScale;
+				int y = mouseY / tileScale;
+				Position p = Position.valueOf(x, y);
+				if(board.getTileAt(p) instanceof IBuildableTile)
+					board.placeTile(new BasicAttackTower(), p);
+			}
+    	}
+		else{
+			overStart = false;
 		}
 	}
 
