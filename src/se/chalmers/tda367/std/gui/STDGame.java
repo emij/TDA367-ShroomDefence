@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.gui;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class STDGame extends StateBasedGame {
@@ -11,6 +12,7 @@ public class STDGame extends StateBasedGame {
 	
 	public STDGame() {
 		super("STD - Shroom Tower Defense");
+		
 		
         this.addState(new MainMenuState(MAINMENUSTATE));
         this.addState(new GameplayState(GAMEPLAYSTATE));
@@ -22,5 +24,4 @@ public class STDGame extends StateBasedGame {
 		this.getState(MAINMENUSTATE).init(gameCon, this);
         this.getState(GAMEPLAYSTATE).init(gameCon, this);
 	}
-
 }

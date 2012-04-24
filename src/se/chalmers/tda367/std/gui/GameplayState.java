@@ -3,6 +3,7 @@ package se.chalmers.tda367.std.gui;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -36,6 +37,7 @@ public class GameplayState extends BasicGameState {
 	private Properties properties = Properties.INSTANCE;
 	private Player player;
 	private GameController gameControl;
+	private Image startButton;
 	
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
@@ -48,18 +50,18 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame state)
 			throws SlickException {
-		background = new Image(getResourcePath("/gameplay_background.png"));
-		pathTile = new Image(getResourcePath("/path_tile.jpg"));
-		buildableTile = new Image(getResourcePath("/buildable_tile.png"));
-		towerTile = new Image(getResourcePath("/tower_tile2.png"));
-		enemyImage = new Image(getResourcePath("/enemy.png"));
+		background = new Image(getResourcePath("/images/gameplay/background.png"));
+		pathTile = new Image(getResourcePath("/images/gameplay/path_tile.jpg"));
+		buildableTile = new Image(getResourcePath("/images/gameplay/buildable_tile.png"));
+		towerTile = new Image(getResourcePath("/images/gameplay/tower_tile2.png"));
+		enemyImage = new Image(getResourcePath("/images/gameplay/enemy.png"));
+		startButton = new Image(getResourcePath("/images/main_menu/start_button.png"));
 		
 		tileScale = properties.getTileScale();
 		
 		board = new GameBoard(25,20, new Position(0,12), new Position (19,12));
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
-		gameControl.nextWave();
 	}
 	
 	//TODO: Remake this system
@@ -107,12 +109,22 @@ public class GameplayState extends BasicGameState {
         	Position p = ei.getEnemyPos();
         	enemyImage.draw(p.getX(), p.getY(), tileScale, tileScale);
         }
+        startButton.draw(container.getWidth()-startButton.getWidth(), container.getHeight()-startButton.getHeight());
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame state, int arg2)
 			throws SlickException {
+		Input input = container.getInput();
+		int mouseX = input.getMouseX();
+		int mouseY = input.getMouseY();
 		
+		if((mouseX >= container.getWidth()-startButton.getWidth() && mouseX <= container.getWidth()) && 
+				(mouseY >= container.getHeight()-startButton.getHeight() && mouseY <= container.getHeight())) {
+			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				gameControl.nextWave();
+			}
+		}
 	}
 
 	@Override

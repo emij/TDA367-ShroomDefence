@@ -6,6 +6,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -34,16 +35,16 @@ public class MainMenuState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame state)
 			throws SlickException {
-		background = new Image(getResourcePath("/main_background.png"));
-		startGameButton = new Image(getResourcePath("/main_start_button.png"));
+		background = new Image(getResourcePath("/images/main_menu/background.png"));
+		startGameButton = new Image(getResourcePath("/images/main_menu/start_button.png"));
 		startButtonScale = 1;
-		exitGameButton = new Image(getResourcePath("/main_exit_button.png"));
+		exitGameButton = new Image(getResourcePath("/images/main_menu/exit_button.png"));
 		exitButtonScale = 1;
 		
 		menuX = container.getWidth()/35;
 		menuY = container.getHeight()/2;
 		
-		music = new Sound(getResourcePath("/main_music.wav"));
+		music = new Sound(getResourcePath("/audio/main_menu/music.wav"));
 		music.loop();
 	}
 
@@ -51,6 +52,7 @@ public class MainMenuState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame state, Graphics g)
 			throws SlickException {
 		background.draw(0, 0, container.getWidth(), container.getHeight());
+	
 		startGameButton.draw(menuX, menuY, startButtonScale);
 		exitGameButton.draw(menuX, menuY+startGameButton.getHeight(), exitButtonScale);
 	}
