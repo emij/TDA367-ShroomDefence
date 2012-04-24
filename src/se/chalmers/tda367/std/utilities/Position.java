@@ -102,7 +102,7 @@ public class Position {
 		return new Position(getX()+dx, getY()+dy);
 	}
 	
-	public static interface PositionFilter {
+	public static interface Filter {
 		
 		/**
 		 * Filter method for accepting a position.
