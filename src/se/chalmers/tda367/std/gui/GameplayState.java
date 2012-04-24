@@ -72,6 +72,7 @@ public class GameplayState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame state, Graphics g)
 			throws SlickException {
         background.draw(0, 0);
+        g.setColor(Color.black);
         
 		int w = board.getWidth();
         int h = board.getHeight();
@@ -95,7 +96,9 @@ public class GameplayState extends BasicGameState {
         
         for(EnemyItem ei : board.getEnemies() ) {
         	Position p = ei.getEnemyPos();
+        	int health = ei.getEnemy().getHealth();
         	enemyImage.draw(p.getX(), p.getY(), tileScale, tileScale);
+        	g.drawString(""+health, p.getX(), p.getY()-tileScale);
         }
         startButton.draw(startX, startY);
         if(overStart) {
