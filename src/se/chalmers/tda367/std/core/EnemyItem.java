@@ -39,6 +39,14 @@ public class EnemyItem {
 	}
 	
 	/**
+	 * 
+	 * @return the waypoints the enemy has.
+	 */
+	public List<Position> getWaypoints() {
+		return waypoints;
+	}
+	
+	/**
 	 * @return the shortest distance between the enemy and the end position.
 	 */
 	public double getDistanceTraveled() {

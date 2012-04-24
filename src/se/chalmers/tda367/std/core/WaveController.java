@@ -93,8 +93,16 @@ public class WaveController {
 	public void moveEnemies(){
 		for (EnemyItem ei : enemies) {
 			ei.moveEnemy();
-			
+			if(ei.getWaypoints().size() == 0){
+				enemyEnteredBase(ei.getEnemy());
+			}
 		}
+	}
+	
+	private void enemyEnteredBase(IEnemy enemy){
+		base.decreaseHealth();
+		enemy.decreaseHealth(1000000);
+		//TODO more flexible implementation
 	}
 
 	/**
@@ -131,7 +139,7 @@ public class WaveController {
 		moveEnemies();
 		shootAtEnemiesInRange();
 		applyEffects();
-		//removeDeadEnemies(); TODO: Fix because causing crash atm.
+		removeDeadEnemies(); //TODO: Fix because causing crash atm.
 		checkIfPlayerAlive();
 	}
 
@@ -161,7 +169,7 @@ public class WaveController {
 	}
 
 	private void removeDeadEnemies(){
-		for(int i = enemies.size(); 0 < i; i--)
+		for(int i = enemies.size()-1; 0 <= i; i--)
 			if(enemies.get(i).getEnemy().getHealth() <= 0){
 				enemies.remove(i);
 			}
