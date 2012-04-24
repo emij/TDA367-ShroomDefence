@@ -101,5 +101,15 @@ public class Position {
 	public Position move(int dx, int dy){
 		return new Position(getX()+dx, getY()+dy);
 	}
+	
+	public static interface PositionFilter {
+		
+		/**
+		 * Filter method for accepting a position.
+		 * @param p the position to check.
+		 * @return true if the position is accepted, else false.
+		 */
+		public boolean accept(Position p);
+	}
 
 }
