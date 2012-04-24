@@ -102,7 +102,8 @@ public class GameplayState extends BasicGameState {
         	}
         }
         
-        for(EnemyItem ei : gameControl.getEnemies() ) {
+        
+        for(EnemyItem ei : board.getEnemies() ) {
         	Position p = ei.getEnemyPos();
         	enemyImage.draw(p.getX(), p.getY(), tileScale, tileScale);
         }

@@ -1,9 +1,5 @@
 package se.chalmers.tda367.std.core;
 
-import java.util.ArrayList;
-
-import se.chalmers.tda367.std.core.enemies.IEnemy;
-import se.chalmers.tda367.std.core.exported.BasicEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.factories.WaveFactory;
 import se.chalmers.tda367.std.utilities.Position;
@@ -44,8 +40,8 @@ public class GameController {
 	 * 
 	 */
 	public void nextWave(){
-		//TODO WAveFactory create wave.
-		Wave wave = new WaveFactory().create("Hej");
+		//TODO Check the sent level parameter to the create method.
+		Wave wave = new WaveFactory().create(1);
 		waveControl.startWave(wave);
 	}
 	
@@ -109,7 +105,7 @@ public class GameController {
 	 * 
 	 * @return - List of enemies.
 	 */
-	public ArrayList<EnemyItem> getEnemies() {
-		return waveControl.getEnemies();
-	}
+//	public ArrayList<EnemyItem> getEnemies() {
+//		return waveControl.getEnemies();
+//	}
 }

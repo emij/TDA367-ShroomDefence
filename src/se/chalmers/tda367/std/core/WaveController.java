@@ -2,8 +2,9 @@ package se.chalmers.tda367.std.core;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.Timer;
 
@@ -12,14 +13,14 @@ import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.PlayerBase;
-import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
+import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
 import se.chalmers.tda367.std.utilities.Position;
 
 
 /**
  * The class that contains the game logic for wave phase of the game.
  * @author Johan Andersson
- * @modified 
+ * @modified Emil Edholm (Apr 24, 2012)
  * @date Apr 22, 2012
  */
 
@@ -32,7 +33,7 @@ public class WaveController {
 	private WaveItem nextEnemy;
 	private PlayerBase base; //TODO where to place base in code.
 	private Wave wave;
-	private ArrayList<EnemyItem> enemies = new ArrayList<EnemyItem>();
+	
 
 	public WaveController(GameBoard board, Player player) {
 		this.board = board;
@@ -67,15 +68,15 @@ public class WaveController {
 	 * Releases the next enemy in queue from the wave
 	 */
 	public void releaseEnemy(){
-
 		if(nextEnemy == null){
 			nextEnemy = wave.getNext();
 		}
 
-		if(board.getTileAt(board.getStartPos()) instanceof IWalkableTile && nextEnemy != null){
-			//TODO Look over the if-statement above, cleaner solution?
+		IBoardTile startTile = board.getTileAt(board.getStartPos());
+		if(startTile instanceof IWalkableTile){
 			addEnemy(nextEnemy);
-			nextEnemy =  wave.getNext();
+			nextEnemy = wave.getNext();
+			
 			if(nextEnemy != null){
 				releaseTimer.setInitialDelay(nextEnemy.getDelay());
 				releaseTimer.restart();
@@ -84,13 +85,18 @@ public class WaveController {
 	}
 
 	private void addEnemy(WaveItem wi){
-		enemies.add(new EnemyItem(wi.getEnemy(), board.getStartPos(), board.getWaypoints()));
+		List<EnemyItem> enemies = board.getEnemies();
+		
+		EnemyItem item = new EnemyItem(wi.getEnemy(), board.getStartPos(), board.getWaypoints());
+		enemies.add(item);
 	}
 
 	/**
 	 * Moves all the enemies on the GameBoard, towards the base.	
 	 */
 	public void moveEnemies(){
+		List<EnemyItem> enemies = board.getEnemies();
+		
 		for (EnemyItem ei : enemies) {
 			ei.moveEnemy();
 			if(ei.getWaypoints().size() == 0){
@@ -112,8 +118,8 @@ public class WaveController {
 		for(int x = 0; x < board.getWidth(); x++){
 			for(int y = 0; y <board.getHeight(); y++){
 				IBoardTile tile = board.getTileAt(x, y);
-				if(tile instanceof AbstractAttackTower){
-					shoot((AbstractAttackTower)tile, new Position(x, y));
+				if(tile instanceof IAttackTower){
+					shoot((IAttackTower)tile, new Position(x, y));
 				}
 			}
 		}
@@ -121,11 +127,11 @@ public class WaveController {
 	
 	
 	//Tower shoot at enemies in range.
-	private void shoot(AbstractAttackTower attackTower, Position pos) {
-		List<IEnemy> enemies = board.getEnemiesInRadius(pos, attackTower.getRadius());
-		//TODO, make more advance logic.
+	private void shoot(IAttackTower tile, Position pos) {
+		List<IEnemy> enemies = board.getEnemiesInRadius(pos, tile.getRadius());
+		//TODO, make more advanced logic.
 		if(enemies.size() > 0){
-			enemies.get(0).decreaseHealth(attackTower.getDmg());
+			enemies.get(0).decreaseHealth(tile.getDmg());
 		}
 //		for(IEffect ie:attackTower.getEffects()){
 //			enemies.get(0).addEffect(ie);	//TODO implements
@@ -139,11 +145,13 @@ public class WaveController {
 		moveEnemies();
 		shootAtEnemiesInRange();
 		applyEffects();
-		removeDeadEnemies(); //TODO: Fix because causing crash atm.
+		removeDeadEnemies();
 		checkIfPlayerAlive();
 	}
 
 	private void applyEffects() {
+		List<EnemyItem> enemies = board.getEnemies();
+		
 		for (EnemyItem ei : enemies) {
 			applyEffect(ei);
 		}
@@ -164,28 +172,25 @@ public class WaveController {
 	}
 
 	private void playerDead(){
-		System.out.println("Player dead, game over");
+		Logger.getLogger("se.chalmers.tda367.std.core").info("Player dead, game over");
 		endWave();
 	}
 
+	/**
+	 * Removes the enemies that are dead from the game board.
+	 */
 	private void removeDeadEnemies(){
-		for(int i = enemies.size()-1; 0 <= i; i--)
-			if(enemies.get(i).getEnemy().getHealth() <= 0){
-				enemies.remove(i);
+		List<EnemyItem> enemies = board.getEnemies();
+		Iterator<EnemyItem> it = enemies.iterator();
+		
+		while(it.hasNext()){
+			EnemyItem item = it.next();
+			if(item.getEnemy().getHealth() <= 0){
+				it.remove();
 			}
+		}
 	}
 	
-	/** Return enemies that is currently active.
-	 * 
-	 * @return - List of enemies.
-	 */
-	public ArrayList<EnemyItem> getEnemies() {
-		return enemies;
-	}
-
-
-
-
 	class ReleaseTimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {

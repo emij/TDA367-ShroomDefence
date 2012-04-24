@@ -11,14 +11,18 @@ import se.chalmers.tda367.std.utilities.*;
 /**
  * Represents the whole game board in a grid system.
  * @author Johan Gustafsson
- * @modified Emil Johansson
+ * @modified Emil Johansson, Emil Edholm
  * @date Mar 22, 2012
  */
 public class GameBoard {
-	private MapLoader map = new MapLoader();
+	//private MapLoader map = new MapLoader();
+	
 	private IBoardTile[][] board;
+	private List<EnemyItem> enemies;
+	
 	private Position startPos;
 	private Position endPos;
+	
 	private final int width;
 	private final int height;
 	private List<Position> waypoints;
@@ -31,36 +35,51 @@ public class GameBoard {
 		if(width <= 0 || height <= 0) {
 			throw new IllegalArgumentException("Width and/or height cannot be equal to or smaller than zero");
 		}
+		
+		
 		this.width = width;
 		this.height = height;
 		board =  new IBoardTile[this.width][this.height];
 		if(!posOnBoard(startPos) || !posOnBoard(endPos)) {
 			throw new IllegalArgumentException("Start and/or end position is not on the board.");
 		}
+		
 		this.startPos = startPos;
 		this.endPos = endPos;
+		
 		MapLoader.setLevel(1);
 		board = MapLoader.getMap();
 		this.waypoints = MapLoader.getWayPointList();
+		
+		enemies = new ArrayList<EnemyItem>();
 	}
 	
 	/**
-	 * Returns a list of enemies that is inside the radius based on supplied position
-	 * @param p
-	 * @param radius
-	 * @return List of enemies.
+	 * Returns a list of enemies that is inside the radius of the supplied position
+	 * @param p the center of the "circle" to check
+	 * @param radius the radius to check
+	 * @return A list of the enemies inside the "circle".
 	 */
 	public List<IEnemy> getEnemiesInRadius(Position p, int radius){
 		List<IEnemy> enemies = new ArrayList<IEnemy>();
 		
-		for(int y = p.getY()-radius; y < p.getY()+radius; y++) {
-			for(int x = p.getX()-radius; x < p.getX()+radius; x++) {
-				if(posOnBoard(x, y) && getTileAt(x, y) instanceof IEnemy) {
-					enemies.add((IEnemy) getTileAt(x, y));
-				}
-			}
-		}
+//		for(int y = p.getY()-radius; y < p.getY()+radius; y++) {
+//			for(int x = p.getX()-radius; x < p.getX()+radius; x++) {
+//				if(posOnBoard(x, y) && getTileAt(x, y) instanceof IEnemy) {
+//					enemies.add((IEnemy) getTileAt(x, y));
+//				}
+//			}
+//		}
 		Collections.sort(enemies);
+		return enemies;
+	}
+	
+	/**
+	 * Retrieves the enemies that are currently on the game board.
+	 * The actual logic behind removing and adding enemies are 
+	 * @return a list of EnemyItems that are currently ON the game board. 
+	 */
+	public List<EnemyItem> getEnemies() {
 		return enemies;
 	}
 
