@@ -64,6 +64,29 @@ public final class DynamicLoader {
 		return classList;
 	}
 	
+	private static <T> List<T> getInstanceList(Class<T> type, List<Class<?>> classList) {
+		if(type == null) {
+			throw new NullPointerException("type is null");
+		}
+		
+		List<T> instanceList = new ArrayList<T>(classList.size());
+		Object tmpInstance = null;
+		for(Class<?> c : classList) {
+			try {
+				tmpInstance = c.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+			if(type.isInstance(tmpInstance)){
+				instanceList.add(type.cast(tmpInstance));
+			}
+			
+		}
+		
+		return instanceList;
+	}
+	
 	
 	/**
 	 * @return Retrieves all dynamically read {@code Enemies} with a correct annotation sorted by enemy strength.
