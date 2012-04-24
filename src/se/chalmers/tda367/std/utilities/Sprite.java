@@ -36,7 +36,7 @@ public class Sprite {
 	
 	/**
 	 * Retrieves the image associated with this sprite.
-	 * @return an image representing the sprite.
+	 * @return an image representing the sprite or {@code null} if there is no associated image.
 	 */
 	public Image getImage() {
 		return image;
