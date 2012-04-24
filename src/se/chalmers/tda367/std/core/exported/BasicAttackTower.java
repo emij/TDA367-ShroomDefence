@@ -31,7 +31,7 @@ public final class BasicAttackTower extends AbstractAttackTower {
 	
 	public BasicAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
-				sprite);
+				null, sprite);
 	}
 
 	@Override

@@ -18,18 +18,19 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public abstract class AbstractAttackTower implements IAttackTower{
 	private int baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed;
 	private final Sprite sprite;
-	private List<IEffect> effects = new ArrayList<IEffect>();
+	private List<IEffect> effects;
 	
 	private final PropertyChangeSupport targetList;
 	
 	public AbstractAttackTower(int baseCost, int baseDamage, 
-							   int effectiveRadius, int aoeRadius, int attackSpeed, Sprite sprite){
+							   int effectiveRadius, int aoeRadius, int attackSpeed, List<IEffect> effects, Sprite sprite){
 		this.baseCost        = baseCost;
 		this.baseDamage      = baseDamage;
 		this.effectiveRadius = effectiveRadius;
 		this.aoeRadius       = aoeRadius;
 		this.attackSpeed     = attackSpeed;
 		this.sprite          = sprite;
+		this.effects		 = new ArrayList<IEffect>(effects);
 		
 		targetList = new PropertyChangeSupport(this);
 	}
