@@ -3,18 +3,16 @@ package se.chalmers.tda367.std.core;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.Timer;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.PlayerBase;
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
-import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.Position;
 
 
@@ -43,7 +41,7 @@ public class WaveController {
 	}
 
 	private void init(){
-		gameLoop = new Timer(100, new GameLoopListener());
+		gameLoop = new Timer(1000/60, new GameLoopListener());
 		releaseTimer = new Timer(5000, new ReleaseTimerListener());
 		base = new PlayerBase(2); //TODO, where to place base in code?
 	}
@@ -95,7 +93,7 @@ public class WaveController {
 	public void moveEnemies(){
 		for (EnemyItem ei : enemies) {
 			ei.moveEnemy();
-			//moveEnemy(eob);
+			
 		}
 	}
 
@@ -118,7 +116,9 @@ public class WaveController {
 	private void shoot(AbstractAttackTower attackTower, Position pos) {
 		List<IEnemy> enemies = board.getEnemiesInRadius(pos, attackTower.getRadius());
 		//TODO, make more advance logic.
-		enemies.get(0).decreaseHealth(attackTower.getDmg());
+		if(enemies.size() > 0){
+			enemies.get(0).decreaseHealth(attackTower.getDmg());
+		}
 //		for(IEffect ie:attackTower.getEffects()){
 //			enemies.get(0).addEffect(ie);	//TODO implements
 //		}

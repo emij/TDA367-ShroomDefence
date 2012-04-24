@@ -19,39 +19,40 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	private int baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed;
 	private final Sprite sprite;
 	private List<IEffect> effects;
-	
+
 	private final PropertyChangeSupport targetList;
-	
+
 	public AbstractAttackTower(int baseCost, int baseDamage, 
-							   int effectiveRadius, int aoeRadius, int attackSpeed, List<IEffect> effects, Sprite sprite){
+			int effectiveRadius, int aoeRadius, int attackSpeed, List<IEffect> effects, Sprite sprite){
 		this.baseCost        = baseCost;
 		this.baseDamage      = baseDamage;
 		this.effectiveRadius = effectiveRadius;
 		this.aoeRadius       = aoeRadius;
 		this.attackSpeed     = attackSpeed;
 		this.sprite          = sprite;
-		this.effects		 = new ArrayList<IEffect>(effects);
-		
+		if(effects != null){
+			this.effects		 = new ArrayList<IEffect>(effects);
+		}
 		targetList = new PropertyChangeSupport(this);
 	}
-	
+
 	@Override
 	public List<IEffect> getEffects() {
 		return effects;
 	}
-	
-	
+
+
 	@Override
 	public abstract void upgrade();
 
 	@Override
 	public abstract void fire();
-	
+
 	@Override
 	public int refund() {
 		return (int)(0.75 * baseCost);
 	}
-	
+
 	@Override
 	public int getBaseCost(){
 		return baseCost;
@@ -81,11 +82,11 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	public Sprite getSprite() {
 		return sprite;
 	}
-	
+
 
 	@Override
 	public abstract int getUpgradeCost();
-	
+
 
 	@Override
 	public void addToTargetList(IEnemy enemy) {
@@ -109,18 +110,18 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	protected void notifyTargetList(int dmg){
 		targetList.firePropertyChange("damage", getDmg(), dmg);
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.getClass().getName() + " {" +
-							               "\n\tBase cost: "       + baseCost        + 
-							               "\n\tBase damage: "     + baseDamage      + 
-							               "\n\tEffectiveRadius: " + effectiveRadius + 
-							               "\n\tDmg Radius: "      + aoeRadius       +
-							               "\n\tAttackSpeed: "     + attackSpeed     +
-							               "\n\tSprite: "          + sprite          +
-							               "\n}\n";
-		
+				"\n\tBase cost: "       + baseCost        + 
+				"\n\tBase damage: "     + baseDamage      + 
+				"\n\tEffectiveRadius: " + effectiveRadius + 
+				"\n\tDmg Radius: "      + aoeRadius       +
+				"\n\tAttackSpeed: "     + attackSpeed     +
+				"\n\tSprite: "          + sprite          +
+				"\n}\n";
+
 		// This should probably not be "closed" and it should be up to each
 		// concrete implementation to do that and add their specific values.
 	}
