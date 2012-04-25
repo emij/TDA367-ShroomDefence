@@ -61,9 +61,15 @@ public final class DynamicLoader {
 		return classList;
 	}
 	
+	/**
+	 * Used to create instances of a list of classes.
+	 */
 	private static <T> List<T> getInstanceList(Class<T> type, List<Class<?>> classList) {
 		if(type == null) {
 			throw new NullPointerException("type is null");
+		}
+		if(classList == null){
+			throw new NullPointerException("classList is null");
 		}
 		
 		List<T> instanceList = new ArrayList<T>(classList.size());
