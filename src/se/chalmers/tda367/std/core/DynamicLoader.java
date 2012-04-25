@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import se.chalmers.tda367.std.core.anno.Enemy;
-import se.chalmers.tda367.std.core.anno.Tower;
+import se.chalmers.tda367.std.core.anno.*;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.ExtendedClassLoader;
 import se.chalmers.tda367.std.utilities.FileScanner;
+import se.chalmers.tda367.std.utilities.Filter;
 
 /**
  * A class used to load exported classes from a previously
@@ -59,8 +58,6 @@ public final class DynamicLoader {
 			}
 		}
 
-		// TODO: Sort before returning?
-		// TODO: Test if it works.
 		return classList;
 	}
 	
@@ -91,20 +88,57 @@ public final class DynamicLoader {
 	/**
 	 * @return Retrieves all dynamically read {@code Enemies} with a correct annotation sorted by enemy strength.
 	 */
-	public static List<Class<?>> getEnemies(){
-		List<Class<?>> enemies = getExportedClasses(Enemy.class);
-		Collections.sort(enemies, new EnemyComparator());
-		return enemies;
+	public static List<IEnemy> getEnemies(){
+		List<Class<?>> enemyClasses = getExportedClasses(Enemy.class);
+		Collections.sort(enemyClasses, new EnemyComparator());
+		return getInstanceList(IEnemy.class, enemyClasses);
+	}
+	
+	/**
+	 * Get the enemies with strength {@code maxLevel} or less.
+	 * @param maxLevel the maximum strength of the enemies to retrieve.
+	 * @return a list of enemies that conform to the parameters.
+	 */
+	public static List<IEnemy> getEnemies(int maxLevel) {
+		return filterList(getEnemies(), maxLevel, new EnemyStrengthFilter(maxLevel));
+	}
+	
+	/**
+	 * Method used for filtering a list (often Enemies or Towers).
+	 * @param list the list to filter
+	 * @param maxLevel the max level strength to use in the filter.
+	 * @param filter the actual filter to use.
+	 * @return a list filtered used the supplied filter.
+	 */
+	private static <T> List<T> filterList(List<T> list, int maxLevel, Filter<T> filter){
+		List<T> filteredList = new ArrayList<T>(list.size());
+
+		for(T item : list) {
+			if(filter.accept(item)){
+				filteredList.add(item);
+			}
+		}
+		
+		return filteredList;
 	}
 	
 	/**
 	 * 
 	 * @return Retrieves all dynamically read {@code Towers} with a correct annotation sorted by tower strength.
 	 */
-	public static List<Class<?>> getTowers() {
+	public static List<ITower> getTowers() {
 		List<Class<?>> towers = getExportedClasses(Tower.class);
 		Collections.sort(towers, new TowerComparator());
-		return towers;
+		return getInstanceList(ITower.class, towers);
+	}
+
+	/**
+	 * Get the towers with strength {@code maxLevel} or less.
+	 * @param maxLevel the maximum strength of the towers to retrieve.
+	 * @return a list of towers that conform to the parameters.
+	 */
+	public static List<ITower> getTowers(int maxLevel) {
+		return filterList(getTowers(), maxLevel, new TowerStrengthFilter(maxLevel));
 	}
 	
 	/**
@@ -121,6 +155,7 @@ public final class DynamicLoader {
 		return true;
 	}
 	
+	// TODO: Possible refactoring of the following classes? They are quite similar.
 	/**
 	 * Used to compare enemy strength. Allows for sorting of list of enemies.
 	 * @author Emil Edholm
@@ -167,5 +202,48 @@ public final class DynamicLoader {
 			}
 			return 0;
 		}
+	}
+	
+	/**
+	 * Used to filter the max level enemy strength described in its annotation.
+	 * @author Emil Edholm
+	 * @date   Apr 25, 2012
+	 */
+	private static class EnemyStrengthFilter implements Filter<IEnemy> {
+		private final int maxLevel;
+		public EnemyStrengthFilter(int maxLevel) {
+			this.maxLevel = maxLevel;
+		}
+		
+		@Override
+		public boolean accept(IEnemy object) {
+			Enemy annotation = object.getClass().getAnnotation(Enemy.class);
+			if(annotation != null) {
+				return Double.compare(annotation.enemyStrength(), maxLevel) <= 0;
+			}
+			return false;
+		}
+		
+	}
+	
+	/**
+	 * Used to filter the max level tower strength described in its annotation.
+	 * @author Emil Edholm
+	 * @date   Apr 25, 2012
+	 */
+	private static class TowerStrengthFilter implements Filter<ITower> {
+		private final int maxLevel;
+		public TowerStrengthFilter(int maxLevel) {
+			this.maxLevel = maxLevel;
+		}
+		@Override
+		public boolean accept(ITower object) {
+			Tower annotation = object.getClass().getAnnotation(Tower.class);
+			if(annotation != null) {
+				return Double.compare(annotation.towerStrength(), maxLevel) <= 0;
+			}
+			return false;
+		}
+		
 	}
 }
