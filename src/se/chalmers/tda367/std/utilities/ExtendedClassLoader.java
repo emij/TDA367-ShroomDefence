@@ -43,7 +43,7 @@ public final class ExtendedClassLoader extends ClassLoader {
 	 * @return a byte array of the read class file. Empty if file not found, etc.
 	 */
 	private byte[] loadClassData (Path searchPath, String className) {
-		File f = new File(searchPath.toString() + className + ".class");
+		File f = searchPath.resolve(className + ".class").toFile();
 		if(!f.isFile()){
 			Logger.getLogger("se.chalmers.tda367.std.utilities").severe("Unable to load the class data from file: " + f.toString());
 			return new byte[0];
