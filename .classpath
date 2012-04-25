@@ -11,12 +11,12 @@
 	<classpathentry kind="lib" path="lib/slick.jar"/>
 	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
 	<classpathentry kind="lib" path="lib/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="lib/eventbus-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/nifty-1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/nifty-default-controls-1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/nifty-slick-renderer-1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/nifty-style-black-1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/Gusten/Git/TDA367-ShroomDefence/lib/nifty-1.3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gusten/Git/TDA367-ShroomDefence/lib/nifty-slick-renderer-1.3.1.jar" sourcepath="lib/nifty-lwjgl-renderer-1.3.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gusten/Git/TDA367-ShroomDefence/lib/nifty-default-controls-1.3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gusten/Git/TDA367-ShroomDefence/lib/eventbus-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gusten/Git/TDA367-ShroomDefence/lib/xpp3_min-1.1.4c.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gusten/Git/TDA367-ShroomDefence/lib/nifty-style-black-1.3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
