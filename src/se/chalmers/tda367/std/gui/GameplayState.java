@@ -9,6 +9,14 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
+import de.lessvoid.nifty.slick2d.input.SlickSlickInputSystem;
+import de.lessvoid.nifty.slick2d.render.SlickRenderDevice;
+import de.lessvoid.nifty.slick2d.sound.SlickSoundDevice;
+import de.lessvoid.nifty.sound.SoundSystem;
+import de.lessvoid.nifty.tools.TimeProvider;
+
 import se.chalmers.tda367.std.core.EnemyItem;
 import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.core.GameController;
@@ -42,6 +50,7 @@ public class GameplayState extends BasicGameState {
 	private Properties properties = Properties.INSTANCE;
 	private Player player;
 	private GameController gameControl;
+	private NiftyOverlayBasicGameState overlay;
 	
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
@@ -61,7 +70,6 @@ public class GameplayState extends BasicGameState {
 		enemyImage = new Image(getResourcePath("/images/gameplay/enemy.png"));
 		startButton = new Image(getResourcePath("/images/gameplay/button_template.png"));
 		towerThumbnail = new Image(getResourcePath("/images/gameplay/tower_thumbnail1.png"));
-		
 		
 		tileScale = properties.getTileScale();
 		

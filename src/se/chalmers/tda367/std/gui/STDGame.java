@@ -9,6 +9,7 @@ public class STDGame extends StateBasedGame {
 
     public static final int MAINMENUSTATE = 0;
     public static final int GAMEPLAYSTATE = 1;
+    public static final int GAMEPLAYOVERLAY = 2;
 	
 	public STDGame() {
 		super("STD - Shroom Tower Defense");
@@ -16,12 +17,12 @@ public class STDGame extends StateBasedGame {
 		
         this.addState(new MainMenuState(MAINMENUSTATE));
         this.addState(new GameplayState(GAMEPLAYSTATE));
+        this.addState(new GameplayOverlay(GAMEPLAYOVERLAY));
         this.enterState(MAINMENUSTATE);
 	}
 
 	@Override
 	public void initStatesList(GameContainer gameCon) throws SlickException {
 		this.getState(MAINMENUSTATE).init(gameCon, this);
-        this.getState(GAMEPLAYSTATE).init(gameCon, this);
 	}
 }
