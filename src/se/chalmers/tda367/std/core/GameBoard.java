@@ -256,7 +256,7 @@ public class GameBoard {
 	 * @author Emil Edholm
 	 * @date   Apr 24, 2012
 	 */
-	private class InRadiusFilter implements Position.Filter {
+	private class InRadiusFilter implements Filter<Position> {
 		private final Position centerPosition;
 		private final int radius;
 		

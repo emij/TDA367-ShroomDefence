@@ -114,15 +114,4 @@ public class Position {
 		// The Pythagorean theorem gives us
 		return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 	}
-	
-	public static interface Filter {
-		
-		/**
-		 * Filter method for accepting a position.
-		 * @param p the position to check.
-		 * @return true if the position is accepted, else false.
-		 */
-		public boolean accept(Position p);
-	}
-
 }
