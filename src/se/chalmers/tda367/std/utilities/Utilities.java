@@ -31,5 +31,4 @@ public enum Utilities {
 	public static Sprite loadSprite(Path p){
 		return null;
 	}
-	
 }

@@ -1,24 +1,31 @@
 package se.chalmers.tda367.std.core;
 
 import java.util.*;
+import java.util.logging.Logger;
 
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.*;
-import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
+import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.*;
 
 /**
  * Represents the whole game board in a grid system.
  * @author Johan Gustafsson
- * @modified Emil Johansson
+ * @modified Emil Johansson, Emil Edholm
  * @date Mar 22, 2012
  */
 public class GameBoard {
-	private Map testMap = new Map();
+	//private MapLoader map = new MapLoader();
+	
 	private IBoardTile[][] board;
+	private List<EnemyItem> enemies;
+	
 	private Position startPos;
 	private Position endPos;
+	
 	private final int width;
 	private final int height;
+	private List<Position> waypoints;
 	
 	public GameBoard(Position startPos, Position endPos){	
 		this(Properties.INSTANCE.getDefaultBoardWidth(), Properties.INSTANCE.getDefaultBoardHeight(), startPos, endPos);
@@ -28,33 +35,49 @@ public class GameBoard {
 		if(width <= 0 || height <= 0) {
 			throw new IllegalArgumentException("Width and/or height cannot be equal to or smaller than zero");
 		}
+		
+		
 		this.width = width;
 		this.height = height;
 		board =  new IBoardTile[this.width][this.height];
 		if(!posOnBoard(startPos) || !posOnBoard(endPos)) {
 			throw new IllegalArgumentException("Start and/or end position is not on the board.");
 		}
+		
 		this.startPos = startPos;
 		this.endPos = endPos;
-		initBoard();
+		
+		MapLoader.setLevel(1);
+		board = MapLoader.getMap();
+		this.waypoints = MapLoader.getWayPointList();
+		
+		enemies = new ArrayList<EnemyItem>();
 	}
 	
 	/**
-	 * Returns a list of enemies that is inside the radius based on supplied position
-	 * @param p
-	 * @param radius
-	 * @return List of enemies.
+	 * Returns a list of enemies that is inside the radius of the supplied position
+	 * @param center the center position of the "circle" to check
+	 * @param radius the radius to check
+	 * @return A list of the enemies inside the "circle". Note that the order of the list is unsorted.
 	 */
-	public ArrayList<IEnemy> getEnemiesInRadius(Position p, int radius){
-		ArrayList<IEnemy> enemies = new ArrayList<IEnemy>();
-		for(int y = p.getY()-radius; y < p.getY()+radius; y++) {
-			for(int x = p.getX()-radius; x < p.getX()+radius; x++) {
-				if(posOnBoard(x, y) && getTileAt(x, y) instanceof IEnemy) {
-					enemies.add((IEnemy) getTileAt(x, y));
-				}
+	public List<EnemyItem> getEnemiesInRadius(Position center, int radius){
+		List<EnemyItem> inRadius = new ArrayList<EnemyItem>();
+		InRadiusFilter filter = new InRadiusFilter(center, radius);
+		
+		for(EnemyItem ei : enemies){
+			if(filter.accept(ei.getEnemyPos())) {
+				inRadius.add(ei);
 			}
 		}
-		Collections.sort(enemies);
+		return inRadius;
+	}
+	
+	/**
+	 * Retrieves the enemies that are currently on the game board.
+	 * The actual logic behind removing and adding enemies are 
+	 * @return a list of EnemyItems that are currently ON the game board. 
+	 */
+	public List<EnemyItem> getEnemies() {
 		return enemies;
 	}
 
@@ -77,9 +100,13 @@ public class GameBoard {
 	 */
 	public void placeTile(IBoardTile tile, Position p){
 		if(posOnBoard(p)) {
+//			if(tile instanceof WaypointTile) {
+//				Position tmp = new Position(p.getX()*32+16, p.getY()*32+16); // TODO: Remove constants. (16 + 8)
+//				waypoints.add(tmp);
+//			}
 			board[p.getX()][p.getY()] = tile;
 		} else {
-			System.out.println("Bad coordinates");
+			Logger.getLogger("se.chalmers.tda367.std.core").info(p + " is a bad coordinate");
 		}
 	}
 	
@@ -111,7 +138,7 @@ public class GameBoard {
 		if(x < 0 || y < 0) {
 			return false;
 		}
-		if(x >= board[0].length || y >= board.length) {
+		if(x >= width || y >= height) {
 			return false;
 		}
 		return true;
@@ -126,20 +153,6 @@ public class GameBoard {
 		return posOnBoard(p.getX(), p.getY());
 	}
 	
-	private void initBoard(){
-		int[][] map = testMap.getMap();
-		IBoardTile buildableTile = new BuildableTile(new Sprite());
-		for(int i = 0; i < map.length;i++){
-			for(int j = 0; j < map[i].length;j++){
-				if(map[i][j] == 0){
-					board[i][j] = buildableTile; 
-				} else { //TODO should probably change PathTile-creation
-					board[i][j] = new PathTile(new Sprite(), testMap.getBoardValueAtPos(new Position(i,j)), new Position(i,j));
-				}
-			}
-			
-		}
-	}
 	
 	/**
 	 * Overrides toString
@@ -190,6 +203,13 @@ public class GameBoard {
 	}
 	
 	/**
+	 * TODO: Fix javadoc
+	 */
+	public List<Position> getWaypoints() { 
+		return new ArrayList<Position>(waypoints);
+	}
+	
+	/**
 	 * Method for checking if a given position on the game board is buildable.
 	 * @param p position to check if buildable.
 	 * @return true if given position is buildable. Returns false if the position isn't buildable or on the game board.
@@ -199,6 +219,24 @@ public class GameBoard {
 			return false;
 		}
 		return getTileAt(p) instanceof IBuildableTile;
+	}
+	
+	/**
+	 * Retrieves all the towers currently on the game board.
+	 * @return a list of towers currently placed on the game board.
+	 */
+	public List<ITower> getTowersOnBoard(){
+		List<ITower> towers = new ArrayList<ITower>();
+		
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				if(getTileAt(x, y) instanceof ITower){
+					towers.add((ITower) getTileAt(x, y));
+				}
+			}
+		}
+		
+		return towers;
 	}
 	
 	/**
@@ -212,7 +250,36 @@ public class GameBoard {
 		}
 		return getTileAt(p) instanceof IEnemy;
 	}
-	public Map getMap(){
-		return testMap;
+	
+	/**
+	 * Class used for filtering enemies that are not in a specified radius from a given center position
+	 * @author Emil Edholm
+	 * @date   Apr 24, 2012
+	 */
+	private class InRadiusFilter implements Filter<Position> {
+		private final Position centerPosition;
+		private final int radius;
+		
+		public InRadiusFilter(Position centerPosition, int radius) {
+			this.centerPosition = new Position(centerPosition);
+			this.radius = radius;
+		}
+		
+		
+		/**
+		 * Accepts the position if it is within the {@code radius} of {@code centerPosition}
+		 */
+		@Override
+		public boolean accept(Position p) {
+			Double distance = Position.calculateDistance(centerPosition, p);
+			
+			if(Double.compare(distance, radius) <= 0) {
+				return true;
+			}
+			
+			return false;
+		}
+		
 	}
+	
 }

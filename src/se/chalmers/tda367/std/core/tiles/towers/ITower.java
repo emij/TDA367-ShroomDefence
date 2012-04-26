@@ -1,10 +1,14 @@
 package se.chalmers.tda367.std.core.tiles.towers;
 
+import java.util.List;
+
+import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 
 /**
  * Represents a general tower.
  * @author Emil Edholm
+ * @modified Johan Andersson
  * @date Mar 25, 2012
  */
 public interface ITower extends IBoardTile {
@@ -35,5 +39,11 @@ public interface ITower extends IBoardTile {
 	 * @return the base cost of the tower.
 	 */
 	public int getBaseCost();
+	
+	/**
+	 * Returns the effects the tower can apply to enemies.
+	 * @return - effects the tower can apply.
+	 */
+	public List<IEffect> getEffects();
 	
 }

@@ -2,13 +2,12 @@ package se.chalmers.tda367.std.utilities;
 
 /**
  * Represents a position/coordinate on the game board. 
- * Position coordniates ranging from {@code Integer.MIN_VALUE} to {@code Integer.MAX_VALUE}
+ * Position coordinates ranging from {@code Integer.MIN_VALUE} to {@code Integer.MAX_VALUE}
  * @author Emil Johansson
- * @modified Emil Edholm, Johan Andersson
+ * @modified Emil Edholm (Apr 24, 2012), Johan Andersson (Mar 28, 2012)
  * @date Mar 22, 2012
- * @modifiedDate Mar 28, 2012
  */
-public final class Position {
+public class Position {
 	private int x, y;
 	
 	public Position(int x, int y){
@@ -48,6 +47,30 @@ public final class Position {
 		return y;
 	}
 	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+	
+	public void incrementX() {
+		this.x += 1;
+	}
+	
+	public void incrementY() {
+		this.y += 1;
+	}
+	
+	public void decrementX() {
+		this.x -= 1;
+	}
+	
+	public void decrementY() {
+		this.y -= 1;
+	}
+	
 	@Override
 	public String toString(){
 		return "(" + x + ", " + y + ")"; 
@@ -77,5 +100,18 @@ public final class Position {
 	public Position move(int dx, int dy){
 		return new Position(getX()+dx, getY()+dy);
 	}
-
+	
+	/**
+	 * Calculate the distance between 2 positions using the Pythagorean theorem.
+	 * @param p1 the first position
+	 * @param p2 the second position
+	 * @return the distance between the two points, expressed as a double.
+	 */
+	public static double calculateDistance(Position p1, Position p2) {
+		double dx = Math.abs(p1.x - p2.x);
+		double dy = Math.abs(p1.y - p2.y);
+		
+		// The Pythagorean theorem gives us
+		return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+	}
 }

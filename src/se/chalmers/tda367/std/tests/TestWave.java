@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import se.chalmers.tda367.std.core.Wave;
 import se.chalmers.tda367.std.core.WaveItem;
-import se.chalmers.tda367.std.core.tiles.enemies.BasicEnemy;
+import se.chalmers.tda367.std.core.exported.BasicEnemy;
 
 
 /**
@@ -21,7 +21,7 @@ public class TestWave {
 	private Wave createBasicWave(int n){
 		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();
 		for(int i = 0; i<n; i++){
-			q.add(new WaveItem(new BasicEnemy(), i+1));
+			//q.add(new WaveItem(new BasicEnemy(), i+1));
 		}
 		return new Wave(q);
 	}

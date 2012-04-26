@@ -11,6 +11,7 @@ import se.chalmers.tda367.std.core.tiles.BuildableTile;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
+import se.chalmers.tda367.std.core.tiles.WaypointTile;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
@@ -27,6 +28,7 @@ import se.chalmers.tda367.std.gui.STDGame;
 		GameBoard board = new GameBoard(25, 20, new Position(1,12), new Position(18,12));
 
 		GameController control = new GameController(new Player("Horv"), board);
+		placeWaypoint(board);
 		String str = "";
 		String strCord = "";
 		int xCord;
@@ -121,14 +123,12 @@ public final class Main {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
-
-	try {
-	            AppGameContainer app = new AppGameContainer(new STDGame(), 1024, 720, false);
-	            app.start();
-	        } catch (SlickException e) {
-	            e.printStackTrace();
-	        }
+		try {
+            AppGameContainer app = new AppGameContainer(new STDGame(), 1024, 720, false);
+            app.start();
+	    } catch (SlickException e) {
+	        e.printStackTrace();
+	    }
 	}
-
 
 }

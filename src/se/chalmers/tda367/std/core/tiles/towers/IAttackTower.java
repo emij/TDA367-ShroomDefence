@@ -2,7 +2,7 @@ package se.chalmers.tda367.std.core.tiles.towers;
 
 import java.util.List;
 
-import se.chalmers.tda367.std.core.tiles.enemies.IEnemy;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 
 /**
  * Represents a type of tower that is able to attack enemies.
