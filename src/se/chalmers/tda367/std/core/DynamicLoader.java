@@ -95,7 +95,14 @@ public final class DynamicLoader {
 	 * @return a list of enemies that conform to the parameters.
 	 */
 	public static List<Class<IEnemy>> getEnemies(int maxLevel) {
-		return filterList(getEnemies(), maxLevel, new EnemyStrengthFilter(maxLevel));
+		StrengthRetriever<Enemy> sr = new StrengthRetriever<Enemy>() {
+			@Override
+			public double getStrength(Enemy annotation) {
+				return annotation.enemyStrength();
+			}
+		};
+		StrengthFilter<Enemy, IEnemy> sf = new StrengthFilter<>(maxLevel, sr, Enemy.class);
+		return filterList(getEnemies(), maxLevel, sf);
 	}
 	
 	/**
@@ -133,7 +140,14 @@ public final class DynamicLoader {
 	 * @return a list of towers that conform to the parameters.
 	 */
 	public static List<Class<ITower>> getTowers(int maxLevel) {
-		return filterList(getTowers(), maxLevel, new TowerStrengthFilter(maxLevel));
+		StrengthRetriever<Tower> sr = new StrengthRetriever<Tower>() {
+			@Override
+			public double getStrength(Tower annotation) {
+				return annotation.towerStrength();
+			}
+		};
+		StrengthFilter<Tower, ITower> sf = new StrengthFilter<Tower, ITower>(maxLevel, sr, Tower.class);
+		return filterList(getTowers(), maxLevel, sf);
 	}
 	
 	/**
@@ -150,7 +164,6 @@ public final class DynamicLoader {
 		return true;
 	}
 	
-	// TODO: Possible refactoring of the following classes? They are quite similar.
 	/**
 	 * Used to compare enemy strength. Allows for sorting of list of enemies.
 	 * @author Emil Edholm
@@ -200,45 +213,37 @@ public final class DynamicLoader {
 	}
 	
 	/**
-	 * Used to filter the max level enemy strength described in its annotation.
+	 * Used to filter the max level strength described in class annotation.
 	 * @author Emil Edholm
-	 * @date   Apr 25, 2012
+	 * @date   Apr 26, 2012
 	 */
-	private static class EnemyStrengthFilter implements Filter<Class<IEnemy>> {
+	private static class StrengthFilter<E extends Annotation, T> implements Filter<Class<T>> {
 		private final int maxLevel;
-		public EnemyStrengthFilter(int maxLevel) {
+		private final StrengthRetriever<E> strengthRetriever;
+		private final Class<E> annotationType;
+		
+		/**
+		 * @param maxLevel the maximum allowed level.
+		 * @param sr the class that retrieves the strength of the supplied annotation
+		 * @param annotationType the type of the annotation to fetch.
+		 */
+		public StrengthFilter(int maxLevel, StrengthRetriever<E> sr, Class<E> annotationType) {
 			this.maxLevel = maxLevel;
+			this.strengthRetriever = sr;
+			this.annotationType = annotationType;
 		}
 		
 		@Override
-		public boolean accept(Class<IEnemy> object) {
-			Enemy annotation = object.getAnnotation(Enemy.class);
+		public boolean accept(Class<T> object) {
+			E annotation = object.getAnnotation(annotationType);
 			if(annotation != null) {
-				return Double.compare(annotation.enemyStrength(), maxLevel) <= 0;
+				return Double.compare(strengthRetriever.getStrength(annotation), maxLevel) <= 0;
 			}
 			return false;
 		}
-		
 	}
 	
-	/**
-	 * Used to filter the max level tower strength described in its annotation.
-	 * @author Emil Edholm
-	 * @date   Apr 25, 2012
-	 */
-	private static class TowerStrengthFilter implements Filter<Class<ITower>> {
-		private final int maxLevel;
-		public TowerStrengthFilter(int maxLevel) {
-			this.maxLevel = maxLevel;
-		}
-		@Override
-		public boolean accept(Class<ITower> object) {
-			Tower annotation = object.getAnnotation(Tower.class);
-			if(annotation != null) {
-				return Double.compare(annotation.towerStrength(), maxLevel) <= 0;
-			}
-			return false;
-		}
-		
+	private interface StrengthRetriever<T extends Annotation> {
+		public double getStrength(T annotation);
 	}
 }
