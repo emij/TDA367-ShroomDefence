@@ -1,10 +1,7 @@
 package se.chalmers.tda367.std.core.exported;
 
-import java.util.List;
-
 import se.chalmers.tda367.std.core.anno.Enemy;
 import se.chalmers.tda367.std.core.enemies.AbstractEnemy;
-import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**

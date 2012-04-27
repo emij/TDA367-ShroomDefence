@@ -56,6 +56,10 @@ public class GameBoard {
 		this.waypoints = MapLoader.getWayPointList();
 		
 		enemies = new ArrayList<EnemyItem>();
+		
+		// TODO: Refactor so that this is read from the map instead.
+		playerBasePosition = Position.valueOf(0, 0);
+		placeTile(new PlayerBase(2), playerBasePosition);
 	}
 	
 	// TODO: Handle event that enemies has died.
@@ -88,8 +92,7 @@ public class GameBoard {
 	}
 	
 	public IPlayerBase getPlayerBase() {
-		//return (IPlayerBase) getTileAt(playerBasePosition);
-		return new PlayerBase(2); // TODO: remove temporary fix.
+		return (IPlayerBase) getTileAt(playerBasePosition);
 	}
 
 	/**
