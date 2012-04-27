@@ -9,6 +9,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.google.common.eventbus.Subscribe;
+
 import se.chalmers.tda367.std.core.EnemyItem;
 import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.core.GameController;
@@ -22,6 +24,8 @@ import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
 import se.chalmers.tda367.std.core.tiles.WaypointTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.events.TowerShootingEvent;
+import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 import sun.swing.BakedArrayList;
@@ -68,6 +72,8 @@ public class GameplayState extends BasicGameState {
 		board = new GameBoard(25,20, new Position(0,12), new Position (19,12));
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
+		
+		EventBus.INSTANCE.register(this);
 	}
 	
 	@Override
@@ -107,6 +113,13 @@ public class GameplayState extends BasicGameState {
         if(overStart) {
         	startButton.draw(startX, startY, Color.green);
         }
+	}
+	
+	@Subscribe
+	public void renderTowerShooting(TowerShootingEvent event){
+		Position from = event.getFromPosition();
+		Position to = event.getToPosition();
+		// TODO: logic goes here.
 	}
 
 	@Override

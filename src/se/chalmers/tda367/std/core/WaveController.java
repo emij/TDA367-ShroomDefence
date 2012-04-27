@@ -14,6 +14,8 @@ import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.PlayerBase;
 import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
+import se.chalmers.tda367.std.events.TowerShootingEvent;
+import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.Position;
 
 
@@ -139,7 +141,9 @@ public class WaveController {
 		
 		//TODO, make more advanced logic.
 		if(!enemies.isEmpty()){
-			enemies.get(0).getEnemy().decreaseHealth(tile.getDmg());
+			EnemyItem enemyItem = enemies.get(0);
+			enemyItem.getEnemy().decreaseHealth(tile.getDmg());
+			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemyItem.getEnemyPos()));
 		}
 //		for(IEffect ie:attackTower.getEffects()){
 //			enemies.get(0).addEffect(ie);	//TODO implements
