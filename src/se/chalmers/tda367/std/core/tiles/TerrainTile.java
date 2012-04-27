@@ -10,8 +10,8 @@ import se.chalmers.tda367.std.utilities.Sprite;
  */
 public class TerrainTile extends AbstractTile{
 	
-	public TerrainTile(Sprite sprite){
-		super(sprite);
+	public TerrainTile(){
+		super(new Sprite("/images/gameplay/background.png"));
 	}
 	
 	@Override

@@ -22,7 +22,7 @@ public class TankEnemy extends AbstractEnemy {
 	 *  Creates a tank enemy.
 	 */
 	public TankEnemy() {
-		super(200, 1, 5, new Sprite());
+		super(200, 1, 5, new Sprite("/images/gameplay/enemy.png")); // Change sprite.
 	}
 	
 	/**

@@ -58,11 +58,6 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame state)
 			throws SlickException {
-		background = new Image(getResourcePath("/images/gameplay/background.png"));
-		pathTile = new Image(getResourcePath("/images/gameplay/path_tile.jpg"));
-		buildableTile = new Image(getResourcePath("/images/gameplay/buildable_tile.png"));
-		towerTile = new Image(getResourcePath("/images/gameplay/tower_tile1.png"));
-		enemyImage = new Image(getResourcePath("/images/gameplay/enemy.png"));
 		startButton = new Image(getResourcePath("/images/gameplay/button_template.png"));
 		towerThumbnail = new Image(getResourcePath("/images/gameplay/tower_thumbnail1.png"));
 		

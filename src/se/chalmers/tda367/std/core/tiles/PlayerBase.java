@@ -10,7 +10,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
 public class PlayerBase implements IPlayerBase {
 	
 	private int health;
-	private static final Sprite sprite = new Sprite();
+	private static final Sprite sprite = new Sprite(); // TODO: get and set a resource for the playerBase.
 	
 	public PlayerBase(int health){
 		this.health = health;

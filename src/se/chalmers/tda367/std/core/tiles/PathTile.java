@@ -13,19 +13,20 @@ public class PathTile extends AbstractTile implements IWalkableTile, Comparable<
 	//TODO modified to test pathfinding
 	Position pos;
 	int boardValue;
+
 	/**
 	 * @param sprite
 	 * @param tileValue
 	 */
-	public PathTile(Sprite sprite){
-		super(sprite);
+	public PathTile(){
+		super(new Sprite("/images/gameplay/path_tile.jpg"));
 	}
-	public PathTile(Sprite sprite, int tileValue) {
-		this(sprite);
+	public PathTile(int tileValue) {
+		this();
 		this.boardValue = tileValue;
 	}
-	public PathTile(Sprite sprite, int tileValue, Position pos) {
-		this(sprite, tileValue);
+	public PathTile(int tileValue, Position pos) {
+		this(tileValue);
 		this.pos = pos;
 	}
 	

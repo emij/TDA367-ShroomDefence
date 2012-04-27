@@ -5,15 +5,16 @@ import se.chalmers.tda367.std.utilities.Sprite;
 /**
  * Class for representing a buildable tile. 
  * @author Emil Johansson
+ * @
  * @date Mar 26, 2012
  */
 public class BuildableTile extends AbstractTile implements IBuildableTile {
 
 	/**
-	 * @param sprite
+	 * Create a buildable tile.
 	 */
-	public BuildableTile(Sprite sprite) {
-		super(sprite);
+	public BuildableTile() {
+		super(new Sprite("/images/gameplay/buildable_tile.png"));
 	}
 	
 	@Override

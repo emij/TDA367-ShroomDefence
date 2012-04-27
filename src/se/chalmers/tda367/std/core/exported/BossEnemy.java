@@ -22,7 +22,7 @@ public class BossEnemy extends AbstractEnemy {
 	 *  Creates a boss enemy.
 	 */
 	public BossEnemy() {
-		super(1000, 2, 50, new Sprite());
+		super(1000, 2, 50, new Sprite("/images/gameplay/enemy.png")); //TODO: change sprite
 	}
 	
 	/**

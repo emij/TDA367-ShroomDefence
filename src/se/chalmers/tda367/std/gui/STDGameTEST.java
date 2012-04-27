@@ -114,7 +114,7 @@ public final class STDGameTEST extends BasicGame {
     
     
 	private static void placePath(GameBoard board) {
-		IBoardTile pathTile = new PathTile(new Sprite());
+		IBoardTile pathTile = new PathTile();
 		int y = (board.getHeight()/2)-1;
 		for (int i = 0; i < board.getWidth(); i++) {
 			board.placeTile(pathTile, new Position(i,y));
@@ -123,7 +123,7 @@ public final class STDGameTEST extends BasicGame {
 	}
 
 	private static void randomPlaceTile(GameBoard board) {
-		IBoardTile buildTile = new BuildableTile(new Sprite());
+		IBoardTile buildTile = new BuildableTile();
 		for (int y = 4; y < 17; y++) {
 			for (int x = 0; x < 20; x++) {
 				board.placeTile(buildTile, new Position(x,y));

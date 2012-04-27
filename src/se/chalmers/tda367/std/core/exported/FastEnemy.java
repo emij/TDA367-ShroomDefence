@@ -22,7 +22,7 @@ public class FastEnemy extends AbstractEnemy {
 	 *  Creates a fast enemy.
 	 */
 	public FastEnemy() {
-		super(50, 3, 5, new Sprite());
+		super(50, 3, 5, new Sprite("/images/gameplay/enemy.png")); //TODO: change sprite
 	}
 	
 	/**

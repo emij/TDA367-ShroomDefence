@@ -24,7 +24,7 @@ public final class BasicAttackTower extends AbstractAttackTower {
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
 							 attackSpeed     = 100;
-	private static final Sprite sprite = new Sprite();
+	private static final Sprite sprite = new Sprite("/images/gameplay/tower_tile1.png"); //TODO: change sprite for the basic tower.
 	
 	private int upgradeLevel = 1;
 	private int dmgModifier = 1;
