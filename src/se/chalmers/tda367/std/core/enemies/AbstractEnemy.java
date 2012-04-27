@@ -76,6 +76,8 @@ public abstract class AbstractEnemy implements IEnemy{
 		}
 		
 		currentHealth -= dmg;
+		
+		// TODO: Send event that enemy has died.
 	}
 
 	@Override

@@ -19,6 +19,8 @@ public class GameController {
 	private BuildController buildControl;
 	private WaveController waveControl;
 	
+	private int releasedWaves = 0;
+	
 	
 	/** Constructor for the GameController, requires a player and a board to work.
 	 * 
@@ -36,12 +38,15 @@ public class GameController {
 		waveControl = new WaveController(board, player);
 	}
 	
-	/** Starts the next wave of enemies.
-	 * 
+	public void updateGameState() {
+		waveControl.updateWaveRelated();
+	}
+	
+	/** 
+	 * Starts the next wave of enemies.
 	 */
 	public void nextWave(){
-		//TODO Check the sent level parameter to the create method.
-		Wave wave = new WaveFactory().create(1);
+		Wave wave = new WaveFactory().create(++releasedWaves);
 		waveControl.startWave(wave);
 	}
 	
@@ -100,12 +105,4 @@ public class GameController {
 	public boolean playerCanAffordTower(ITower tower) {
 		return buildControl.playerCanAffordTower(tower);
 	}
-	
-	/** Return enemies that is currently active.
-	 * 
-	 * @return - List of enemies.
-	 */
-//	public ArrayList<EnemyItem> getEnemies() {
-//		return waveControl.getEnemies();
-//	}
 }

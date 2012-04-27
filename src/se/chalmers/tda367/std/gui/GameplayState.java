@@ -35,6 +35,7 @@ public class GameplayState extends BasicGameState {
 	private Image enemyImage;
 	private Image startButton;
 	private Image towerThumbnail;
+	
 	private int tileScale;
 	private int startX, startY, startGridX, startGridY;
 	private boolean overStart = false, towerChoosed = false;
@@ -42,6 +43,9 @@ public class GameplayState extends BasicGameState {
 	private Properties properties = Properties.INSTANCE;
 	private Player player;
 	private GameController gameControl;
+	int updateDelay = 0;
+	
+	// TODO: Handle events: player has died.
 	
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
@@ -109,9 +113,16 @@ public class GameplayState extends BasicGameState {
         }
 	}
 
+	
 	@Override
-	public void update(GameContainer container, StateBasedGame state, int arg2)
+	public void update(GameContainer container, StateBasedGame state, int delta)
 			throws SlickException {
+		updateDelay += delta;
+		if(updateDelay >= 20) {
+			gameControl.updateGameState();
+			updateDelay = 0;
+		}
+		
 		startX = (int)(container.getWidth()*0.796);
 		startY = (int)(container.getHeight()*0.895);
 		startGridX = (int)(container.getWidth()*0.797);

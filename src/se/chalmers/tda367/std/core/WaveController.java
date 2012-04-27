@@ -12,7 +12,6 @@ import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
-import se.chalmers.tda367.std.core.tiles.PlayerBase;
 import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
 import se.chalmers.tda367.std.utilities.Position;
 
@@ -20,31 +19,26 @@ import se.chalmers.tda367.std.utilities.Position;
 /**
  * The class that contains the game logic for wave phase of the game.
  * @author Johan Andersson
- * @modified Emil Edholm (Apr 24, 2012)
+ * @modified Emil Edholm (Apr 27, 2012)
  * @date Apr 22, 2012
  */
 
-public class WaveController {
+class WaveController {
 
+	/** The delay (in milliseconds) before the first enemy is placed on the game board */
+	private static final int INITIAL_WAVE_DELAY = 100;
+	
 	private GameBoard board;
 	private Player player;
-	private Timer gameLoop;
 	private Timer releaseTimer;
 	private WaveItem nextEnemy;
-	private PlayerBase base; //TODO where to place base in code.
 	private Wave wave;
 	
 
 	public WaveController(GameBoard board, Player player) {
 		this.board = board;
 		this.player = player;
-		init();
-	}
-
-	private void init(){
-		gameLoop = new Timer(1000/60, new GameLoopListener());
-		releaseTimer = new Timer(5000, new ReleaseTimerListener());
-		base = new PlayerBase(2); //TODO, where to place base in code?
+		releaseTimer = new Timer(INITIAL_WAVE_DELAY, new WaveReleaseTimerListener());
 	}
 
 	/**
@@ -52,22 +46,32 @@ public class WaveController {
 	 */
 	public void startWave(Wave wave){
 		this.wave = wave;
-		gameLoop.start();
 		releaseTimer.start();
 	}
 
 	/**
-	 * Ends the running wave
+	 * Stops the release of enemies from the current wave
 	 */
-	public void endWave(){
-		gameLoop.stop();
+	public void endWaveRelease(){
 		releaseTimer.stop();
+	}
+	
+	/**
+	 * The loop that updates the the wave related bits of the game.
+	 * Does things like moving the enemies, making the towers shoot at the enemies etc.
+	 */
+	public void updateWaveRelated(){
+		moveEnemies();
+		shootAtEnemiesInRange();
+		applyEffects();
+		removeDeadEnemies();
+		checkIfPlayerAlive();
 	}
 
 	/**
 	 * Releases the next enemy in queue from the wave
 	 */
-	public void releaseEnemy(){
+	private void releaseEnemy(){
 		if(nextEnemy == null){
 			nextEnemy = wave.getNext();
 		}
@@ -87,6 +91,9 @@ public class WaveController {
 		}
 	}
 
+	/**
+	 * Add a enemy to the game board from a {@code WaveItem}
+	 */
 	private void addEnemy(WaveItem wi){
 		List<EnemyItem> enemies = board.getEnemies();
 		
@@ -97,27 +104,28 @@ public class WaveController {
 	/**
 	 * Moves all the enemies on the GameBoard, towards the base.	
 	 */
-	public void moveEnemies(){
+	private void moveEnemies(){
 		List<EnemyItem> enemies = board.getEnemies();
 		
 		for (EnemyItem ei : enemies) {
 			ei.moveEnemy();
-			if(ei.getWaypoints().size() == 0){
+			if(ei.getWaypoints().isEmpty()){ // I.e. the enemy is done walking.
 				enemyEnteredBase(ei.getEnemy());
 			}
 		}
 	}
 	
+	/** Method that controls what happens when an enemy enters the player base. */
 	private void enemyEnteredBase(IEnemy enemy){
-		base.decreaseHealth();
-		enemy.decreaseHealth(1000000);
-		//TODO more flexible implementation
+		board.getPlayerBase().decreaseHealth();
+		board.getEnemies().remove(enemy); // Remove the "offending" enemy from the game board.
+		// TODO: Send event that player has entered the base?
 	}
 
 	/**
 	 * Towers fires at enemies in range.
 	 */
-	public void shootAtEnemiesInRange(){
+	private void shootAtEnemiesInRange(){
 		int tileScale = Properties.INSTANCE.getTileScale();
 		
 		for(int x = 0; x < board.getWidth(); x++){
@@ -132,7 +140,9 @@ public class WaveController {
 	}
 	
 	
-	//Tower shoot at enemies in range.
+	/**
+	 * Handles the individual shots.
+	 */
 	private void shoot(IAttackTower tile, Position pos) {
 		int radius = tile.getRadius() * Properties.INSTANCE.getTileScale();
 		List<EnemyItem> enemies = board.getEnemiesInRadius(pos, radius);
@@ -147,16 +157,8 @@ public class WaveController {
 	}
 
 	/**
-	 * The loop that updates the whole game
+	 * Apply the effects on the enemies
 	 */
-	public void updateGame(){
-		moveEnemies();
-		shootAtEnemiesInRange();
-		applyEffects();
-		removeDeadEnemies();
-		checkIfPlayerAlive();
-	}
-
 	private void applyEffects() {
 		List<EnemyItem> enemies = board.getEnemies();
 		
@@ -165,23 +167,23 @@ public class WaveController {
 		}
 	}
 
+	
 	private void applyEffect(EnemyItem ei) {
 		IEnemy enemy = ei.getEnemy();
 		for (IEffect ie : enemy.getEffects()) {
 			//TODO continue this
-			
 		}
 	}
 
 	private void checkIfPlayerAlive(){
-		if(base.getHealth() <= 0){
+		if(board.getPlayerBase().getHealth() <= 0){
 			playerDead();
 		}
 	}
 
 	private void playerDead(){
 		Logger.getLogger("se.chalmers.tda367.std.core").info("Player dead, game over");
-		endWave();
+		// TODO: Sent event that player is dead.
 	}
 
 	/**
@@ -199,23 +201,11 @@ public class WaveController {
 		}
 	}
 	
-	class ReleaseTimerListener implements ActionListener {
+	private class WaveReleaseTimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			releaseEnemy();
 		}
 
 	}
-
-
-	class GameLoopListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			updateGame();
-		}
-	}
-
-
-
-
 }

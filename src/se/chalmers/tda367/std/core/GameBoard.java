@@ -27,6 +27,10 @@ public class GameBoard {
 	private final int height;
 	private List<Position> waypoints;
 	
+	// TODO: Implement this by reading a map.
+	private Position playerBasePosition;
+	
+	// TODO: Refactor the constructors to take a single map parameter instead.
 	public GameBoard(Position startPos, Position endPos){	
 		this(Properties.INSTANCE.getDefaultBoardWidth(), Properties.INSTANCE.getDefaultBoardHeight(), startPos, endPos);
 	}
@@ -54,6 +58,8 @@ public class GameBoard {
 		enemies = new ArrayList<EnemyItem>();
 	}
 	
+	// TODO: Handle event that enemies has died.
+	
 	/**
 	 * Returns a list of enemies that is inside the radius of the supplied position
 	 * @param center the center position of the "circle" to check
@@ -69,7 +75,7 @@ public class GameBoard {
 				inRadius.add(ei);
 			}
 		}
-		return inRadius;
+		return inRadius; // TODO: Sort by enemies closest to player base.
 	}
 	
 	/**
@@ -79,6 +85,11 @@ public class GameBoard {
 	 */
 	public List<EnemyItem> getEnemies() {
 		return enemies;
+	}
+	
+	public IPlayerBase getPlayerBase() {
+		//return (IPlayerBase) getTileAt(playerBasePosition);
+		return new PlayerBase(2); // TODO: remove temporary fix.
 	}
 
 	/**
