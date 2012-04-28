@@ -1,9 +1,5 @@
 package se.chalmers.tda367.std.core.tiles.towers;
 
-import java.util.List;
-
-import se.chalmers.tda367.std.core.enemies.IEnemy;
-
 /**
  * Represents a type of tower that is able to attack enemies.
  * <p>Should contain a PropertyChangeSupport to support the target list.</p>
@@ -12,13 +8,6 @@ import se.chalmers.tda367.std.core.enemies.IEnemy;
  * @date Mar 25, 2012
  */
 public interface IAttackTower extends ITower{
-	
-	/**
-	 * Fire the "weapon" on the tower.
-	 * Essentially notify all enemies in the target list of damage done to them.
-	 */
-	public void fire();
-	
 	/**
 	 * Returns the damage of the tower.
 	 * @return the base amount of damage the tower does to an enemy.
@@ -32,36 +21,15 @@ public interface IAttackTower extends ITower{
 	public int getAttackSpeed();
 	
 	/**
+	 * Decides whether or not the tower is attack-ready.
+	 * @param delta - the time since the last game state update in milliseconds.
+	 * @return true if ready to attack, else false.
+	 */
+	public boolean isAttackReady(int delta);
+	
+	/**
 	 * Damage done inside the radius from the point of impact
 	 * @return the damage radius on the impact zone, from which enemies are hurt.
 	 */
 	public int getDmgRadius();
-	
-	/**
-	 * Add an enemy to the towers target list.
-	 * <p>
-	 * The enemies added here will be damaged by the towers base damage
-	 * based on the attack speed.</p> 
-	 * 
-	 * <p>Only enemies within the towers effective radius should be added here.</p>
-	 * <p>If {@code enemy} is null, no action is taken and no exception is thrown.</p>
-	 * @param enemy the enemy within range.
-	 */
-	public void addToTargetList(IEnemy enemy);
-	
-	/**
-	 * Remove an enemy from the target list.
-	 * If {@code enemy} is not in the target list or null, no action will be taken.
-	 * @param enemy the enemy to remove.
-	 */
-	public void removeFromTargetList(IEnemy enemy);
-	
-	/**
-	 * Method for updating the list of enemies in range.
-	 * I.e. first clear all the enemies from the target list,
-	 * then add all new enemies from the supplied list.
-	 * @param enemies the enemies to add, if list is null, the list is cleared.
-	 */
-	public void updateTargetList(List<IEnemy> enemies);
-	
 }

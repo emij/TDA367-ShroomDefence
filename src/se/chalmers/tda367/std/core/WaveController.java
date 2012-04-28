@@ -135,8 +135,10 @@ class WaveController {
 			for(int y = 0; y <board.getHeight(); y++){
 				IBoardTile tile = board.getTileAt(x, y);
 				if(tile instanceof IAttackTower){
-					
-					shoot((IAttackTower)tile, new Position(x*tileScale, y*tileScale));
+					IAttackTower attackTower = (IAttackTower) tile;
+					if(attackTower.isAttackReady(delta)) {
+						shoot(attackTower, new Position(x*tileScale, y*tileScale));
+					}
 				}
 			}
 		}

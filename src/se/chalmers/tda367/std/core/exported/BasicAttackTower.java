@@ -43,11 +43,6 @@ public final class BasicAttackTower extends AbstractAttackTower {
 	}
 
 	@Override
-	public void fire() {
-		notifyTargetList(baseDamage * dmgModifier);
-	}
-
-	@Override
 	public int getUpgradeCost() {
 		return 10 * upgradeLevel;
 	}
