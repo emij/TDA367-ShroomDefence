@@ -33,7 +33,6 @@ public class GameplayState extends BasicGameState {
 	private Properties properties = Properties.INSTANCE;
 	private Player player;
 	private GameController gameControl;
-	int updateDelay = 0;
 	
 	// TODO: Handle events: player has died.
 	
@@ -54,7 +53,7 @@ public class GameplayState extends BasicGameState {
 		
 		tileScale = properties.getTileScale();
 		
-		board = new GameBoard(25,20, new Position(0,12), new Position (19,12));
+		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
 	}
@@ -96,11 +95,7 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame state, int delta)
 			throws SlickException {
-		updateDelay += delta;
-		if(updateDelay >= 20) {
-			gameControl.updateGameState();
-			updateDelay = 0;
-		}
+		gameControl.updateGameState(delta);
 		
 		startX = (int)(container.getWidth()*0.796);
 		startY = (int)(container.getHeight()*0.895);
@@ -128,7 +123,7 @@ public class GameplayState extends BasicGameState {
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 		    	int x = mouseX / tileScale;
 				int y = mouseY / tileScale;
-				Position p = Position.valueOf(x, y);
+				GameBoard.BoardPosition p = GameBoard.BoardPosition.valueOf(x, y);
 				if(board.getTileAt(p) instanceof IBuildableTile && towerChoosed) {
 					board.placeTile(new BasicAttackTower(), p);
 					towerChoosed = false;

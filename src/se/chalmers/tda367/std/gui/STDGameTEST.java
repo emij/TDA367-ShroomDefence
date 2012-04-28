@@ -15,7 +15,6 @@ import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
-import se.chalmers.tda367.std.utilities.Position;
 
 /**
  * The main class containing the main method.
@@ -51,7 +50,7 @@ public final class STDGameTEST extends BasicGame {
 		enemyTile = new Image(getResourcePath("/enemy.png"));
 		towerTile = new Image(getResourcePath("/tower_tile1.png"));
 		
-		board = new GameBoard(25,20, new Position(0,12), new Position (19,12));
+		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12),GameBoard.BoardPosition.valueOf(19,12));
 		//randomPlaceTile(board);
 		//placePath(board);
 	}
@@ -69,7 +68,7 @@ public final class STDGameTEST extends BasicGame {
             int clickCount){
     	x = x / tileScale;
 		y = y / tileScale;
-		Position p = Position.valueOf(x, y);
+		GameBoard.BoardPosition p = GameBoard.BoardPosition.valueOf(x, y);
 		
 		if(board.getTileAt(p) instanceof IBuildableTile)
 			board.placeTile(new BasicAttackTower(), p);
@@ -116,8 +115,8 @@ public final class STDGameTEST extends BasicGame {
 		IBoardTile pathTile = new PathTile();
 		int y = (board.getHeight()/2)-1;
 		for (int i = 0; i < board.getWidth(); i++) {
-			board.placeTile(pathTile, new Position(i,y));
-			board.placeTile(pathTile, new Position(i,y+1));
+			board.placeTile(pathTile, GameBoard.BoardPosition.valueOf(i,y));
+			board.placeTile(pathTile, GameBoard.BoardPosition.valueOf(i,y+1));
 		}
 	}
 
@@ -125,7 +124,7 @@ public final class STDGameTEST extends BasicGame {
 		IBoardTile buildTile = new BuildableTile();
 		for (int y = 4; y < 17; y++) {
 			for (int x = 0; x < 20; x++) {
-				board.placeTile(buildTile, new Position(x,y));
+				board.placeTile(buildTile, GameBoard.BoardPosition.valueOf(x,y));
 			}
 			
 		}

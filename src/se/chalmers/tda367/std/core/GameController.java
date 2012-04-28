@@ -2,7 +2,6 @@ package se.chalmers.tda367.std.core;
 
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.factories.WaveFactory;
-import se.chalmers.tda367.std.utilities.Position;
 
 
 
@@ -38,8 +37,12 @@ public class GameController {
 		waveControl = new WaveController(board, player);
 	}
 	
-	public void updateGameState() {
-		waveControl.updateWaveRelated();
+	/**
+	 * Update the game to the next state.
+	 * @param delta - the amount of time in milliseconds from the previous update.
+	 */
+	public void updateGameState(final int delta) {
+		waveControl.updateWaveRelated(delta);
 	}
 	
 	/** 
@@ -56,7 +59,7 @@ public class GameController {
 	 * @param pos - Position to build upon.
 	 * @return - True if tower was build otherwise false
 	 */
-	public boolean buildTower(ITower tower, Position pos){
+	public boolean buildTower(ITower tower, GameBoard.BoardPosition pos){
 		return buildControl.buildTower(tower, pos);
 	}
 	
@@ -66,7 +69,7 @@ public class GameController {
 	 * @param pos - Position on which the tower is built.
 	 * @return - True if tower is sold.
 	 */
-	public boolean sellTower(ITower tower, Position pos){
+	public boolean sellTower(ITower tower, GameBoard.BoardPosition pos){
 		return buildControl.sellTower(tower, pos);
 	}
 	
@@ -93,7 +96,7 @@ public class GameController {
 	 * @param pos - Position to test buildability on.
 	 * @return - True if position is buildable on board.
 	 */
-	public boolean isBuildableSpot(Position pos) {
+	public boolean isBuildableSpot(GameBoard.BoardPosition pos) {
 		return buildControl.isBuildableSpot(pos);
 	}
 	

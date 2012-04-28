@@ -59,10 +59,11 @@ class WaveController {
 	/**
 	 * The loop that updates the the wave related bits of the game.
 	 * Does things like moving the enemies, making the towers shoot at the enemies etc.
+	 * @param delta - the amount of time (in milliseconds) since the last update.
 	 */
-	public void updateWaveRelated(){
-		moveEnemies();
-		shootAtEnemiesInRange();
+	public void updateWaveRelated(final int delta){
+		moveEnemies(delta);
+		shootAtEnemiesInRange(delta);
 		applyEffects();
 		removeDeadEnemies();
 		checkIfPlayerAlive();
@@ -97,18 +98,19 @@ class WaveController {
 	private void addEnemy(WaveItem wi){
 		List<EnemyItem> enemies = board.getEnemies();
 		
-		EnemyItem item = new EnemyItem(wi.getEnemy(), board.getStartPos(), board.getWaypoints());
+		EnemyItem item = new EnemyItem(wi.getEnemy(), board.getStartPos().toPosition(), board.getWaypoints());
 		enemies.add(item);
 	}
 
 	/**
-	 * Moves all the enemies on the GameBoard, towards the base.	
+	 * Moves all the enemies on the GameBoard, towards the base.
+	 * @param delta - the amount of time (in milliseconds) since the last update.	
 	 */
-	private void moveEnemies(){
+	private void moveEnemies(final int delta){
 		List<EnemyItem> enemies = board.getEnemies();
 		
 		for (EnemyItem ei : enemies) {
-			ei.moveEnemy();
+			ei.moveEnemy(delta);
 			if(ei.getWaypoints().isEmpty()){ // I.e. the enemy is done walking.
 				enemyEnteredBase(ei.getEnemy());
 			}
@@ -124,10 +126,11 @@ class WaveController {
 
 	/**
 	 * Towers fires at enemies in range.
+	 * @param delta - the amount of time (in milliseconds) since the last update.
 	 */
-	private void shootAtEnemiesInRange(){
+	private void shootAtEnemiesInRange(final int delta){
 		int tileScale = Properties.INSTANCE.getTileScale();
-		
+		// TODO: Utilize delta.
 		for(int x = 0; x < board.getWidth(); x++){
 			for(int y = 0; y <board.getHeight(); y++){
 				IBoardTile tile = board.getTileAt(x, y);

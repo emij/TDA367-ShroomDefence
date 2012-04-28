@@ -2,15 +2,15 @@ package se.chalmers.tda367.std.utilities;
 
 /**
  * Represents a position/coordinate on the game board. 
- * Position coordinates ranging from {@code Integer.MIN_VALUE} to {@code Integer.MAX_VALUE}
+ * Position coordinates ranging from {@code Float.MIN_VALUE} to {@code Float.MAX_VALUE}
  * @author Emil Johansson
- * @modified Emil Edholm (Apr 24, 2012), Johan Andersson (Mar 28, 2012)
+ * @modified Emil Edholm (Apr 28, 2012), Johan Andersson (Mar 28, 2012)
  * @date Mar 22, 2012
  */
 public class Position {
-	private int x, y;
+	private float x, y;
 	
-	public Position(int x, int y){
+	public Position(float x, float y){
 		this.x = x;
 		this.y = y;
 		
@@ -27,7 +27,7 @@ public class Position {
 	 * @param y the y coordinate/position
 	 * @return a position with the specified values.
 	 */
-	public static Position valueOf(int x, int y){
+	public static Position valueOf(float x, float y){
 		return new Position(x, y);
 	}
 	
@@ -35,7 +35,7 @@ public class Position {
 	 * Get the x-value of the position.
 	 * @return the position x-value.
 	 */
-	public final int getX() {
+	public final float getX() {
 		return x;
 	}
 
@@ -43,15 +43,15 @@ public class Position {
 	 * Get the y-value of the position.
 	 * @return the y value of the position.
 	 */
-	public final int getY() {
+	public final float getY() {
 		return y;
 	}
 	
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 	
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 	
@@ -79,8 +79,8 @@ public class Position {
 	@Override 
 	public int hashCode(){
 		int result = 17;
-		result = 31 * result + x;
-		result = 31 * result + y;
+		result = 31 * result + Float.floatToIntBits(x);
+		result = 31 * result + Float.floatToIntBits(y);
 		
 		return result;
 	}
@@ -97,8 +97,9 @@ public class Position {
 		return x == p.x && y == p.y;
 	}
 	
-	public Position move(int dx, int dy){
-		return new Position(getX()+dx, getY()+dy);
+	public void move(float dx, float dy){
+		x = x + dx;
+		y = y + dy;
 	}
 	
 	/**

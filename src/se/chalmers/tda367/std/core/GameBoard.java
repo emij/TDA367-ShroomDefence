@@ -20,22 +20,22 @@ public class GameBoard {
 	private IBoardTile[][] board;
 	private List<EnemyItem> enemies;
 	
-	private Position startPos;
-	private Position endPos;
+	private BoardPosition startPos;
+	private BoardPosition endPos;
 	
 	private final int width;
 	private final int height;
 	private List<Position> waypoints;
 	
 	// TODO: Implement this by reading a map.
-	private Position playerBasePosition;
+	private BoardPosition playerBasePosition;
 	
 	// TODO: Refactor the constructors to take a single map parameter instead.
-	public GameBoard(Position startPos, Position endPos){	
+	public GameBoard(BoardPosition startPos, BoardPosition endPos){	
 		this(Properties.INSTANCE.getDefaultBoardWidth(), Properties.INSTANCE.getDefaultBoardHeight(), startPos, endPos);
 	}
 	
-	public GameBoard(int width, int height, Position startPos, Position endPos){
+	public GameBoard(int width, int height, BoardPosition startPos, BoardPosition endPos){
 		if(width <= 0 || height <= 0) {
 			throw new IllegalArgumentException("Width and/or height cannot be equal to or smaller than zero");
 		}
@@ -58,7 +58,7 @@ public class GameBoard {
 		enemies = new ArrayList<EnemyItem>();
 		
 		// TODO: Refactor so that this is read from the map instead.
-		playerBasePosition = Position.valueOf(0, 0);
+		playerBasePosition = BoardPosition.valueOf(0, 0);
 		placeTile(new PlayerBase(2), playerBasePosition);
 	}
 	
@@ -100,7 +100,7 @@ public class GameBoard {
 	 * @param oldP
 	 * @param newP
 	 */
-	public void moveTile(Position oldP, Position newP){
+	public void moveTile(BoardPosition oldP, BoardPosition newP){
 		IBoardTile newPosTile = getTileAt(newP);
 		
 		placeTile(getTileAt(oldP), newP);
@@ -112,7 +112,7 @@ public class GameBoard {
 	 * @param tile
 	 * @param p
 	 */
-	public void placeTile(IBoardTile tile, Position p){
+	public void placeTile(IBoardTile tile, BoardPosition p){
 		if(posOnBoard(p)) {
 //			if(tile instanceof WaypointTile) {
 //				Position tmp = new Position(p.getX()*32+16, p.getY()*32+16); // TODO: Remove constants. (16 + 8)
@@ -139,7 +139,7 @@ public class GameBoard {
 	 * @param p
 	 * @return IBoardTile from given position.
 	 */
-	public IBoardTile getTileAt(Position p){
+	public IBoardTile getTileAt(BoardPosition p){
 		return getTileAt(p.getX(), p.getY());
 	}
 	
@@ -163,7 +163,7 @@ public class GameBoard {
 	 * @param p
 	 * @return true if position is on the game board.
 	 */
-	public boolean posOnBoard(Position p){
+	public boolean posOnBoard(BoardPosition p){
 		return posOnBoard(p.getX(), p.getY());
 	}
 	
@@ -204,7 +204,7 @@ public class GameBoard {
 	 * Method to get the enemy's starting position on the game board.
 	 * @return a position containing the coordinates of the enemy starting position.
 	 */
-	public Position getStartPos() {
+	public BoardPosition getStartPos() {
 		return startPos;
 	}
 	
@@ -212,7 +212,7 @@ public class GameBoard {
 	 * Method to get the end/goal position on the game board.
 	 * @return a position containing the coordinates of the end/goal position.
 	 */
-	public Position getEndPos() {
+	public BoardPosition getEndPos() {
 		return endPos;
 	}
 	
@@ -228,7 +228,7 @@ public class GameBoard {
 	 * @param p position to check if buildable.
 	 * @return true if given position is buildable. Returns false if the position isn't buildable or on the game board.
 	 */
-	public boolean canBuildAt(Position p) {
+	public boolean canBuildAt(BoardPosition p) {
 		if(!posOnBoard(p)) {
 			return false;
 		}
@@ -258,7 +258,7 @@ public class GameBoard {
 	 * @param p position to check for an enemy.
 	 * @return true if an enemy is on the given position. Returns false if given position is outside the board or no enemy is at the position.
 	 */
-	public boolean isEnemyAt(Position p) {
+	public boolean isEnemyAt(BoardPosition p) {
 		if(!posOnBoard(p)) {
 			return false;
 		}
@@ -294,6 +294,43 @@ public class GameBoard {
 			return false;
 		}
 		
+	}
+	
+	/**
+	 * Class used for representing positions on the game board.
+	 * @author Emil Edholm
+	 * @date   Apr 28, 2012
+	 */
+	public static class BoardPosition {
+		private int x, y;
+		private BoardPosition(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+		
+		public static BoardPosition valueOf(int x, int y) {
+			return new BoardPosition(x, y);
+		}
+		
+		public static BoardPosition valueOf(BoardPosition bp) {
+			return valueOf(bp.getX(), bp.getY());
+		}
+		
+		public int getX() {
+			return x;
+		}
+		
+		public int getY() {
+			return y;
+		}
+		
+		/**
+		 * Convert to a floating point based Position.
+		 * @return a {@code Position} with the same coordinates as {@code this}
+		 */
+		public Position toPosition() {
+			return Position.valueOf(x, y);
+		}
 	}
 	
 }

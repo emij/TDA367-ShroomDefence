@@ -22,7 +22,7 @@ public class TankEnemy extends AbstractEnemy {
 	 *  Creates a tank enemy.
 	 */
 	public TankEnemy() {
-		super(200, 1, 5, sprite);
+		super(200, 0.1F, 5, sprite);
 	}
 	
 	/**

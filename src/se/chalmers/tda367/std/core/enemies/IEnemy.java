@@ -41,19 +41,20 @@ public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
 	 * Returns the speed of the enemy.
 	 * @return the speed of the enemy
 	 */
-	public int getSpeed();
+	public float getSpeed();
 	/**
 	 * Increase speed of the enemy with the specified value
 	 * @param inc
 	 * @return current speed
 	 */
-	public int increaseSpeed(int inc);
+	public float increaseSpeed(float inc);
 	/**
 	 * Decrease speed of the enemy with the specified value
 	 * @param inc
-	 * @return current speed
+	 * @return the new speed
 	 */
-	public int decreaseSpeed(int inc);
+	public float decreaseSpeed(float inc);
+	
 	/**
 	 * Returns the current boardValue of the enemy.
 	 * Higher value means closer to playerBase
