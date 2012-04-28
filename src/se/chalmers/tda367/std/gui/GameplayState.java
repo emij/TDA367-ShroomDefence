@@ -12,6 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import se.chalmers.tda367.std.core.EnemyItem;
 import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.core.GameController;
+import se.chalmers.tda367.std.core.Level1Map;
 import se.chalmers.tda367.std.core.Player;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.exported.BasicAttackTower;
@@ -53,7 +54,7 @@ public class GameplayState extends BasicGameState {
 		
 		tileScale = properties.getTileScale();
 		
-		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
+		board = new GameBoard(new Level1Map());
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
 	}
