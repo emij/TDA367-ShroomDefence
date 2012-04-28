@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core.exported;
 
 import se.chalmers.tda367.std.core.anno.Enemy;
 import se.chalmers.tda367.std.core.enemies.AbstractEnemy;
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -14,12 +15,14 @@ import se.chalmers.tda367.std.utilities.Sprite;
  */
 @Enemy(name = "Sherman", description = "Represents a slow but hard tank enemy which moves slow but have lots of health.", enemyStrength = 1.5)
 public class TankEnemy extends AbstractEnemy {
+	//TODO: change sprite for the tank enemy.
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");
 
 	/**
 	 *  Creates a tank enemy.
 	 */
 	public TankEnemy() {
-		super(200, 1, 5, new Sprite("/images/gameplay/enemy.png")); // Change sprite.
+		super(200, 1, 5, sprite);
 	}
 	
 	/**
@@ -28,11 +31,5 @@ public class TankEnemy extends AbstractEnemy {
 	@Override
 	public String toString(){
 		return "t";
-	}
-
-	@Override
-	public Sprite getSprite() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

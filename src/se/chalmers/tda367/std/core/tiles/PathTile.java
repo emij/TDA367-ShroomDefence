@@ -1,5 +1,6 @@
 package se.chalmers.tda367.std.core.tiles;
 
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
@@ -13,13 +14,15 @@ public class PathTile extends AbstractTile implements IWalkableTile, Comparable<
 	//TODO modified to test pathfinding
 	Position pos;
 	int boardValue;
+	
+	//TODO: change sprite for the Path tile.
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/path_tile.jpg");
 
 	/**
-	 * @param sprite
-	 * @param tileValue
+	 * Create a new PathTile.
 	 */
 	public PathTile(){
-		super(new Sprite("/images/gameplay/path_tile.jpg"));
+		super(sprite);
 	}
 	public PathTile(int tileValue) {
 		this();

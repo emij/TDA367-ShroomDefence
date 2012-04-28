@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core.exported;
 
 import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -24,7 +25,9 @@ public final class BasicAttackTower extends AbstractAttackTower {
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
 							 attackSpeed     = 100;
-	private static final Sprite sprite = new Sprite("/images/gameplay/tower_tile1.png"); //TODO: change sprite for the basic tower.
+	
+	//TODO: change sprite for the basic tower.
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/tower_tile1.png");
 	
 	private int upgradeLevel = 1;
 	private int dmgModifier = 1;

@@ -1,5 +1,6 @@
 package se.chalmers.tda367.std.core.tiles;
 
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -10,11 +11,14 @@ import se.chalmers.tda367.std.utilities.Sprite;
  */
 public class BuildableTile extends AbstractTile implements IBuildableTile {
 
+	//TODO: change sprite for the buildable tile.
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/buildable_tile.png");
+	
 	/**
 	 * Create a buildable tile.
 	 */
 	public BuildableTile() {
-		super(new Sprite("/images/gameplay/buildable_tile.png"));
+		super(sprite);
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core.exported;
 
 import se.chalmers.tda367.std.core.anno.Enemy;
 import se.chalmers.tda367.std.core.enemies.AbstractEnemy;
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -14,12 +15,13 @@ import se.chalmers.tda367.std.utilities.Sprite;
  */
 @Enemy(name = "El Jefe", description = "Represents a boss enemy.", enemyStrength = 2)
 public class BossEnemy extends AbstractEnemy {
-	
+	//TODO: change sprite for the boss enemy.
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");
 	/**
 	 *  Creates a boss enemy.
 	 */
 	public BossEnemy() {
-		super(1000, 2, 50, new Sprite("/images/gameplay/enemy.png")); //TODO: change sprite
+		super(1000, 2, 50, sprite); //TODO: change sprite
 	}
 	
 	/**
@@ -28,11 +30,5 @@ public class BossEnemy extends AbstractEnemy {
 	@Override
 	public String toString(){
 		return "b";
-	}
-
-	@Override
-	public Sprite getSprite() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

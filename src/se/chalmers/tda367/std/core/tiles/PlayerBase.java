@@ -1,5 +1,6 @@
 package se.chalmers.tda367.std.core.tiles;
 
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -10,11 +11,12 @@ import se.chalmers.tda367.std.utilities.Sprite;
 public class PlayerBase implements IPlayerBase {
 	
 	private int health;
-	private final Sprite sprite; // TODO: get and set a resource for the playerBase.
+	
+	//TODO: change sprite for the PlayerBase tile.
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/castle-tile.png");
 	
 	public PlayerBase(int health){
 		this.health = health;
-		sprite = new Sprite("/images/gameplay/castle-tile.png");
 	}
 
 	@Override

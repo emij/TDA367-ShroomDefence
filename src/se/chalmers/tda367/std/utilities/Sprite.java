@@ -4,28 +4,37 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 /**
  * Represents a Sprite. i.e. a moving (or static) image of sorts.
- * Used mostly as a in-between class and the GUI will have to convert this to a usable image.
+ * <br /> Note that this class <b>must</b> be created by the Guice injector, otherwise it will throw {@code NullPointerException}.
  * @author Emil Edholm
  * @date Apr 24, 2012
  */
 public class Sprite {
-	public final Path imagePath;
+	private final Path imagePath;
+	private NativeSprite nativeSprite; // Uses Guice dependency injection to load the right class.
 	
 	/**
 	 * Create a sprite with the image loaded from a resource string.
-	 * @param resourceString the resource string from which to load the image.
+	 * @param - nativeSprite the native sprite to use (dependency injected).
+	 * @param - resourceString the resource string from which to load the image.
 	 */
-	public Sprite(String resourceString){
+	@Inject
+	public Sprite(NativeSprite nativeSprite, @Assisted("resourceString") String resourceString){
+		this.nativeSprite = nativeSprite;
 		String s = getClass().getResource(resourceString).getPath();
 		if(s != null) {
 			imagePath = Paths.get(s.substring(1)); // Must for some reason remove a '/' at the beginning.
+			nativeSprite.create(imagePath);
 		}
 		else {
 			Logger.getLogger("se.chalmers.tda367.std.utilities").severe("Unable to find the resource: " + resourceString);
 			imagePath = null;
 		}
+		
 	}
 	
 	/**
@@ -34,5 +43,13 @@ public class Sprite {
 	 */
 	public Path getImagePath() {
 		return imagePath;
+	}
+	
+	/**
+	 * Retrieve the native sprite that does the actual drawing.
+	 * @return the native sprite attached to this sprite.
+	 */
+	public NativeSprite getNativeSprite() {
+		return nativeSprite;
 	}
 }

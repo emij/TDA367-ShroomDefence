@@ -20,6 +20,7 @@ import se.chalmers.tda367.std.core.exported.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
@@ -48,14 +49,6 @@ public class GameplayState extends BasicGameState {
 		return getClass().getResource(path).getPath();
 	}
 	
-	private Image spriteToImage(Sprite s) throws SlickException{
-		if(s == null) {
-			Logger.getLogger("se.chalmers.tda367.std.gui").severe("Supplied Sprite is null.");
-		}
-		return new Image(s.getImagePath().toString());
-		// TODO: Needs to be refactored. To slow...
-	}
-	
 	@Override
 	public void init(GameContainer container, StateBasedGame state)
 			throws SlickException {
@@ -78,28 +71,22 @@ public class GameplayState extends BasicGameState {
         
 		int w = board.getWidth();
         int h = board.getHeight();
-        Image tileImage = null;
         for(int y = 0; y < h; y++){
         	for(int x = 0; x < w; x++){
         		IBoardTile tile = board.getTileAt(x, y);
         		int nX = x * tileScale;
         		int nY = y * tileScale;
-        		
-        		
-        		tileImage = spriteToImage(tile.getSprite());
-        		tileImage.draw(nX, nY, tileScale, tileScale);
+        		tile.getSprite().getNativeSprite().draw(nX, nY, tileScale, tileScale);
         	}
         }
         
         
-        Image enemyImage = null;
         for(EnemyItem ei : board.getEnemies() ) {
-        	enemyImage = spriteToImage(ei.getEnemy().getSprite());
-        	
         	Position p = ei.getEnemyPos();
         	int health = ei.getEnemy().getHealth();
         	
-        	enemyImage.draw(p.getX(), p.getY(), tileScale, tileScale);
+        	NativeSprite image = ei.getEnemy().getSprite().getNativeSprite();
+        	image.draw(p.getX(), p.getY(), tileScale, tileScale);
         	g.drawString(""+health, p.getX(), p.getY()-tileScale);
         }
         startButton.draw(startX, startY);
