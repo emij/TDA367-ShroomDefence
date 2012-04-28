@@ -3,7 +3,7 @@ package se.chalmers.tda367.std.core.tiles;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 public class WaypointTile extends AbstractTile implements IWalkableTile {
-	
+	// TODO: Schedule for destruction... 
 	/**
 	 * Create a new waypoint tile.
 	 * @param sprite

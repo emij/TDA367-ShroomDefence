@@ -53,35 +53,53 @@ public class EnemyItem {
 		return distanceTraveled;
 	}
 	
-	public void moveEnemy() {
-		if(waypoints == null || waypoints.size() == 0) {
+	/**
+	 * Move the enemy forward.
+	 * @param delta - the amount of time (in milliseconds) since the last movement.	
+	 */
+	public void moveEnemy(int delta) {
+		if(waypoints == null || waypoints.isEmpty()) {
 			return;
 		}
-		else if(!waypoints.get(0).equals(enemyPos)) {
-			for(int i = 0; i < enemy.getSpeed(); i++) {
-				if(waypoints.get(0).getX() != enemyPos.getX()) {
-					if(waypoints.get(0).getX() > enemyPos.getX()) {
-						enemyPos.incrementX();
-					}
-					else {
-						enemyPos.decrementX();
-					}
-					if (waypoints.get(0).equals(enemyPos)) {
-						waypoints.remove(0);
-					}
+		
+		Position waypoint = waypoints.get(0);
+		if(!minorDifference(waypoint, enemyPos)) {
+			float speedDelta = enemy.getSpeed() * delta;
+			float x = enemyPos.getX();
+			float y = enemyPos.getY();
+			float wayX = waypoint.getX();
+			float wayY = waypoint.getY();
+			
+			if(!minorDifference(wayX, x)) {
+				if(wayX > x) {
+					enemyPos.move(speedDelta, 0);
 				}
-				else if(waypoints.get(0).getY() != enemyPos.getY()) {
-					if(waypoints.get(0).getY() > enemyPos.getY()) {
-						enemyPos.incrementY();
-					}
-					else {
-						enemyPos.decrementY();
-					}
-					if (waypoints.get(0).equals(enemyPos)) {
-						waypoints.remove(0);
-					}
+				else {
+					enemyPos.move(-speedDelta, 0);
 				}
 			}
+			else if(!minorDifference(wayY, y)) {
+				if(wayY > y) {
+					enemyPos.move(0, speedDelta);
+				}
+				else {
+					enemyPos.move(0, -speedDelta);
+				}
+				
+			}
+			if (minorDifference(waypoint, enemyPos)) {
+				waypoints.remove(waypoint);
+			}
 		}
+	}
+	
+	/** Decides if the difference between two values are negligible */
+	private boolean minorDifference(float f1, float f2) {
+		int diff = Float.compare(Math.abs(f1 - f2), 0.5F);
+		return diff <= 0;
+	}
+	
+	private boolean minorDifference(Position p1, Position p2) {
+		return minorDifference(p1.getX(), p2.getX()) && minorDifference(p1.getY(), p2.getY());
 	}
 }

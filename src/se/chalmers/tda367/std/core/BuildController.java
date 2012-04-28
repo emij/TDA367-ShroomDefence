@@ -2,18 +2,15 @@ package se.chalmers.tda367.std.core;
 
 import se.chalmers.tda367.std.core.tiles.BuildableTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
-import se.chalmers.tda367.std.utilities.Position;
 
 /**
  * The class that contains the game logic for build phase of the game.
  * @author Johan Andersson
- * @modified 
+ * @modified Emil Edholm (Apr 27, 2012)
  * @date Apr 22, 2012
  */
 
-public class BuildController {
-
-	
+class BuildController {
 	private static final double SELL_MODIFER = 0.75; 
 	private GameBoard board;
 	private Player player;
@@ -24,13 +21,14 @@ public class BuildController {
 		this.player = player;
 	}
 	
-	/** Builds a tower on the board.
+	/** 
+	 * Builds a tower on the board.
 	 * 
 	 * @param tower - Tower to be built.
 	 * @param pos - Position to build upon.
-	 * @return - True if tower was build otherwise false
+	 * @return - True if tower was built otherwise false
 	 */
-	public boolean buildTower(ITower tower, Position pos){
+	public boolean buildTower(ITower tower, GameBoard.BoardPosition pos){
 		if(isBuildableSpot(pos) && playerCanAffordTower(tower)){
 			board.placeTile(tower, pos);
 			return true;
@@ -44,7 +42,7 @@ public class BuildController {
 	 * @param pos - Position to test buildability on.
 	 * @return - True if position is buildable on board.
 	 */
-	public boolean isBuildableSpot(Position pos) {
+	public boolean isBuildableSpot(GameBoard.BoardPosition pos) {
 		return board.canBuildAt(pos);
 	}
 
@@ -86,19 +84,18 @@ public class BuildController {
 	 * @param pos - Position on which the tower is built.
 	 * @return - True if tower is sold.
 	 */
-	public boolean sellTower(ITower tower, Position pos){
+	public boolean sellTower(ITower tower, GameBoard.BoardPosition pos){
 		if(isTowerAt(tower,pos)){
 			player.setMoney(player.getMoney() + tower.refund());
-			board.placeTile(new BuildableTile(null), pos);
+			board.placeTile(new BuildableTile(), pos);
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	private boolean isTowerAt(ITower tower, Position pos) {
+	private boolean isTowerAt(ITower tower, GameBoard.BoardPosition pos) {
 		return tower == board.getTileAt(pos);
-		//TODO Does it work?
 	}
 		
 	

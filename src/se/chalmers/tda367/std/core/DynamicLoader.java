@@ -85,7 +85,8 @@ public final class DynamicLoader {
 	 */
 	public static List<Class<IEnemy>> getEnemies(){
 		List<Class<IEnemy>> enemies = getExportedClasses(Enemy.class);
-		Collections.sort(enemies, new EnemyComparator());
+		StrengthComparator<Enemy, IEnemy> sr = new StrengthComparator<>(Enemy.class, new EnemyStrengthRetriever());
+		Collections.sort(enemies, sr);
 		return enemies;
 	}
 	
@@ -95,7 +96,8 @@ public final class DynamicLoader {
 	 * @return a list of enemies that conform to the parameters.
 	 */
 	public static List<Class<IEnemy>> getEnemies(int maxLevel) {
-		return filterList(getEnemies(), maxLevel, new EnemyStrengthFilter(maxLevel));
+		StrengthFilter<Enemy, IEnemy> sf = new StrengthFilter<>(maxLevel, new EnemyStrengthRetriever(), Enemy.class);
+		return filterList(getEnemies(), maxLevel, sf);
 	}
 	
 	/**
@@ -123,7 +125,9 @@ public final class DynamicLoader {
 	 */
 	public static List<Class<ITower>> getTowers() {
 		List<Class<ITower>> towers = getExportedClasses(Tower.class);
-		Collections.sort(towers, new TowerComparator());
+		
+		StrengthComparator<Tower, ITower> sr = new StrengthComparator<>(Tower.class, new TowerStrengthRetriever());
+		Collections.sort(towers, sr);
 		return towers;
 	}
 
@@ -133,7 +137,8 @@ public final class DynamicLoader {
 	 * @return a list of towers that conform to the parameters.
 	 */
 	public static List<Class<ITower>> getTowers(int maxLevel) {
-		return filterList(getTowers(), maxLevel, new TowerStrengthFilter(maxLevel));
+		StrengthFilter<Tower, ITower> sf = new StrengthFilter<Tower, ITower>(maxLevel, new TowerStrengthRetriever(), Tower.class);
+		return filterList(getTowers(), maxLevel, sf);
 	}
 	
 	/**
@@ -150,25 +155,22 @@ public final class DynamicLoader {
 		return true;
 	}
 	
-	// TODO: Possible refactoring of the following classes? They are quite similar.
-	/**
-	 * Used to compare enemy strength. Allows for sorting of list of enemies.
-	 * @author Emil Edholm
-	 * @date   Apr 23, 2012
-	 */
-	private static class EnemyComparator implements Comparator<Class<IEnemy>> {
-
+	private static class StrengthComparator<E extends Annotation, T> implements Comparator<Class<T>> {
+		private final Class<E> annotationType;
+		private final StrengthRetriever<E> strengthRetriever;
+		public StrengthComparator(Class<E> annotationType, StrengthRetriever<E> sr){
+			this.strengthRetriever = sr;
+			this.annotationType = annotationType;
+		}
+		
 		@Override
-		public int compare(Class<IEnemy> o1, Class<IEnemy> o2) {
-			Enemy e1 = o1.getAnnotation(Enemy.class);
-			Enemy e2 = o2.getAnnotation(Enemy.class);
-			if(e1 != null && e2 != null){
-				int strengthDiff = Double.compare(e1.enemyStrength(), e2.enemyStrength());
-				if(strengthDiff != 0){
-					return strengthDiff;
-				}
-				
-				return e1.name().compareTo(e2.name());
+		public int compare(Class<T> o1, Class<T> o2) {
+			E anno1 = o1.getAnnotation(annotationType);
+			E anno2 = o2.getAnnotation(annotationType);
+			
+			if(anno1 != null && anno2 != null){
+				int strengthDiff = Double.compare(strengthRetriever.getStrength(anno1), strengthRetriever.getStrength(anno2));
+				return strengthDiff;
 			}
 			return 0;
 		}
@@ -176,69 +178,51 @@ public final class DynamicLoader {
 	}
 	
 	/**
-	 * Used to compare Tower-strength and tower name.
-	 * Allows for sorting of lists of towers.
+	 * Used to filter the max level strength described in class annotation.
 	 * @author Emil Edholm
-	 * @date   Apr 23, 2012
+	 * @date   Apr 26, 2012
 	 */
-	private static class TowerComparator implements Comparator<Class<ITower>> {
-
-		@Override
-		public int compare(Class<ITower> o1, Class<ITower> o2) {
-			Tower t1 = o1.getAnnotation(Tower.class);
-			Tower t2 = o2.getAnnotation(Tower.class);
-			if(t1 != null && t2 != null){
-				int strengthDiff = Double.compare(t1.towerStrength(), t2.towerStrength());
-				if(strengthDiff != 0){
-					return strengthDiff;
-				}
-				
-				return t1.name().compareTo(t2.name());
-			}
-			return 0;
-		}
-	}
-	
-	/**
-	 * Used to filter the max level enemy strength described in its annotation.
-	 * @author Emil Edholm
-	 * @date   Apr 25, 2012
-	 */
-	private static class EnemyStrengthFilter implements Filter<Class<IEnemy>> {
+	private static class StrengthFilter<E extends Annotation, T> implements Filter<Class<T>> {
 		private final int maxLevel;
-		public EnemyStrengthFilter(int maxLevel) {
+		private final StrengthRetriever<E> strengthRetriever;
+		private final Class<E> annotationType;
+		
+		/**
+		 * @param maxLevel the maximum allowed level.
+		 * @param sr the class that retrieves the strength of the supplied annotation
+		 * @param annotationType the type of the annotation to fetch.
+		 */
+		public StrengthFilter(int maxLevel, StrengthRetriever<E> sr, Class<E> annotationType) {
 			this.maxLevel = maxLevel;
+			this.strengthRetriever = sr;
+			this.annotationType = annotationType;
 		}
 		
 		@Override
-		public boolean accept(Class<IEnemy> object) {
-			Enemy annotation = object.getAnnotation(Enemy.class);
+		public boolean accept(Class<T> object) {
+			E annotation = object.getAnnotation(annotationType);
 			if(annotation != null) {
-				return Double.compare(annotation.enemyStrength(), maxLevel) <= 0;
+				return Double.compare(strengthRetriever.getStrength(annotation), maxLevel) <= 0;
 			}
 			return false;
 		}
-		
 	}
 	
-	/**
-	 * Used to filter the max level tower strength described in its annotation.
-	 * @author Emil Edholm
-	 * @date   Apr 25, 2012
-	 */
-	private static class TowerStrengthFilter implements Filter<Class<ITower>> {
-		private final int maxLevel;
-		public TowerStrengthFilter(int maxLevel) {
-			this.maxLevel = maxLevel;
-		}
+	private interface StrengthRetriever<T extends Annotation> {
+		public double getStrength(T annotation);
+	}
+	
+	private static class TowerStrengthRetriever implements StrengthRetriever<Tower>  {
 		@Override
-		public boolean accept(Class<ITower> object) {
-			Tower annotation = object.getAnnotation(Tower.class);
-			if(annotation != null) {
-				return Double.compare(annotation.towerStrength(), maxLevel) <= 0;
-			}
-			return false;
+		public double getStrength(Tower annotation) {
+			return annotation.towerStrength();
 		}
-		
+	}
+	
+	private static class EnemyStrengthRetriever implements StrengthRetriever<Enemy>  {
+		@Override
+		public double getStrength(Enemy annotation) {
+			return annotation.enemyStrength();
+		}
 	}
 }
