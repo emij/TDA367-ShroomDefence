@@ -16,7 +16,6 @@ import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.Position;
-import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * The main class containing the main method.

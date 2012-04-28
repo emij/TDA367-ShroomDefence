@@ -1,7 +1,5 @@
 package se.chalmers.tda367.std.gui;
 
-import java.util.logging.Logger;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -19,10 +17,8 @@ import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.exported.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
-import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;
-import se.chalmers.tda367.std.utilities.Sprite;
 
 public class GameplayState extends BasicGameState {
 	private int stateID;

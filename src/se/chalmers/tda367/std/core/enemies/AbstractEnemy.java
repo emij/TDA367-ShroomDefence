@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
-import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**

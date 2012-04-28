@@ -4,9 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
-import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.utilities.Sprite;
-import se.chalmers.tda367.std.core.tiles.PathTile;
 
 /**
  * Represents a killable enemy.
