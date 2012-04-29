@@ -3,7 +3,6 @@ package se.chalmers.tda367.std.core.maps;
 import java.io.*;
 import java.util.*;
 
-import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.tiles.*;

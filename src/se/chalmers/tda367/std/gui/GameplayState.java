@@ -17,7 +17,6 @@ import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Player;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.exported.BasicAttackTower;
-import se.chalmers.tda367.std.core.maps.LevelMap;
 import se.chalmers.tda367.std.core.maps.MapLoader;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
