@@ -42,6 +42,8 @@ class WaveController {
 		this.player = player;
 		releaseTimer = new Timer(INITIAL_WAVE_DELAY, new WaveReleaseTimerListener());
 	}
+	
+	// TODO: Add start/stop methods and send appropriate events when called.
 
 	/**
 	 * Starts a new wave
@@ -132,7 +134,6 @@ class WaveController {
 	 */
 	private void shootAtEnemiesInRange(final int delta){
 		int tileScale = Properties.INSTANCE.getTileScale();
-		// TODO: Utilize delta.
 		for(int x = 0; x < board.getWidth(); x++){
 			for(int y = 0; y <board.getHeight(); y++){
 				IBoardTile tile = board.getTileAt(x, y);
