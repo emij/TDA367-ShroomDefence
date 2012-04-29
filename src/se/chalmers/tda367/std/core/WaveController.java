@@ -13,6 +13,8 @@ import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
+import se.chalmers.tda367.std.events.TowerShootingEvent;
+import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.Position;
 
 
@@ -40,6 +42,8 @@ class WaveController {
 		this.player = player;
 		releaseTimer = new Timer(INITIAL_WAVE_DELAY, new WaveReleaseTimerListener());
 	}
+	
+	// TODO: Add start/stop methods and send appropriate events when called.
 
 	/**
 	 * Starts a new wave
@@ -130,7 +134,6 @@ class WaveController {
 	 */
 	private void shootAtEnemiesInRange(final int delta){
 		int tileScale = Properties.INSTANCE.getTileScale();
-		// TODO: Utilize delta.
 		for(int x = 0; x < board.getWidth(); x++){
 			for(int y = 0; y <board.getHeight(); y++){
 				IBoardTile tile = board.getTileAt(x, y);
@@ -154,7 +157,9 @@ class WaveController {
 		
 		//TODO, make more advanced logic.
 		if(!enemies.isEmpty()){
-			enemies.get(0).getEnemy().decreaseHealth(tile.getDmg());
+			EnemyItem enemyItem = enemies.get(0);
+			enemyItem.getEnemy().decreaseHealth(tile.getDmg());
+			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemyItem.getEnemyPos()));
 		}
 //		for(IEffect ie:attackTower.getEffects()){
 //			enemies.get(0).addEffect(ie);	//TODO implements
