@@ -16,29 +16,20 @@ import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Player;
 import se.chalmers.tda367.std.core.Properties;
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.exported.BasicAttackTower;
-import se.chalmers.tda367.std.core.tiles.BuildableTile;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
-import se.chalmers.tda367.std.core.tiles.PathTile;
-import se.chalmers.tda367.std.core.tiles.WaypointTile;
-import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;
-import se.chalmers.tda367.std.utilities.Sprite;
-import sun.swing.BakedArrayList;
 
 public class GameplayState extends BasicGameState {
 	private int stateID;
-	private Image background;
-	private Image pathTile;
-	private Image buildableTile;
-	private Image towerTile;
-	private Image enemyImage;
 	private Image startButton;
 	private Image towerThumbnail;
+	private Image background;
+	
 	private int tileScale;
 	private int startX, startY, startGridX, startGridY;
 	private boolean overStart = false, towerChoosed = false;
@@ -46,6 +37,8 @@ public class GameplayState extends BasicGameState {
 	private Properties properties = Properties.INSTANCE;
 	private Player player;
 	private GameController gameControl;
+	
+	// TODO: Handle events: player has died.
 	
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
@@ -58,18 +51,13 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame state)
 			throws SlickException {
-		background = new Image(getResourcePath("/images/gameplay/background.png"));
-		pathTile = new Image(getResourcePath("/images/gameplay/path_tile.jpg"));
-		buildableTile = new Image(getResourcePath("/images/gameplay/buildable_tile.png"));
-		towerTile = new Image(getResourcePath("/images/gameplay/tower_tile1.png"));
-		enemyImage = new Image(getResourcePath("/images/gameplay/enemy.png"));
 		startButton = new Image(getResourcePath("/images/gameplay/button_template.png"));
 		towerThumbnail = new Image(getResourcePath("/images/gameplay/tower_thumbnail1.png"));
-		
+		background = new Image(getResourcePath("/images/gameplay/background.png"));
 		
 		tileScale = properties.getTileScale();
 		
-		board = new GameBoard(25,20, new Position(0,12), new Position (19,12));
+		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
 		
@@ -89,15 +77,7 @@ public class GameplayState extends BasicGameState {
         		IBoardTile tile = board.getTileAt(x, y);
         		int nX = x * tileScale;
         		int nY = y * tileScale;
-        		if(tile instanceof PathTile){
-        			pathTile.draw(nX, nY, tileScale, tileScale);
-        		}
-        		else if(tile instanceof BuildableTile){
-        			buildableTile.draw(nX, nY, tileScale, tileScale);
-        		}
-        		else if(tile instanceof ITower){
-        			towerTile.draw(nX, nY, tileScale, tileScale);
-        		}
+        		tile.getSprite().getNativeSprite().draw(nX, nY, tileScale, tileScale);
         	}
         }
         
@@ -105,7 +85,9 @@ public class GameplayState extends BasicGameState {
         for(EnemyItem ei : board.getEnemies() ) {
         	Position p = ei.getEnemyPos();
         	int health = ei.getEnemy().getHealth();
-        	enemyImage.draw(p.getX(), p.getY(), tileScale, tileScale);
+        	
+        	NativeSprite image = ei.getEnemy().getSprite().getNativeSprite();
+        	image.draw(p.getX(), p.getY(), tileScale, tileScale);
         	g.drawString(""+health, p.getX(), p.getY()-tileScale);
         }
         startButton.draw(startX, startY);
@@ -122,9 +104,12 @@ public class GameplayState extends BasicGameState {
 		// TODO: logic goes here.
 	}
 
+	
 	@Override
-	public void update(GameContainer container, StateBasedGame state, int arg2)
+	public void update(GameContainer container, StateBasedGame state, int delta)
 			throws SlickException {
+		gameControl.updateGameState(delta);
+		
 		startX = (int)(container.getWidth()*0.796);
 		startY = (int)(container.getHeight()*0.895);
 		startGridX = (int)(container.getWidth()*0.797);
@@ -151,7 +136,7 @@ public class GameplayState extends BasicGameState {
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 		    	int x = mouseX / tileScale;
 				int y = mouseY / tileScale;
-				Position p = Position.valueOf(x, y);
+				GameBoard.BoardPosition p = GameBoard.BoardPosition.valueOf(x, y);
 				if(board.getTileAt(p) instanceof IBuildableTile && towerChoosed) {
 					board.placeTile(new BasicAttackTower(), p);
 					towerChoosed = false;

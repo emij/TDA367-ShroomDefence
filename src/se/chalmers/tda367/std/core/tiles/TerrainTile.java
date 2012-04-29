@@ -1,5 +1,6 @@
 package se.chalmers.tda367.std.core.tiles;
 
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -9,8 +10,13 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @date Mar 26, 2012
  */
 public class TerrainTile extends AbstractTile{
+	//TODO: change sprite for the TerrainTile tile.
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/default_tile.jpg");
 	
-	public TerrainTile(Sprite sprite){
+	/**
+	 * Create a new TerrainTile.
+	 */
+	public TerrainTile(){
 		super(sprite);
 	}
 	

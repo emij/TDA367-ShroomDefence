@@ -1,10 +1,8 @@
 package se.chalmers.tda367.std.core.exported;
 
-import java.util.List;
-
 import se.chalmers.tda367.std.core.anno.Enemy;
 import se.chalmers.tda367.std.core.enemies.AbstractEnemy;
-import se.chalmers.tda367.std.utilities.Position;
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -17,12 +15,14 @@ import se.chalmers.tda367.std.utilities.Sprite;
  */
 @Enemy(name = "Speedy gonzales", description = "Represents an enemy slightly faster than usual.", enemyStrength = 1)
 public class FastEnemy extends AbstractEnemy {
-	
+	//TODO: change sprite for the fast enemy.
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");
+
 	/**
 	 *  Creates a fast enemy.
 	 */
 	public FastEnemy() {
-		super(50, 3, 5, new Sprite());
+		super(50, 0.3F, 5, sprite);
 	}
 	
 	/**
@@ -31,11 +31,5 @@ public class FastEnemy extends AbstractEnemy {
 	@Override
 	public String toString(){
 		return "f";
-	}
-
-	@Override
-	public Sprite getSprite() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
