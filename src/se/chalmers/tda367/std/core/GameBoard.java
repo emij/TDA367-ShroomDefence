@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import se.chalmers.tda367.std.core.enemies.IEnemy;
+import se.chalmers.tda367.std.core.maps.Map;
+import se.chalmers.tda367.std.core.maps.MapItem;
 import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.*;
@@ -29,16 +31,21 @@ public class GameBoard {
 		this.width = map.getWidth();
 		this.height = map.getHeight();
 		this.board =  new IBoardTile[this.width][this.height];
-		
 		this.enemyStartPos = map.getEnemyStartPos();
 		this.playerBasePos = map.getPlayerBasePos();
-		placeTile(new PlayerBase(2), playerBasePos);
+		this.waypoints = new ArrayList<Position>();
+		this.enemies = new ArrayList<EnemyItem>();
 		
-		MapLoader.setLevel(1);
-		board = MapLoader.getMap();
-		this.waypoints = MapLoader.getWayPointList();
-		
-		enemies = new ArrayList<EnemyItem>();
+		// Populate the game board with data from the Map.
+		for(int y = 0; y < height; y++) {
+			for(int x = 0; x < width; x++) {
+				MapItem item = map.getMapItem(x, y);
+				board[x][y] = item.getTile();
+				if(item.isWaypoint()) {
+					waypoints.add(item.getWaypointPosition());
+				}
+			}
+		}
 	}
 	
 	// TODO: Handle event that enemies has died.
