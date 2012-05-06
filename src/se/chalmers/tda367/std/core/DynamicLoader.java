@@ -85,7 +85,7 @@ public final class DynamicLoader {
 	 */
 	public static List<Class<IEnemy>> getEnemies(){
 		List<Class<IEnemy>> enemies = getExportedClasses(Enemy.class);
-		StrengthComparator<Enemy, IEnemy> sr = new StrengthComparator<>(Enemy.class, new EnemyStrengthRetriever());
+		StrengthComparator<Enemy, IEnemy> sr = new StrengthComparator<Enemy, IEnemy>(Enemy.class, new EnemyStrengthRetriever());
 		Collections.sort(enemies, sr);
 		return enemies;
 	}
@@ -96,7 +96,7 @@ public final class DynamicLoader {
 	 * @return a list of enemies that conform to the parameters.
 	 */
 	public static List<Class<IEnemy>> getEnemies(int maxLevel) {
-		StrengthFilter<Enemy, IEnemy> sf = new StrengthFilter<>(maxLevel, new EnemyStrengthRetriever(), Enemy.class);
+		StrengthFilter<Enemy, IEnemy> sf = new StrengthFilter<Enemy, IEnemy>(maxLevel, new EnemyStrengthRetriever(), Enemy.class);
 		return filterList(getEnemies(), maxLevel, sf);
 	}
 	
@@ -126,7 +126,7 @@ public final class DynamicLoader {
 	public static List<Class<ITower>> getTowers() {
 		List<Class<ITower>> towers = getExportedClasses(Tower.class);
 		
-		StrengthComparator<Tower, ITower> sr = new StrengthComparator<>(Tower.class, new TowerStrengthRetriever());
+		StrengthComparator<Tower, ITower> sr = new StrengthComparator<Tower, ITower>(Tower.class, new TowerStrengthRetriever());
 		Collections.sort(towers, sr);
 		return towers;
 	}
