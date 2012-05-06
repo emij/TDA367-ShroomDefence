@@ -1,5 +1,7 @@
 package se.chalmers.tda367.std.mapeditor;
 
+import java.awt.Graphics;
+
 import javax.swing.JPanel;
 
 import se.chalmers.tda367.std.core.maps.MapItem;
@@ -17,6 +19,12 @@ public class MapItemJPanel extends JPanel {
 		this.x       = x;
 		this.y       = y;
 		this.mapItem = mapItem;
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		// Painting the tile goes here.
 	}
 
 	/**
