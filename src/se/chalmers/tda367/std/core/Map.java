@@ -62,7 +62,7 @@ public class Map {
 	public int[][] getMap(){
 		return mapArray;
 	}
-	public int getBoardValueAtPos(Position pos){
+	public int getBoardValueAtPos(GameBoard.BoardPosition pos){
 		int x = pos.getX();
 		int y = pos.getY();
 		return mapArray[x][y];

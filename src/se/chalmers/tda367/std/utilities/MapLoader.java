@@ -47,16 +47,16 @@ public class MapLoader {
 	    	int yCord = Integer.parseInt(tileData[2]); 
 	    	if(tileType.equals("S")){
 	    		map = new IBoardTile[xCord][yCord];
-	    		IBoardTile buildableTile = new BuildableTile(new Sprite());
+	    		IBoardTile buildableTile = new BuildableTile();
 	    		for(int i = 0; i < map.length;i++){
 	    			for(int j = 0; j < map[i].length;j++){
 	    				map[i][j] = buildableTile;
 	    			}
 	    		}
 	    	} else if(tileType.equals("P")){
-	    		map[xCord][yCord] = new PathTile(new Sprite());
+	    		map[xCord][yCord] = new PathTile();
 	    	} else if(tileType.equals("W")){
-	    		map[xCord][yCord] = new PathTile(new Sprite());
+	    		map[xCord][yCord] = new PathTile();
 	    		wayPointList.add(new Position(xCord*Properties.INSTANCE.getTileScale() 
 	    				,yCord*Properties.INSTANCE.getTileScale()));
 	    	}

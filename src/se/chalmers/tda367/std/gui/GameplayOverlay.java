@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import se.chalmers.tda367.std.core.EnemyItem;
 import se.chalmers.tda367.std.core.GameBoard;
+import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
 import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Player;
 import se.chalmers.tda367.std.core.Properties;
@@ -75,7 +76,7 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 		towerChoosed = false;
 		tileScale = properties.getTileScale();
 		
-		board = new GameBoard(25,20, new Position(0,12), new Position (19,12));
+		board = new GameBoard(25,20, BoardPosition.valueOf(0,12), BoardPosition.valueOf(19,12));
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
 		
@@ -150,7 +151,7 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 				 && towerChoosed && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			int x = mouseX / tileScale;
 			int y = mouseY / tileScale;
-			Position p = Position.valueOf(x, y);
+			BoardPosition p = BoardPosition.valueOf(x, y);
 			if(board.getTileAt(p) instanceof IBuildableTile) {
 				board.placeTile(new BasicAttackTower(), p);
 				towerChoosed = false;

@@ -1,10 +1,8 @@
 package se.chalmers.tda367.std.core.exported;
 
-import java.util.List;
-
 import se.chalmers.tda367.std.core.anno.Enemy;
 import se.chalmers.tda367.std.core.enemies.AbstractEnemy;
-import se.chalmers.tda367.std.utilities.Position;
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -18,12 +16,15 @@ import se.chalmers.tda367.std.utilities.Sprite;
  */
 @Enemy(name = "Basic enemy", description = "Represents the most common enemy.", enemyStrength = 1)
 public final class BasicEnemy extends AbstractEnemy {
-
+	
+	//TODO: change sprite for the basic enemy.
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");
+	
 	/**
 	 * Creates a basic enemy.
 	 */
 	public BasicEnemy() {
-		super(100, 2, 5, new Sprite());
+		super(100, 0.2F, 5, sprite);
 	}
 	
 	/**
@@ -33,11 +34,4 @@ public final class BasicEnemy extends AbstractEnemy {
 	public String toString(){
 		return "e";
 	}
-
-	@Override
-	public Sprite getSprite() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

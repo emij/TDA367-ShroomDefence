@@ -6,12 +6,8 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
-import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-import sun.swing.BakedArrayList;
 
 public class MainMenuState extends BasicGameState {
 	private int stateID;

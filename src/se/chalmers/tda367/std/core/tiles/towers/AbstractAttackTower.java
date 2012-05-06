@@ -1,13 +1,10 @@
 package se.chalmers.tda367.std.core.tiles.towers;
 
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.utilities.Sprite;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * A skeleton implementation of the {@code IAttackTower}
@@ -19,8 +16,8 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	private int baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed;
 	private final Sprite sprite;
 	private List<IEffect> effects;
-
-	private final PropertyChangeSupport targetList;
+	
+	private int timeSinceLastAttack = 0;
 
 	public AbstractAttackTower(int baseCost, int baseDamage, 
 			int effectiveRadius, int aoeRadius, int attackSpeed, List<IEffect> effects, Sprite sprite){
@@ -33,7 +30,6 @@ public abstract class AbstractAttackTower implements IAttackTower{
 		if(effects != null){
 			this.effects		 = new ArrayList<IEffect>(effects);
 		}
-		targetList = new PropertyChangeSupport(this);
 	}
 
 	@Override
@@ -44,9 +40,6 @@ public abstract class AbstractAttackTower implements IAttackTower{
 
 	@Override
 	public abstract void upgrade();
-
-	@Override
-	public abstract void fire();
 
 	@Override
 	public int refund() {
@@ -72,6 +65,16 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	public int getAttackSpeed() {
 		return attackSpeed;
 	}
+	
+	@Override
+	public boolean isAttackReady(final int delta) {
+		timeSinceLastAttack += delta;
+		if(timeSinceLastAttack >= getAttackSpeed()){
+			timeSinceLastAttack = 0;
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public int getDmgRadius() {
@@ -86,30 +89,6 @@ public abstract class AbstractAttackTower implements IAttackTower{
 
 	@Override
 	public abstract int getUpgradeCost();
-
-
-	@Override
-	public void addToTargetList(IEnemy enemy) {
-		targetList.addPropertyChangeListener(enemy);
-	}
-
-	@Override
-	public void removeFromTargetList(IEnemy enemy) {
-		targetList.removePropertyChangeListener(enemy);
-	}
-	@Override
-	public void updateTargetList(List<IEnemy> enemies){
-		//TODO
-		throw new NotImplementedException();		
-	}
-	/**
-	 * Notifies the enemies in the target list of the damage done to them.
-	 * Sends the base damage as the {@code oldValue}.
-	 * @param dmg the damage to send to the target list.
-	 */
-	protected void notifyTargetList(int dmg){
-		targetList.firePropertyChange("damage", getDmg(), dmg);
-	}
 
 	@Override
 	public String toString() {

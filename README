@@ -1,5 +1,2 @@
-<<<<<<< HEAD
-A variant of the tower defence game using the Slick framework.
-=======
-Contains the source for the Shroom Tower Defense game (STD).
->>>>>>> GameLoop
+The Shroom Tower Defense game written in Java for the TDA367 class at
+Chalmers University of Technology.
