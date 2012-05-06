@@ -8,6 +8,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.google.common.eventbus.Subscribe;
+
 import se.chalmers.tda367.std.core.EnemyItem;
 import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
@@ -20,6 +22,9 @@ import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.PathTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.events.TowerShootingEvent;
+import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;
 
 import de.lessvoid.nifty.Nifty;
@@ -76,7 +81,7 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 		towerChoosed = false;
 		tileScale = properties.getTileScale();
 		
-		board = new GameBoard(25,20, BoardPosition.valueOf(0,12), BoardPosition.valueOf(19,12));
+		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
 		
@@ -84,6 +89,8 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 		nifty = new Nifty(new SlickRenderDevice(container), new SlickSoundDevice(), input, new LWJGLTimeProvider());
 		prepareNifty(nifty, state);
 		initNifty(container, state);
+		
+		EventBus.INSTANCE.register(this);
 	}
 
 	@Override
@@ -108,15 +115,7 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
         		IBoardTile tile = board.getTileAt(x, y);
         		int nX = x * tileScale;
         		int nY = y * tileScale;
-        		if(tile instanceof PathTile){
-        			pathTile.draw(nX, nY, tileScale, tileScale);
-        		}
-        		else if(tile instanceof BuildableTile){
-        			buildableTile.draw(nX, nY, tileScale, tileScale);
-        		}
-        		else if(tile instanceof ITower){
-        			towerTile.draw(nX, nY, tileScale, tileScale);
-        		}
+        		tile.getSprite().getNativeSprite().draw(nX, nY, tileScale, tileScale);
         	}
         }
         
@@ -128,15 +127,25 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
         for(EnemyItem ei : board.getEnemies() ) {
         	Position p = ei.getEnemyPos();
         	int health = ei.getEnemy().getHealth();
-        	enemyImage.draw(p.getX(), p.getY(), tileScale, tileScale);
+        	
+        	NativeSprite image = ei.getEnemy().getSprite().getNativeSprite();
+        	image.draw(p.getX(), p.getY(), tileScale, tileScale);
         	g.drawString(""+health, p.getX(), p.getY()-tileScale);
         }
         nifty.render(false);
 	}
-
+	
+	@Subscribe
+	public void renderTowerShooting(TowerShootingEvent event){
+		Position from = event.getFromPosition();
+		Position to = event.getToPosition();
+		// TODO: logic goes here.
+	}
+	
 	@Override
 	protected void updateGame(GameContainer container, StateBasedGame state, int delta)
 			throws SlickException {
+		gameControl.updateGameState(delta);
 		nifty.update();
 		
 		Input input = container.getInput();
