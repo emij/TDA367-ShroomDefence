@@ -22,6 +22,9 @@ import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.Position;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.effects.EffectEventId;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
@@ -46,6 +49,7 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 	private GameController gameControl;
 	private Nifty nifty;
 	private InputSystem input;
+	private int mouseX, mouseY;
 	
 	public GameplayOverlay(int stateID) {
 		this.stateID = stateID;
@@ -70,14 +74,15 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 		
 		towerChoosed = false;
 		tileScale = properties.getTileScale();
-		input = new PlainSlickInputSystem();
-		nifty = new Nifty(new SlickRenderDevice(container), new SlickSoundDevice(), input, new LWJGLTimeProvider());
-		prepareNifty(nifty, state);
-		initNifty(container, state);
 		
 		board = new GameBoard(25,20, new Position(0,12), new Position (19,12));
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
+		
+		input = new PlainSlickInputSystem();
+		nifty = new Nifty(new SlickRenderDevice(container), new SlickSoundDevice(), input, new LWJGLTimeProvider());
+		prepareNifty(nifty, state);
+		initNifty(container, state);
 	}
 
 	@Override
@@ -114,6 +119,10 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
         	}
         }
         
+        //TODO: Fix so this method shows correct tower and has correct placement
+        if(towerChoosed) {
+        	towerTile.draw(mouseX, mouseY, tileScale, tileScale);
+        }
         
         for(EnemyItem ei : board.getEnemies() ) {
         	Position p = ei.getEnemyPos();
@@ -130,18 +139,22 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 		nifty.update();
 		
 		Input input = container.getInput();
-		int mouseX = input.getMouseX();
-		int mouseY = input.getMouseY();
-
-		if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()) {
-			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-		    	int x = mouseX / tileScale;
-				int y = mouseY / tileScale;
-				Position p = Position.valueOf(x, y);
-				if(board.getTileAt(p) instanceof IBuildableTile && towerChoosed) {
-					board.placeTile(new BasicAttackTower(), p);
-					towerChoosed = false;
-				}
+		mouseX = input.getMouseX();
+		mouseY = input.getMouseY();
+		
+		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
+			towerChoosed = false;
+		}
+		
+		if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()
+				 && towerChoosed && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			int x = mouseX / tileScale;
+			int y = mouseY / tileScale;
+			Position p = Position.valueOf(x, y);
+			if(board.getTileAt(p) instanceof IBuildableTile) {
+				board.placeTile(new BasicAttackTower(), p);
+				towerChoosed = false;
+				//TODO: Reset focus
 			}
     	}
 	}
@@ -165,6 +178,15 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 	
 	public void startWave() {
 		gameControl.nextWave();
+	}
+	
+	public String getPlayerScore() {
+		return player.getCurrentScore() + "";
+	}
+	
+	//TODO: Load remaining life dynamic
+	public String getRemainingLife() {
+		return "10";
 	}
 	
 	public void buildTower(String tower) {
