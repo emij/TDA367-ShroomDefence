@@ -79,9 +79,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
 		
-		prepareNifty(new Nifty(new SlickRenderDevice(container), new SlickSoundDevice(),
-				new PlainSlickInputSystem(), new LWJGLTimeProvider()), state);
 		initNifty(container, state);
+		nifty = this.getNifty();
+		prepareNifty(nifty, state);
 		
 		EventBus.INSTANCE.register(this);
 	}
@@ -94,7 +94,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Override
 	protected void prepareNifty(Nifty nifty, StateBasedGame state) {
 		nifty.fromXml(getResourcePath("/XMLFile1.xml"), "start", this);
-		this.nifty = this.getNifty();
 	}
 
 	@Override
