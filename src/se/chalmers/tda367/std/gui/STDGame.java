@@ -15,7 +15,7 @@ public class STDGame extends StateBasedGame {
 		
 		
         this.addState(new MainMenuState(MAINMENUSTATE));
-        this.addState(new GameplayOverlay(GAMEPLAYOVERLAY));
+        this.addState(new GameplayState(GAMEPLAYOVERLAY));
         this.enterState(MAINMENUSTATE);
 	}
 

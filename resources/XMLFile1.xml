@@ -6,17 +6,17 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
     <useControls filename="nifty-default-controls.xml" />
     
     <screen id="start" defaultFocusElement="startWaveButton" 
-        controller="se.chalmers.tda367.std.gui.GameplayOverlay">
+        controller="se.chalmers.tda367.std.gui.GameplayState">
          <layer id="bottomUI" childLayout="horizontal">
             <panel height="10%" width="50%" align="left" valign="bottom" 
             backgroundColor="#444444" childLayout="horizontal" visibleToMouse="true">
-                <text font="verdana-24-shadow.fnt" text="Remaining life: "/>
-                <text font="verdana-24-shadow.fnt" text="${CALL.getRemainingLife()}"/>
+                <control name="label" text="Remaining life: " width="27%" height="100%" align="left"/>
+                <control id="lifeLabel" name="label" width="*" height="100%" textHAlign="left"/>
             </panel>
             <panel height="10%" width="50%" align="right" valign="bottom" 
             backgroundColor="#444444" childLayout="horizontal" visibleToMouse="true">
-                <text font="verdana-24-shadow.fnt" text="Score: "/>
-                <text font="verdana-24-shadow.fnt" text="${CALL.getPlayerScore()}"/>
+                <control name="label" text="Score: " width="11%" height="100%" align="left"/>
+                <control id="scoreLabel" name="label" width="*" height="100%" textHAlign="left"/>
             </panel>
         </layer>
         <layer id="rightUI" childLayout="center" visibleToMouse="true">

@@ -28,6 +28,7 @@ import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.effects.EffectEventId;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
@@ -39,14 +40,12 @@ import de.lessvoid.nifty.slick2d.render.SlickRenderDevice;
 import de.lessvoid.nifty.slick2d.sound.SlickSoundDevice;
 import de.lessvoid.nifty.slick2d.time.LWJGLTimeProvider;
 import de.lessvoid.nifty.spi.input.InputSystem;
+import de.lessvoid.nifty.tools.SizeValue;
 
 
-public class GameplayOverlay extends NiftyOverlayBasicGameState implements ScreenController {
+public class GameplayState extends NiftyOverlayBasicGameState implements ScreenController {
 	private int stateID;
-	private Image pathTile;
-	private Image buildableTile;
 	private Image towerTile;
-	private Image enemyImage;
 	private int tileScale;
 	private boolean towerChoosed;
 	private GameBoard board;
@@ -54,11 +53,12 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 	private Player player;
 	private GameController gameControl;
 	private Nifty nifty;
-	private InputSystem input;
 	private int mouseX, mouseY;
 	
-	public GameplayOverlay(int stateID) {
+	public GameplayState(int stateID) {
 		this.stateID = stateID;
+		towerChoosed = false;
+		tileScale = properties.getTileScale();
 	}
 	
 	private String getResourcePath(String path){
@@ -73,21 +73,14 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 	@Override
 	protected void initGameAndGUI(GameContainer container, StateBasedGame state)
 			throws SlickException {
-		pathTile = new Image(getResourcePath("/images/gameplay/path_tile.jpg"));
-		buildableTile = new Image(getResourcePath("/images/gameplay/buildable_tile.png"));
 		towerTile = new Image(getResourcePath("/images/gameplay/tower_tile1.png"));
-		enemyImage = new Image(getResourcePath("/images/gameplay/enemy.png"));
-		
-		towerChoosed = false;
-		tileScale = properties.getTileScale();
 		
 		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
 		
-		input = new PlainSlickInputSystem();
-		nifty = new Nifty(new SlickRenderDevice(container), new SlickSoundDevice(), input, new LWJGLTimeProvider());
-		prepareNifty(nifty, state);
+		prepareNifty(new Nifty(new SlickRenderDevice(container), new SlickSoundDevice(),
+				new PlainSlickInputSystem(), new LWJGLTimeProvider()), state);
 		initNifty(container, state);
 		
 		EventBus.INSTANCE.register(this);
@@ -101,6 +94,7 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 	@Override
 	protected void prepareNifty(Nifty nifty, StateBasedGame state) {
 		nifty.fromXml(getResourcePath("/XMLFile1.xml"), "start", this);
+		this.nifty = this.getNifty();
 	}
 
 	@Override
@@ -147,6 +141,7 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 			throws SlickException {
 		gameControl.updateGameState(delta);
 		nifty.update();
+		UpdateCurrentStats();
 		
 		Input input = container.getInput();
 		mouseX = input.getMouseX();
@@ -154,6 +149,7 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 		
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 			towerChoosed = false;
+			nifty.getCurrentScreen().findElementByName("startWaveButton").setFocus();
 		}
 		
 		if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()
@@ -164,7 +160,7 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 			if(board.getTileAt(p) instanceof IBuildableTile) {
 				board.placeTile(new BasicAttackTower(), p);
 				towerChoosed = false;
-				//TODO: Reset focus
+				nifty.getCurrentScreen().findElementByName("startWaveButton").setFocus();
 			}
     	}
 	}
@@ -190,13 +186,21 @@ public class GameplayOverlay extends NiftyOverlayBasicGameState implements Scree
 		gameControl.nextWave();
 	}
 	
+	
+	public void UpdateCurrentStats() {
+		Element lifeLabel = nifty.getCurrentScreen().findElementByName("lifeLabel");
+		Element scoreLabel = nifty.getCurrentScreen().findElementByName("scoreLabel");
+		
+	    lifeLabel.getNiftyControl(Label.class).setText("" + board.getPlayerBase().getHealth());
+	    scoreLabel.getNiftyControl(Label.class).setText("" + player.getCurrentScore());
+	}
+	
 	public String getPlayerScore() {
 		return player.getCurrentScore() + "";
 	}
 	
-	//TODO: Load remaining life dynamic
 	public String getRemainingLife() {
-		return "10";
+		return board.getPlayerBase().getHealth() + "";
 	}
 	
 	public void buildTower(String tower) {
