@@ -59,13 +59,13 @@ public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
 	 * Returns the armor of the enemy.
 	 * @return the armor of the enemy
 	 */
-	public float getArmor();
+	public int getArmor();
 	
 	/**
 	 * Returns the base armor of the enemy, enemy armor without any effects on it.
 	 * @return the base armor of the enemy.
 	 */
-	public float getBaseArmor();
+	public int getBaseArmor();
 	
 //	/**
 //	 * Increase speed of the enemy with the specified value

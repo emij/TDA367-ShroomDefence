@@ -81,6 +81,9 @@ public abstract class AbstractEnemy implements IEnemy{
 
 	@Override
 	public void decreaseHealth(int dmg) {
+		int reducedDmg = dmg - this.getArmor();
+		dmg = (reducedDmg > 0) ? reducedDmg : 0;
+		
 		if(dmg > currentHealth) {
 			currentHealth = 0;
 			return;
@@ -110,16 +113,16 @@ public abstract class AbstractEnemy implements IEnemy{
 	}
 
 	@Override
-	public float getArmor() {
+	public int getArmor() {
 		double armor = baseArmor;
 		for(IEffect effect: effects){
 			armor = armor * effect.getArmorModifier();
 		}
-		return (float)armor;
+		return (int)armor;
 	}
 
 	@Override
-	public float getBaseArmor() {
+	public int getBaseArmor() {
 		return baseArmor;
 	}
 

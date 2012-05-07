@@ -64,7 +64,7 @@ class WaveController {
 	public void updateWaveRelated(final int delta){
 		moveEnemies(delta);
 		shootAtEnemiesInRange(delta);
-		applyEffects();
+		applyHealthEffects();
 		removeDeadEnemies();
 		checkIfPlayerAlive();
 	}
@@ -164,20 +164,23 @@ class WaveController {
 	/**
 	 * Apply the effects on the enemies
 	 */
-	private void applyEffects() {
+	private void applyHealthEffects() {
 		List<EnemyItem> enemies = board.getEnemies();
 		
 		for (EnemyItem ei : enemies) {
-			applyEffect(ei);
+			applyHealthEffect(ei);
 		}
 	}
 
 	
-	private void applyEffect(EnemyItem ei) {
+	private void applyHealthEffect(EnemyItem ei) {
 		IEnemy enemy = ei.getEnemy();
+		double healthModifier = 1.0;
 		for (IEffect ie : enemy.getEffects()) {
-			//TODO continue this
+			healthModifier = healthModifier * ie.getHealthModifier();
 		}
+		double health = enemy.getHealth() * healthModifier;
+		enemy.decreaseHealth(enemy.getHealth()-(int)health);
 	}
 
 	private void checkIfPlayerAlive(){
