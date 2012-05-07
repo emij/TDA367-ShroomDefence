@@ -3,45 +3,46 @@ package se.chalmers.tda367.std.core.effects;
 /**
  * A skeleton implementation of IEffect.
  * @author Johan Gustafsson
+ * @modifed Johan Andersson
  * @date Apr 23, 2012
  */
 public abstract class AbstractEffect implements IEffect {
-	
-	private int duration;
-	private int speedMod;
-	private int healthMod;
-	private int armorMod;
-	
-	public AbstractEffect(int duration, int speedModifier, int healthModifier, int armorModifier) {
+
+	private double duration,
+					 speedMod,
+					 healthMod,
+					 armorMod;
+
+	public AbstractEffect(double duration, double speedModifier, double healthModifier, double armorModifier) {
 		this.duration 	= duration;
 		this.speedMod 	= speedModifier;
 		this.healthMod 	= healthModifier;
 		this.armorMod	= armorModifier;
 	}
-	
+
 	@Override
-	public int getDuration() {
+	public double getDuration() {
 		return duration;
 	}
-	
+
 	@Override 
-	public void decrementDuration() {
-		duration -= 1;
+	public void decrementDuration(double milisec) {
+		duration -= milisec;
 	}
-	
+
 	@Override
-	public int getSpeedModifier() {
+	public double getSpeedModifier() {
 		return speedMod;
 	}
-	
+
 	@Override
-	public int getHealthModifier() {
+	public double getHealthModifier() {
 		return healthMod;
 	}
-	
+
 	@Override
-	public int getArmorModifier() {
+	public double getArmorModifier() {
 		return armorMod;
 	}
-	
+
 }
