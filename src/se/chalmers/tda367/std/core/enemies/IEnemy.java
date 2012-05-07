@@ -17,6 +17,12 @@ import se.chalmers.tda367.std.utilities.Sprite;
 public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
 	
 	/**
+	 * Returns the base health of the enemy, enemy health without any effects on it.
+	 * @return the base health of the enemy.
+	 */
+	public int getBaseHealth();
+	
+	/**
 	 * Returns the health of the enemy.
 	 * @return the current health of the enemy.
 	 */
@@ -42,18 +48,37 @@ public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
 	 * @return the speed of the enemy
 	 */
 	public float getSpeed();
+	
 	/**
-	 * Increase speed of the enemy with the specified value
-	 * @param inc
-	 * @return current speed
+	 * Returns the base speed of the enemy, enemy speed without any effects on it.
+	 * @return the base speed of the enemy.
 	 */
-	public float increaseSpeed(float inc);
+	public float getBaseSpeed();
+	
 	/**
-	 * Decrease speed of the enemy with the specified value
-	 * @param inc
-	 * @return the new speed
+	 * Returns the armor of the enemy.
+	 * @return the armor of the enemy
 	 */
-	public float decreaseSpeed(float inc);
+	public float getArmor();
+	
+	/**
+	 * Returns the base armor of the enemy, enemy armor without any effects on it.
+	 * @return the base armor of the enemy.
+	 */
+	public float getBaseArmor();
+	
+//	/**
+//	 * Increase speed of the enemy with the specified value
+//	 * @param inc
+//	 * @return current speed
+//	 */
+//	public float increaseSpeed(float inc);
+//	/**
+//	 * Decrease speed of the enemy with the specified value
+//	 * @param inc
+//	 * @return the new speed
+//	 */
+//	public float decreaseSpeed(float inc);
 	
 	/**
 	 * Returns the current boardValue of the enemy.
