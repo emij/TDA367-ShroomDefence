@@ -28,7 +28,7 @@ public abstract class AbstractEnemy implements IEnemy{
 
 	public AbstractEnemy(int startHealth, float speed, int armor, int lootValue, Sprite sprite){
 		this.baseHealth = startHealth;
-//		this.currentHealth = this.baseHealth;
+		this.currentHealth = this.baseHealth;
 		this.baseSpeed    = speed;
 //		this.currentSpeed	= baseSpeed;
 		this.baseArmor 		= armor;
