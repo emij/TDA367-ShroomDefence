@@ -27,7 +27,7 @@ public class Sprite {
 		this.nativeSprite = nativeSprite;
 		String s = getClass().getResource(resourceString).getPath();
 		if(s != null) {
-			imagePath = Paths.get(s.substring(1)); // Must for some reason remove a '/' at the beginning.
+			imagePath = Paths.get(s/*.substring(1)*/); // Must for some reason remove a '/' at the beginning.
 			nativeSprite.create(imagePath);
 		}
 		else {
