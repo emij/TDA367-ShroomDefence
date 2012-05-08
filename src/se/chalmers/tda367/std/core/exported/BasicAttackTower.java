@@ -25,6 +25,7 @@ public final class BasicAttackTower extends AbstractAttackTower {
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
 							 attackSpeed     = 100;
+	private static final String name = "BasicTower";
 	
 	//TODO: change sprite for the basic tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/tower_tile1.png");
@@ -34,7 +35,7 @@ public final class BasicAttackTower extends AbstractAttackTower {
 	
 	public BasicAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
-				null, sprite);
+				null, sprite, name);
 	}
 
 	@Override

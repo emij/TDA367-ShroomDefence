@@ -14,6 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import com.google.common.eventbus.Subscribe;
 
+import se.chalmers.tda367.std.core.DynamicLoader;
 import se.chalmers.tda367.std.core.EnemyItem;
 import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
@@ -23,12 +24,14 @@ import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.exported.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
+import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
@@ -50,6 +53,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private List<AttackAnimation> attacksList;
 	private Image[] explosion;
 	private Animation explosionAnimation;
+	private ITower choosenTower;
 
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
@@ -73,6 +77,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		initAnimations();
 		initNifty(container, state);
 		nifty = this.getNifty();
+		initGUIButtons();
 		
 		lifeLabel = nifty.getCurrentScreen().findElementByName("lifeLabel");
 		scoreLabel = nifty.getCurrentScreen().findElementByName("scoreLabel");
@@ -81,6 +86,24 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		container.getGraphics().setLineWidth(3);
 		
 		EventBus.INSTANCE.register(this);
+	}
+
+	private void initGUIButtons() {
+		//TODO: Fix the implemenation of this so it shows a name of the tower and also so it adds them in right order.
+		Element leftBtnPanel = nifty.getCurrentScreen().findElementByName("leftButtonPanel");
+		Element rightBtnPanel = nifty.getCurrentScreen().findElementByName("rightButtonPanel");
+		ControlBuilder cb = new ControlBuilder("icons");
+		cb.width("85%");
+		cb.height("15%");
+		cb.name("button");
+		cb.font("verdana-smallregular.fnt");
+		List<Class<ITower>> exportedTowers = DynamicLoader.getTowers();
+		
+		for(Class<ITower> towerClass : exportedTowers) {
+			ITower tmpInst = DynamicLoader.createInstance(towerClass);
+			cb.interactOnClick("buildTower("+ tmpInst.getName() + ")");
+			cb.build(nifty, nifty.getCurrentScreen(), leftBtnPanel);
+		}
 	}
 
 	private void initAnimations() throws SlickException {
@@ -149,7 +172,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			int y = mouseY / tileScale;
 			BoardPosition p = BoardPosition.valueOf(x, y);
 			if(board.getTileAt(p) instanceof IBuildableTile) {
-				board.placeTile(new BasicAttackTower(), p);
+				board.placeTile(choosenTower, p);
 				towerChoosed = false;
 				defaultFocusElement.setFocus();
 			}
@@ -241,11 +264,11 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	
 	public void buildTower(String tower) {
 		towerChoosed = true;
-		if(tower.equals("basic")) {
-			
+		if(tower.equals("BasicTower")) {
+			choosenTower = new BasicAttackTower();
 		}
-		else if(tower.equals("poison")) {
-			
+		else if(tower.equals("PoisonTower")) {
+			choosenTower = new BasicAttackTower();
 		}
 	}
 	

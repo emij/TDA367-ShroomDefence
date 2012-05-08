@@ -24,21 +24,9 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                 backgroundColor="#444444" childLayout="vertical">
                 <panel id="buttonPanel" childLayout="horizontal" width="95%" height="80%" 
                     align="center" valing="top" backgroundColor="#575757" padding="20%,0,0,8%">
-                    <panel childLayout="vertical" align="left" width="50%" height="100%">
-                        <control id="basicTowerButton" type="button" label="Basic" name="basicTowerButton" width="85%" height="15%">
-                            <interact onClick="buildTower(basic)" />
-                        </control>
-                        <control id="areaTowerButton" type="button" label="AoE" name="areaTowerButton" width="85%" height="15%">
-                            <interact onClick="buildTower(area)" />
-                        </control>
-                        <control id="testButton1" type="button" label="test1" name="testButton1" width="85%" height="15%">
-                            <interact onClick="buildTower(testButton1)" />
-                        </control>
-                        <control id="testButton2" type="button" label="test2" name="testButton2" width="85%" height="15%">
-                            <interact onClick="buildTower(testButton2)" />
-                        </control>
+                    <panel id="leftButtonPanel" childLayout="vertical" align="left" width="50%" height="100%">
                     </panel>
-                    <panel childLayout="vertical" align="right" width="50%" height="100%">
+                    <panel id="rightButtonPanel" childLayout="vertical" align="right" width="50%" height="100%">
                         <control id="slowTowerButton" type="button" label="Slow" name="slowTowerButton" width="85%" height="15%">
                             <interact onClick="buildTower(slow)" />
                         </control>

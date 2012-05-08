@@ -9,6 +9,7 @@ import se.chalmers.tda367.std.core.tiles.IBoardTile;
  * Represents a general tower.
  * @author Emil Edholm
  * @modified Johan Andersson
+ * @modified Johan Gustafsson
  * @date Mar 25, 2012
  */
 public interface ITower extends IBoardTile {
@@ -46,4 +47,9 @@ public interface ITower extends IBoardTile {
 	 */
 	public List<IEffect> getEffects();
 	
+	/**
+	 * Returns a name of the tower.
+	 * @return name of the tower
+	 */
+	public String getName();
 }
