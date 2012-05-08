@@ -120,7 +120,8 @@ class WaveController {
 	/** Method that controls what happens when an enemy enters the player base. */
 	private void enemyEnteredBase(IEnemy enemy){
 		board.getPlayerBase().decreaseHealth();
-		board.getEnemies().remove(enemy); // Remove the "offending" enemy from the game board.
+		board.getEnemies().remove(enemy); 
+		// Remove the "offending" enemy from the game board.
 		// TODO: Send event that player has entered the base?
 	}
 
@@ -155,10 +156,11 @@ class WaveController {
 		//TODO, make more advanced logic.
 		if(!enemies.isEmpty()){
 			enemies.get(0).getEnemy().decreaseHealth(tile.getDmg());
+			System.out.println("Shot at "+enemies.get(0).getEnemy());
+			for(IEffect ie:tile.getEffects()){
+				enemies.get(0).getEnemy().addEffect(ie);	//TODO refactor
+			}
 		}
-//		for(IEffect ie:attackTower.getEffects()){
-//			enemies.get(0).addEffect(ie);	//TODO implements
-//		}
 	}
 
 	/**
