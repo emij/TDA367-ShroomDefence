@@ -26,9 +26,9 @@ public class Sprite {
 	public Sprite(NativeSprite nativeSprite, @Assisted("resourceString") String resourceString){
 		this.nativeSprite = nativeSprite;
 		String s = getClass().getResource(resourceString).getPath();
-		if(s != null) {
-			imagePath = Paths.get(s.substring(1)); // Must for some reason remove a '/' at the beginning.
-			nativeSprite.create(imagePath);
+		if(s != null && s.length() > 0) {
+			imagePath = Paths.get(s);
+			nativeSprite.create(imagePath.toAbsolutePath());
 		}
 		else {
 			Logger.getLogger("se.chalmers.tda367.std.utilities").severe("Unable to find the resource: " + resourceString);
