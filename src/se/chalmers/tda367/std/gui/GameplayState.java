@@ -2,11 +2,12 @@ package se.chalmers.tda367.std.gui;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
@@ -47,6 +48,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Nifty nifty;
 	private Element lifeLabel, scoreLabel, defaultFocusElement;
 	private List<AttackAnimation> attacksList;
+	private Image[] explosion;
+	private Animation explosionAnimation;
 
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
@@ -67,6 +70,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
 		
+		initAnimations();
 		initNifty(container, state);
 		nifty = this.getNifty();
 		
@@ -77,6 +81,15 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		container.getGraphics().setLineWidth(3);
 		
 		EventBus.INSTANCE.register(this);
+	}
+
+	private void initAnimations() throws SlickException {
+		Image exp_1 = new Image(getResourcePath("/animations/explosion_1.png"));
+		Image exp_2 = new Image(getResourcePath("/animations/explosion_2.png"));
+		explosion = new Image[2];
+		explosion[0] = exp_1;
+		explosion[1] = exp_2;
+		explosionAnimation = new Animation(explosion, 500);
 	}
 
 	@Override
@@ -218,6 +231,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			Position to = event.getToPosition();
 			g.drawLine(from.getX()+tileScale/2, from.getY()+tileScale/2,
 					to.getX()+tileScale/2, to.getY()+tileScale/2);
+			g.drawAnimation(explosionAnimation, to.getX(), to.getY());
 			attack.decreaseDuration();
 			if(attack.getRemainigDuration() == 0) {
 				attacksList.remove(attack);
