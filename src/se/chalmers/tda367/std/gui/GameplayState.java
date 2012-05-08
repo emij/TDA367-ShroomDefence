@@ -1,5 +1,9 @@
 package se.chalmers.tda367.std.gui;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -41,12 +45,14 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Player player;
 	private GameController gameControl;
 	private Nifty nifty;
-	private Element lifeLabel, scoreLabel;
+	private Element lifeLabel, scoreLabel, defaultFocusElement;
+	private List<AttackAnimation> attacksList;
 
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
 		towerChoosed = false;
 		tileScale = properties.getTileScale();
+		attacksList = new LinkedList<AttackAnimation>();
 	}
 	
 	@Override
@@ -63,7 +69,10 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		
 		initNifty(container, state);
 		nifty = this.getNifty();
-		prepareNifty(nifty, state);
+		
+		lifeLabel = nifty.getCurrentScreen().findElementByName("lifeLabel");
+		scoreLabel = nifty.getCurrentScreen().findElementByName("scoreLabel");
+		defaultFocusElement = nifty.getCurrentScreen().findElementByName("startWaveButton");
 		
 		container.getGraphics().setLineWidth(3);
 		
@@ -78,9 +87,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Override
 	protected void prepareNifty(Nifty nifty, StateBasedGame state) {
 		nifty.fromXml(getResourcePath("/XMLFile1.xml"), "start", this);
-		
-		lifeLabel = nifty.getCurrentScreen().findElementByName("lifeLabel");
-		scoreLabel = nifty.getCurrentScreen().findElementByName("scoreLabel");
 	}
 
 	@Override
@@ -91,24 +97,29 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
         renderTiles();
         renderEnemies(g);
         
+        //If a tower has been selected it will show a small rectangle where you hold the
+        //mouse to indicate if one can build on that tile or not.
         if(towerChoosed) {
         	renderBuildingFeedback(g);
+        }
+        if(attacksList != null && !attacksList.isEmpty()) {
+        	renderAttacks(g);
         }
 	}
 	
 	@Subscribe
 	public void renderTowerShooting(TowerShootingEvent event){
-		Position from = event.getFromPosition();
-		Position to = event.getToPosition();
+		//Position from = event.getFromPosition();
+		//Position to = event.getToPosition();
 		// TODO: logic goes here.
+		AttackAnimation attack = new AttackAnimation(event, 50);
+		attacksList.add(attack);
 	}
 	
 	@Override
 	protected void updateGame(GameContainer container, StateBasedGame state, int delta)
 			throws SlickException {
 		gameControl.updateGameState(delta);
-		nifty.update();
-		
 		
 		Input input = container.getInput();
 		mouseX = input.getMouseX();
@@ -116,7 +127,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 			towerChoosed = false;
-			nifty.getCurrentScreen().findElementByName("startWaveButton").setFocus();
+			defaultFocusElement.setFocus();
 		}
 		
 		if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()
@@ -127,7 +138,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			if(board.getTileAt(p) instanceof IBuildableTile) {
 				board.placeTile(new BasicAttackTower(), p);
 				towerChoosed = false;
-				nifty.getCurrentScreen().findElementByName("startWaveButton").setFocus();
+				defaultFocusElement.setFocus();
 			}
     	}
 	}
@@ -199,6 +210,21 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 	}
 	
+	private void renderAttacks(Graphics g) {
+		List<AttackAnimation> tmpList = new LinkedList<AttackAnimation>(attacksList);
+		for(AttackAnimation attack : tmpList) {
+			TowerShootingEvent event = attack.getAttackEvent();
+			Position from = event.getFromPosition();
+			Position to = event.getToPosition();
+			g.drawLine(from.getX()+tileScale/2, from.getY()+tileScale/2,
+					to.getX()+tileScale/2, to.getY()+tileScale/2);
+			attack.decreaseDuration();
+			if(attack.getRemainigDuration() == 0) {
+				attacksList.remove(attack);
+			}
+		}
+	}
+	
 	public void buildTower(String tower) {
 		towerChoosed = true;
 		if(tower.equals("basic")) {
@@ -206,6 +232,38 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 		else if(tower.equals("poison")) {
 			
+		}
+	}
+	
+	/**
+	 * Private helper class for representing a towers attack.
+	 * @author Johan Gustafsson
+	 * @date   May 08, 2012
+	 */
+	private class AttackAnimation {
+		private int duration;
+		private TowerShootingEvent event;
+		
+		public AttackAnimation(TowerShootingEvent event, int duration) {
+			this.duration = duration;
+			this.event = event;
+		}
+		
+		public void decreaseDuration() {
+			if(duration != 0) {
+				duration -= 1;
+			}
+			else {
+				duration = 0;
+			}
+		}
+		
+		public int getRemainigDuration() {
+			return duration;
+		}
+		
+		public TowerShootingEvent getAttackEvent() {
+			return event;
 		}
 	}
 }
