@@ -20,11 +20,10 @@ import javax.swing.DefaultComboBoxModel;
 import se.chalmers.tda367.std.mapeditor.events.NewMapEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
 
-import java.awt.Dialog.ModalityType;
-import java.awt.Window.Type;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class NewMapWizard extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -118,6 +117,7 @@ public class NewMapWizard extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						// What happens on the OK button click.
 						int width = (int)NewMapWizard.this.widthSpinner.getValue();
 						int height = (int)NewMapWizard.this.heightSpinner.getValue();
 						DefaultTile defTile = (DefaultTile)NewMapWizard.this.defaultTileComboBox.getSelectedItem();
@@ -135,6 +135,7 @@ public class NewMapWizard extends JDialog {
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						// Hide form on Cancel click.
 						NewMapWizard.this.setVisible(false);
 					}
 				});
