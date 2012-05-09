@@ -47,13 +47,13 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private int stateID;
 	private int tileScale;
 	private int mouseX, mouseY;
-	private boolean towerIsChoosen, optionsScreenIsOpen;
+	private boolean towerIsChoosen, optionsScreenIsOpen, gameOver;
 	private GameBoard board;
 	private Properties properties = Properties.INSTANCE;
 	private Player player;
 	private GameController gameControl;
 	private Nifty nifty;
-	private Element lifeLabel, scoreLabel, defaultFocusElement, optionsPopup;
+	private Element lifeLabel, scoreLabel, defaultFocusElement, optionsPopup, gameOverPopup;
 	private List<AttackAnimation> attacksList;
 	private Image[] explosion;
 	private Animation explosionAnimation;
@@ -62,25 +62,27 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
-		towerIsChoosen = false;
-		optionsScreenIsOpen = false;
 		tileScale = properties.getTileScale();
-		attacksList = new LinkedList<AttackAnimation>();
 	}
 	
 	@Override
 	protected void enterState(GameContainer container, StateBasedGame state)
 			throws SlickException {
+		towerIsChoosen = false;
+		optionsScreenIsOpen = false;
+		gameOver = false;
+		attacksList = new LinkedList<AttackAnimation>();
+		
+		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
+		player = new Player("GustenTestar");
+		gameControl = new GameController(player, board);
+		
 		backgroundMusic.loop(1, 1);
 	}
 
 	@Override
 	protected void initGameAndGUI(GameContainer container, StateBasedGame state)
 			throws SlickException {
-		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
-		player = new Player("GustenTestar");
-		gameControl = new GameController(player, board);
-		
 		initSound();
 		initAnimations();
 		initNifty(container, state);
@@ -129,11 +131,14 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		scoreLabel = nifty.getCurrentScreen().findElementByName("scoreLabel");
 		defaultFocusElement = nifty.getCurrentScreen().findElementByName("startWaveButton");
 		optionsPopup = nifty.createPopup("optionsPopup");
+		gameOverPopup = nifty.createPopup("gameOverPopup");
 	}
 	
 	@Override
 	protected void leaveState(GameContainer container, StateBasedGame state)
 			throws SlickException {
+		backgroundMusic.stop();
+		nifty.closePopup(gameOverPopup.getId());
 	}
 
 	@Override
@@ -194,6 +199,13 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 				defaultFocusElement.setFocus();
 			}
     	}
+		if(board.getPlayerBase().getHealth() == 0) {
+			nifty.showPopup(nifty.getCurrentScreen(), gameOverPopup.getId(), null);
+		}
+		
+		if(gameOver) {
+			state.enterState(STDGame.MAINMENUSTATE);
+		}
 	}
 
 	@Override
@@ -297,6 +309,10 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			nifty.showPopup(nifty.getCurrentScreen(), optionsPopup.getId(), null);
 		}
 		optionsScreenIsOpen = !optionsScreenIsOpen;
+	}
+	
+	public void endGame() {
+		gameOver = true;
 	}
 	
 	@NiftyEventSubscriber(id="musicCheckbox")

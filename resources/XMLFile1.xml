@@ -75,4 +75,17 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
             </panel>
         </panel>
     </popup>
+    <popup id="gameOverPopup" childLayout="center" backgroundColor="#000a">
+        <panel style="nifty-panel-red" childLayout="vertical" padding="18px,28px,40px,16px" width="50%" height="80%" align="center" valign="center">
+            <panel childLayout="vertical" width="85%" height="80%">
+                <text text="Game over!" font="verdana-smallregular.fnt" fontSize="40" width="100%" height="20%" textHAlign="center"/>
+                <text text="Your final score was:" font="verdana-smallregular.fnt" fontSize="20" width="100%" height="20%" wrap="true"/>
+            </panel>
+            <panel childLayout="vertical" width="*" height="*">
+                <control id="endGameButton" name="button" label="Close" width="50%" height="90%" align="right" valign="bottom">
+                    <interact onClick="endGame()"/>
+                </control>
+            </panel>
+        </panel>
+    </popup>
 </nifty>
