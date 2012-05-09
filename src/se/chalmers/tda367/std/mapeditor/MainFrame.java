@@ -2,12 +2,14 @@ package se.chalmers.tda367.std.mapeditor;
 
 import java.awt.BorderLayout;
 import javax.swing.*;
+
 import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.logging.Logger;
 
 /**
  * The main frame of the Map Editor.
@@ -16,6 +18,27 @@ import java.awt.Insets;
  */
 @SuppressWarnings("serial")
 public final class MainFrame extends JFrame {
+	
+	/**
+	 * Launches the map editor GUI.
+	 * @param args the command line arguments.
+	 */
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch(Exception e) {
+			Logger.getLogger("se.chalmers.tda367.std.mapeditor").severe("Unable to set look and feel of the map editor");
+			e.printStackTrace();
+		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				MainFrame mf = new MainFrame();
+				mf.setVisible(true);
+			}
+		});
+	}
+	
 	public MainFrame(){
 		initializeFrame();
 	}
