@@ -96,7 +96,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private void initGUIButtons() {
 		//TODO: Fix the implemenation of this so it shows a name of the tower and also so it adds them in right order.
 		Element leftBtnPanel = nifty.getCurrentScreen().findElementByName("leftButtonPanel");
-		Element rightBtnPanel = nifty.getCurrentScreen().findElementByName("rightButtonPanel");
+		//Element rightBtnPanel = nifty.getCurrentScreen().findElementByName("rightButtonPanel");
 		ControlBuilder cb = new ControlBuilder("icons");
 		cb.width("85%");
 		cb.height("15%");
