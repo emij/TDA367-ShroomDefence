@@ -54,11 +54,19 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
     </screen>
     <popup id="optionsPopup" childLayout="center" backgroundColor="#000a">
         <panel style="nifty-panel-red" childLayout="vertical" padding="18px,28px,40px,16px" width="50%" height="80%" align="center" valign="center">
-            <panel childLayout="horizontal" width="85%" height="80%">
-                <control id="musicCheckbox" name="checkbox" label="music on/off" width="15%" height="10%" align="left" valign="top">
-                    
-                </control>
-                <control name="label" text="Music on/off" width="50%" height="10%" align="right"/>
+            <panel childLayout="vertical" width="85%" height="80%">
+                <panel childLayout="horizontal" width="85%" height="20%"> 
+                    <control name="label" text="Music on/off" width="50%" height="85%" align="left" valign="center"/>
+                    <control id="musicCheckbox" name="checkbox" width="7%" height="43%" align="right" valign="center">
+                        
+                    </control>
+                </panel>
+                <panel childLayout="horizontal" width="85%" height="20%">
+                    <control name="label" text="Music volume" width="50%" height="85%" align="left" valign="center"/>
+                    <control id="musicVolumeSlider" name="horizontalSlider" initial="100" width="55%" height="25%" align="right" valign="center">
+                        
+                    </control>
+                </panel>     
             </panel>
             <panel childLayout="vertical" width="*" height="*">
                 <control id="closeOptionsButton" name="button" label="Close" width="50%" height="90%" align="right" valign="bottom">

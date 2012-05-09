@@ -36,6 +36,7 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.Label;
+import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -70,7 +71,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Override
 	protected void enterState(GameContainer container, StateBasedGame state)
 			throws SlickException {
-		backgroundMusic.play();
+		backgroundMusic.loop(1, 1);
 	}
 
 	@Override
@@ -306,6 +307,11 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		else {
 			backgroundMusic.resume();
 		}
+	}
+	
+	@NiftyEventSubscriber(id="musicVolumeSlider")
+	public void onSliderEvent(String id, SliderChangedEvent event) {
+		backgroundMusic.setVolume(event.getValue()/100);
 	}
 	
 	/**
