@@ -22,8 +22,11 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
         <layer id="rightUI" childLayout="center" visibleToMouse="true">
             <panel height="100%" width="21%" align="right" valign="center" 
                 backgroundColor="#444444" childLayout="vertical">
+                <control id="optionsButton" name="button" label="Options" width="85%" height="10%" align="center">
+                    <interact onClick="toggleOptions()"/>
+                </control>
                 <panel id="buttonPanel" childLayout="horizontal" width="95%" height="80%" 
-                    align="center" valing="top" backgroundColor="#575757" padding="20%,0,0,8%">
+                    align="center" valing="top" backgroundColor="#575757" padding="10%,0,0,8%">
                     <panel id="leftButtonPanel" childLayout="vertical" align="left" width="50%" height="100%">
                     </panel>
                     <panel id="rightButtonPanel" childLayout="vertical" align="right" width="50%" height="100%">
@@ -49,4 +52,19 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
             </panel>
         </layer>
     </screen>
+    <popup id="optionsPopup" childLayout="center" backgroundColor="#000a">
+        <panel style="nifty-panel-red" childLayout="vertical" padding="18px,28px,40px,16px" width="50%" height="80%" align="center" valign="center">
+            <panel childLayout="horizontal" width="85%" height="80%">
+                <control id="musicCheckbox" name="checkbox" label="music on/off" width="15%" height="10%" align="left" valign="top">
+                    
+                </control>
+                <control name="label" text="Music on/off" width="50%" height="10%" align="right"/>
+            </panel>
+            <panel childLayout="vertical" width="*" height="*">
+                <control id="closeOptionsButton" name="button" label="Close" width="50%" height="90%" align="right" valign="bottom">
+                    <interact onClick="toggleOptions()"/>
+                </control>
+            </panel>
+        </panel>
+    </popup>
 </nifty>

@@ -18,7 +18,6 @@ public class MainMenuState extends BasicGameState {
 	private float exitButtonScale;
 	private int menuX;
 	private int menuY;
-	private Sound music;
 	
 	public MainMenuState(int stateID) {
 		this.stateID = stateID;
@@ -39,9 +38,6 @@ public class MainMenuState extends BasicGameState {
 		
 		menuX = container.getWidth()/35;
 		menuY = container.getHeight()/2;
-		
-		music = new Sound(getResourcePath("/audio/main_menu/music.wav"));
-		music.loop();
 	}
 
 	@Override
