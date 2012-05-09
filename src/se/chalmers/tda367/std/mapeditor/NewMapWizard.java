@@ -16,6 +16,10 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.Dialog.ModalityType;
+import java.awt.Window.Type;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class NewMapWizard extends JDialog {
 
@@ -25,8 +29,11 @@ public class NewMapWizard extends JDialog {
 	 * Create the dialog.
 	 */
 	public NewMapWizard() {
+		setType(Type.UTILITY);
+		setResizable(false);
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("New map");
-		setBounds(100, 100, 220, 175);
+		setBounds(100, 100, 199, 151);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -86,10 +93,10 @@ public class NewMapWizard extends JDialog {
 			contentPanel.add(lblDefaultTile, gbc_lblDefaultTile);
 		}
 		{
-			JComboBox<String> comboBox = new JComboBox<String>();
+			JComboBox<DefaultTile> comboBox = new JComboBox<DefaultTile>();
 			comboBox.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 			comboBox.setToolTipText("What tile to fill the \"background\" by default");
-			comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Terrain tile", "Buildable tile"}));
+			comboBox.setModel(new DefaultComboBoxModel<DefaultTile>(DefaultTile.values()));
 			GridBagConstraints gbc_comboBox = new GridBagConstraints();
 			gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 			gbc_comboBox.gridx = 1;
@@ -108,6 +115,11 @@ public class NewMapWizard extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						NewMapWizard.this.setVisible(false);
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
