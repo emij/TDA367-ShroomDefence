@@ -5,20 +5,22 @@ import javax.swing.*;
 
 import com.google.common.eventbus.Subscribe;
 
+import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.maps.MapItem;
 import se.chalmers.tda367.std.mapeditor.events.NewMapEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.SpriteCreator;
 
-import java.awt.GridLayout;
 import java.awt.Font;
-import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.logging.Logger;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.CardLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * The main frame of the Map Editor.
@@ -49,9 +51,14 @@ public final class MainFrame extends JFrame {
 		});
 	}
 	
-	private final JPanel rightPanel = new JPanel();
+	private final JSplitPane splitPane = new JSplitPane();
+	private final MapJPanel mapPanel = new MapJPanel();
+	private final JPanel nothingLoadedPanel = new JPanel();
+	
+	private MapItem selectedMapItem;
 	
 	public MainFrame(){
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Add this class to the eventbus.
 		EventBus.INSTANCE.register(this);
 		
@@ -59,10 +66,16 @@ public final class MainFrame extends JFrame {
 	}
 	
 	private void initializeFrame(){
-	    getContentPane().setLayout(new BorderLayout());
+	    splitPane.setEnabled(false);
+	    splitPane.setVisible(false);
+	    getContentPane().setLayout(new CardLayout(0, 0));
 	    
-	    JSplitPane splitPane = new JSplitPane();
-	    getContentPane().add(splitPane, BorderLayout.CENTER);
+	    getContentPane().add(nothingLoadedPanel, "name_30931586860224");
+	    
+	    JLabel lblNewLabel = new JLabel("No map loaded/created");
+	    lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 29));
+	    nothingLoadedPanel.add(lblNewLabel);
+	    getContentPane().add(splitPane, "name_30931601367131");
 	    
 	    JPanel leftPanel = new JPanel();
 	    splitPane.setLeftComponent(leftPanel);
@@ -142,8 +155,19 @@ public final class MainFrame extends JFrame {
 	    gbc_rdbtnPlaceWaypoint.gridy = 6;
 	    panel.add(rdbtnPlaceWaypoint, gbc_rdbtnPlaceWaypoint);
 	    buttonGroup.add(rdbtnPlaceWaypoint);
+	    mapPanel.addMouseListener(new MouseAdapter() {
+	    	@Override
+	    	public void mouseClicked(MouseEvent e) {
+	    		int scale = Properties.INSTANCE.getTileScale();
+	    		
+	    		int x = e.getX() / scale;
+	    		int y = e.getY() / scale;
+	    		
+	    		mapPanel.setMapItem(x, y, MapItem.createBuildableMapItem());
+	    	}
+	    });
 	    
-	    splitPane.setRightComponent(rightPanel);
+	    splitPane.setRightComponent(mapPanel);
 	    this.setTitle("STD Map Editor");
 	    this.setLocationRelativeTo(null); // Center screen
 	    this.setSize(690,547);
@@ -167,10 +191,21 @@ public final class MainFrame extends JFrame {
 	    JMenuItem mntmOpen = new JMenuItem("Open...");
 	    mnFile.add(mntmOpen);
 	    
+	    JSeparator separator_1 = new JSeparator();
+	    mnFile.add(separator_1);
+	    
+	    JMenuItem mntmSaveAs = new JMenuItem("Save as...");
+	    mnFile.add(mntmSaveAs);
+	    
 	    JSeparator separator = new JSeparator();
 	    mnFile.add(separator);
 	    
 	    JMenuItem mntmExit = new JMenuItem("Exit");
+	    mntmExit.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		System.exit(0);
+	    	}
+	    });
 	    mnFile.add(mntmExit);
 	    
 	    JMenu mnEdit = new JMenu("Edit");
@@ -182,18 +217,8 @@ public final class MainFrame extends JFrame {
 	
 	@Subscribe
 	public void createNewMap(NewMapEvent event) {
-		MapItem defaultItem = new MapItem(event.getDefaultTile().getTile());
-		int width = event.getWidth();
-		int height = event.getHeight();
-		
-		rightPanel.setLayout(new GridLayout(width, height));
-		
-		MapItemJPanel itemPanel = null;
-		for(int y = 0; y < height; y++) { 
-			for(int x = 0; x < width; x++) {
-				itemPanel = new MapItemJPanel(x, y, defaultItem);
-				rightPanel.add(itemPanel);
-			}
-		}
+		splitPane.setVisible(true);
+		splitPane.setEnabled(true);
+		nothingLoadedPanel.setVisible(false);
 	}
 }

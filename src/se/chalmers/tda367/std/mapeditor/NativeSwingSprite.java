@@ -1,6 +1,6 @@
 package se.chalmers.tda367.std.mapeditor;
 
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,13 +17,12 @@ import se.chalmers.tda367.std.utilities.NativeSprite;
 public final class NativeSwingSprite implements NativeSprite {
 
 	private BufferedImage image;
-	private Graphics2D graphics;
+	private Graphics graphics;
 	
 	@Override
 	public void create(Path pathToImage) {
 		try {
 			image = ImageIO.read(pathToImage.toFile());
-			graphics = image.createGraphics();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -65,6 +64,13 @@ public final class NativeSwingSprite implements NativeSprite {
 	@Override
 	public int getWidth() {
 		return image.getWidth();
+	}
+	
+	/**
+	 * Must be set before able to draw since swing requires a Graphics object that does the actual drawing.
+	 */
+	public void setGraphics(Graphics g) {
+		this.graphics = g;
 	}
 
 }
