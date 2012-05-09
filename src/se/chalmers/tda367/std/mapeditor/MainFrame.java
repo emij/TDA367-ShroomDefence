@@ -3,6 +3,11 @@ package se.chalmers.tda367.std.mapeditor;
 import java.awt.BorderLayout;
 import javax.swing.*;
 
+import com.google.common.eventbus.Subscribe;
+
+import se.chalmers.tda367.std.mapeditor.events.NewMapEvent;
+import se.chalmers.tda367.std.utilities.EventBus;
+
 import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.FlowLayout;
@@ -10,6 +15,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.logging.Logger;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * The main frame of the Map Editor.
@@ -40,6 +47,9 @@ public final class MainFrame extends JFrame {
 	}
 	
 	public MainFrame(){
+		// Add this class to the eventbus.
+		EventBus.INSTANCE.register(this);
+		
 		initializeFrame();
 	}
 	
@@ -142,6 +152,13 @@ public final class MainFrame extends JFrame {
 	    menuBar.add(mnFile);
 	    
 	    JMenuItem mntmNewMap = new JMenuItem("New...");
+	    mntmNewMap.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		NewMapWizard wizard = new NewMapWizard();
+	    		wizard.setLocationRelativeTo(null);
+	    		wizard.setVisible(true);
+	    	}
+	    });
 	    mnFile.add(mntmNewMap);
 	    
 	    JMenuItem mntmOpen = new JMenuItem("Open...");
@@ -158,5 +175,10 @@ public final class MainFrame extends JFrame {
 	    
 	    JMenuItem mntmMenuItemGoes = new JMenuItem("Menu item goes here...");
 	    mnEdit.add(mntmMenuItemGoes);
+	}
+	
+	@Subscribe
+	public void createNewMap(NewMapEvent event) {
+		// TODO: Create a new map with specified settings.
 	}
 }
