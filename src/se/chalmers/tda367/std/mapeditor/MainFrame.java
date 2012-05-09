@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import com.google.common.eventbus.Subscribe;
 
+import se.chalmers.tda367.std.core.maps.MapItem;
 import se.chalmers.tda367.std.mapeditor.events.NewMapEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
 
@@ -45,6 +46,8 @@ public final class MainFrame extends JFrame {
 			}
 		});
 	}
+	
+	private final JPanel rightPanel = new JPanel();
 	
 	public MainFrame(){
 		// Add this class to the eventbus.
@@ -138,9 +141,7 @@ public final class MainFrame extends JFrame {
 	    panel.add(rdbtnPlaceWaypoint, gbc_rdbtnPlaceWaypoint);
 	    buttonGroup.add(rdbtnPlaceWaypoint);
 	    
-	    JPanel rightPanel = new JPanel();
 	    splitPane.setRightComponent(rightPanel);
-	    rightPanel.setLayout(new GridLayout(1, 0, 0, 0));
 	    this.setTitle("STD Map Editor");
 	    this.setLocationRelativeTo(null); // Center screen
 	    this.setSize(690,547);
@@ -179,6 +180,18 @@ public final class MainFrame extends JFrame {
 	
 	@Subscribe
 	public void createNewMap(NewMapEvent event) {
-		// TODO: Create a new map with specified settings.
+		MapItem defaultItem = new MapItem(event.getDefaultTile().getTile());
+		int width = event.getWidth();
+		int height = event.getHeight();
+		
+		rightPanel.setLayout(new GridLayout(width, height));
+		
+		MapItemJPanel itemPanel = null;
+		for(int y = 0; y < height; y++) { 
+			for(int x = 0; x < width; x++) {
+				itemPanel = new MapItemJPanel(x, y, defaultItem);
+				rightPanel.add(itemPanel);
+			}
+		}
 	}
 }
