@@ -16,6 +16,10 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+
+import se.chalmers.tda367.std.mapeditor.events.NewMapEvent;
+import se.chalmers.tda367.std.utilities.EventBus;
+
 import java.awt.Dialog.ModalityType;
 import java.awt.Window.Type;
 import java.awt.event.ActionListener;
@@ -24,6 +28,9 @@ import java.awt.event.ActionEvent;
 public class NewMapWizard extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	private final JSpinner widthSpinner;
+	private final JSpinner heightSpinner;
+	private final JComboBox<DefaultTile> defaultTileComboBox;
 
 	/**
 	 * Create the dialog.
@@ -55,13 +62,13 @@ public class NewMapWizard extends JDialog {
 			contentPanel.add(lblMapWidth, gbc_lblMapWidth);
 		}
 		{
-			JSpinner spinner = new JSpinner();
-			spinner.setModel(new SpinnerNumberModel(25, 10, 500, 1));
+			widthSpinner = new JSpinner();
+			widthSpinner.setModel(new SpinnerNumberModel(25, 10, 500, 1));
 			GridBagConstraints gbc_spinner = new GridBagConstraints();
 			gbc_spinner.insets = new Insets(0, 0, 5, 0);
 			gbc_spinner.gridx = 1;
 			gbc_spinner.gridy = 0;
-			contentPanel.add(spinner, gbc_spinner);
+			contentPanel.add(widthSpinner, gbc_spinner);
 		}
 		{
 			JLabel lblHeight = new JLabel("Height");
@@ -74,13 +81,13 @@ public class NewMapWizard extends JDialog {
 			contentPanel.add(lblHeight, gbc_lblHeight);
 		}
 		{
-			JSpinner spinner = new JSpinner();
-			spinner.setModel(new SpinnerNumberModel(20, 10, 500, 1));
+			heightSpinner = new JSpinner();
+			heightSpinner.setModel(new SpinnerNumberModel(20, 10, 500, 1));
 			GridBagConstraints gbc_spinner = new GridBagConstraints();
 			gbc_spinner.insets = new Insets(0, 0, 5, 0);
 			gbc_spinner.gridx = 1;
 			gbc_spinner.gridy = 1;
-			contentPanel.add(spinner, gbc_spinner);
+			contentPanel.add(heightSpinner, gbc_spinner);
 		}
 		{
 			JLabel lblDefaultTile = new JLabel("Default tile");
@@ -93,15 +100,15 @@ public class NewMapWizard extends JDialog {
 			contentPanel.add(lblDefaultTile, gbc_lblDefaultTile);
 		}
 		{
-			JComboBox<DefaultTile> comboBox = new JComboBox<DefaultTile>();
-			comboBox.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-			comboBox.setToolTipText("What tile to fill the \"background\" by default");
-			comboBox.setModel(new DefaultComboBoxModel<DefaultTile>(DefaultTile.values()));
+			defaultTileComboBox = new JComboBox<DefaultTile>();
+			defaultTileComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+			defaultTileComboBox.setToolTipText("What tile to fill the \"background\" with by default");
+			defaultTileComboBox.setModel(new DefaultComboBoxModel<DefaultTile>(DefaultTile.values()));
 			GridBagConstraints gbc_comboBox = new GridBagConstraints();
 			gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 			gbc_comboBox.gridx = 1;
 			gbc_comboBox.gridy = 2;
-			contentPanel.add(comboBox, gbc_comboBox);
+			contentPanel.add(defaultTileComboBox, gbc_comboBox);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -109,6 +116,17 @@ public class NewMapWizard extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int width = (int)NewMapWizard.this.widthSpinner.getValue();
+						int height = (int)NewMapWizard.this.heightSpinner.getValue();
+						DefaultTile defTile = (DefaultTile)NewMapWizard.this.defaultTileComboBox.getSelectedItem();
+								
+						NewMapEvent event = new NewMapEvent(width, height, defTile);
+						EventBus.INSTANCE.post(event);
+						NewMapWizard.this.setVisible(false);
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
