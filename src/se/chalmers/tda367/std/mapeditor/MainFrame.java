@@ -8,6 +8,7 @@ import com.google.common.eventbus.Subscribe;
 import se.chalmers.tda367.std.core.maps.MapItem;
 import se.chalmers.tda367.std.mapeditor.events.NewMapEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 
 import java.awt.GridLayout;
 import java.awt.Font;
@@ -32,6 +33,7 @@ public final class MainFrame extends JFrame {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
+		SpriteCreator.setNativeSpriteClass(NativeSwingSprite.class);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch(Exception e) {

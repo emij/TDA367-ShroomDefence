@@ -2,10 +2,6 @@ package se.chalmers.tda367.std.utilities;
 
 import java.nio.file.Path;
 
-import com.google.inject.ImplementedBy;
-
-import se.chalmers.tda367.std.gui.NativeSlickSprite;
-
 /**
  * A interface that describes common methods for a sprite.
  * Each GUI needs to have a class that implements this interface to convert to
@@ -13,7 +9,6 @@ import se.chalmers.tda367.std.gui.NativeSlickSprite;
  * @author Emil Edholm
  * @date   Apr 28, 2012
  */
-@ImplementedBy(NativeSlickSprite.class)
 public interface NativeSprite {
 	
 	/**

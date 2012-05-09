@@ -9,11 +9,18 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
  * @date   Apr 28, 2012
  */
 final class SpriteModule extends AbstractModule {
+	private final Class<? extends NativeSprite> nativeClass;
+	public SpriteModule(Class<? extends NativeSprite> nativeClass) {
+		this.nativeClass = nativeClass;
+	}
 	@Override
 	public void configure() {
+		bind(NativeSprite.class).to(nativeClass);
 		install(new FactoryModuleBuilder()
 	     .implement(Sprite.class, Sprite.class)
 	     .build(SpriteFactory.class));
 	}
+	
+	
 
 }
