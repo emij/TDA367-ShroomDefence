@@ -8,12 +8,13 @@ import se.chalmers.tda367.std.mapeditor.DefaultTile;
  * @date   May 9, 2012
  */
 public final class NewMapEvent {
-	private final int width, height;
+	private final int width, height, level;
 	private final DefaultTile defaultTile;
-	public NewMapEvent(int width, int height, DefaultTile defaultTile) {
+	public NewMapEvent(int width, int height, DefaultTile defaultTile, int level) {
 		this.width = width;
 		this.height = height;
 		this.defaultTile = defaultTile;
+		this.level = level;
 	}
 	
 	public int getWidth() {
@@ -26,6 +27,13 @@ public final class NewMapEvent {
 	
 	public DefaultTile getDefaultTile() {
 		return defaultTile;
+	}
+	
+	/**
+	 * @return the level this map represents.
+	 */
+	public int getLevel() {
+		return this.level;
 	}
 }
 

@@ -29,6 +29,7 @@ public class NewMapWizard extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private final JSpinner widthSpinner;
 	private final JSpinner heightSpinner;
+	private final JSpinner levelSpinner;
 	private final JComboBox<DefaultTile> defaultTileComboBox;
 
 	/**
@@ -39,23 +40,23 @@ public class NewMapWizard extends JDialog {
 		setResizable(false);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("New map");
-		setBounds(100, 100, 199, 151);
+		setBounds(100, 100, 206, 185);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
 		gbl_contentPanel.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_contentPanel.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JLabel lblMapWidth = new JLabel("Width");
-			lblMapWidth.setFont(new Font("Tahoma", Font.BOLD, 14));
+			lblMapWidth.setFont(new Font("Dialog", Font.PLAIN, 13));
 			lblMapWidth.setToolTipText("The number of tiles used in the width");
 			GridBagConstraints gbc_lblMapWidth = new GridBagConstraints();
 			gbc_lblMapWidth.anchor = GridBagConstraints.EAST;
-			gbc_lblMapWidth.insets = new Insets(0, 0, 5, 5);
+			gbc_lblMapWidth.insets = new Insets(0, 0, 5, 15);
 			gbc_lblMapWidth.gridx = 0;
 			gbc_lblMapWidth.gridy = 0;
 			contentPanel.add(lblMapWidth, gbc_lblMapWidth);
@@ -64,6 +65,7 @@ public class NewMapWizard extends JDialog {
 			widthSpinner = new JSpinner();
 			widthSpinner.setModel(new SpinnerNumberModel(25, 10, 500, 1));
 			GridBagConstraints gbc_spinner = new GridBagConstraints();
+			gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
 			gbc_spinner.insets = new Insets(0, 0, 5, 0);
 			gbc_spinner.gridx = 1;
 			gbc_spinner.gridy = 0;
@@ -71,9 +73,9 @@ public class NewMapWizard extends JDialog {
 		}
 		{
 			JLabel lblHeight = new JLabel("Height");
-			lblHeight.setFont(new Font("Tahoma", Font.BOLD, 14));
+			lblHeight.setFont(new Font("Dialog", Font.PLAIN, 13));
 			GridBagConstraints gbc_lblHeight = new GridBagConstraints();
-			gbc_lblHeight.insets = new Insets(0, 0, 5, 5);
+			gbc_lblHeight.insets = new Insets(0, 0, 5, 15);
 			gbc_lblHeight.anchor = GridBagConstraints.EAST;
 			gbc_lblHeight.gridx = 0;
 			gbc_lblHeight.gridy = 1;
@@ -83,6 +85,7 @@ public class NewMapWizard extends JDialog {
 			heightSpinner = new JSpinner();
 			heightSpinner.setModel(new SpinnerNumberModel(20, 10, 500, 1));
 			GridBagConstraints gbc_spinner = new GridBagConstraints();
+			gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
 			gbc_spinner.insets = new Insets(0, 0, 5, 0);
 			gbc_spinner.gridx = 1;
 			gbc_spinner.gridy = 1;
@@ -90,10 +93,10 @@ public class NewMapWizard extends JDialog {
 		}
 		{
 			JLabel lblDefaultTile = new JLabel("Default tile");
-			lblDefaultTile.setFont(new Font("Segoe UI", Font.BOLD, 14));
+			lblDefaultTile.setFont(new Font("Dialog", Font.PLAIN, 13));
 			GridBagConstraints gbc_lblDefaultTile = new GridBagConstraints();
 			gbc_lblDefaultTile.anchor = GridBagConstraints.EAST;
-			gbc_lblDefaultTile.insets = new Insets(0, 0, 0, 5);
+			gbc_lblDefaultTile.insets = new Insets(0, 0, 5, 15);
 			gbc_lblDefaultTile.gridx = 0;
 			gbc_lblDefaultTile.gridy = 2;
 			contentPanel.add(lblDefaultTile, gbc_lblDefaultTile);
@@ -104,10 +107,32 @@ public class NewMapWizard extends JDialog {
 			defaultTileComboBox.setToolTipText("What tile to fill the \"background\" with by default");
 			defaultTileComboBox.setModel(new DefaultComboBoxModel<DefaultTile>(DefaultTile.values()));
 			GridBagConstraints gbc_comboBox = new GridBagConstraints();
+			gbc_comboBox.insets = new Insets(0, 0, 5, 0);
 			gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 			gbc_comboBox.gridx = 1;
 			gbc_comboBox.gridy = 2;
 			contentPanel.add(defaultTileComboBox, gbc_comboBox);
+		}
+		{
+			JLabel lblMapLevel = new JLabel("Map level");
+			lblMapLevel.setToolTipText("What level the new map shall represent.");
+			lblMapLevel.setFont(new Font("Dialog", Font.PLAIN, 13));
+			GridBagConstraints gbc_lblMapLevel = new GridBagConstraints();
+			gbc_lblMapLevel.anchor = GridBagConstraints.EAST;
+			gbc_lblMapLevel.insets = new Insets(0, 0, 0, 15);
+			gbc_lblMapLevel.gridx = 0;
+			gbc_lblMapLevel.gridy = 3;
+			contentPanel.add(lblMapLevel, gbc_lblMapLevel);
+		}
+		{
+			levelSpinner = new JSpinner();
+			levelSpinner.setToolTipText("What level the new map shall represent.");
+			levelSpinner.setModel(new SpinnerNumberModel(1, 1, 1000, 1));
+			GridBagConstraints gbc_spinner = new GridBagConstraints();
+			gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
+			gbc_spinner.gridx = 1;
+			gbc_spinner.gridy = 3;
+			contentPanel.add(levelSpinner, gbc_spinner);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -121,8 +146,9 @@ public class NewMapWizard extends JDialog {
 						int width = (int)NewMapWizard.this.widthSpinner.getValue();
 						int height = (int)NewMapWizard.this.heightSpinner.getValue();
 						DefaultTile defTile = (DefaultTile)NewMapWizard.this.defaultTileComboBox.getSelectedItem();
+						int level = (int)NewMapWizard.this.levelSpinner.getValue();
 								
-						NewMapEvent event = new NewMapEvent(width, height, defTile);
+						NewMapEvent event = new NewMapEvent(width, height, defTile, level);
 						EventBus.INSTANCE.post(event);
 						NewMapWizard.this.setVisible(false);
 					}
