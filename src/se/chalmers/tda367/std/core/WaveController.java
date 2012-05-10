@@ -65,8 +65,14 @@ class WaveController {
 		moveEnemies(delta);
 		shootAtEnemiesInRange(delta);
 		applyHealthEffects();
+		decreaseEffectsDuration();
 		removeDeadEnemies();
 		checkIfPlayerAlive();
+	}
+
+	private void decreaseEffectsDuration() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
