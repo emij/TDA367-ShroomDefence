@@ -10,17 +10,16 @@ import se.chalmers.tda367.std.utilities.Position;
  * @author Johan Gustafsson
  * @date April 15, 2012
  */
-public class EnemyItem {
+public class EnemyItem implements Comparable<EnemyItem>{
 	private IEnemy enemy;
 	private Position enemyPos;
-	private double distanceTraveled;
 	private List<Position> waypoints;
 	private Properties p = Properties.INSTANCE;
+	private float enemyDistanceTraveled = 0;
 	
 	public EnemyItem(IEnemy enemy, Position enemyPos, List<Position> waypoints) {
 		this.enemy = enemy;
 		this.enemyPos = new Position(enemyPos.getX()*p.getTileScale(), enemyPos.getY()*p.getTileScale());
-		this.distanceTraveled = 0;
 		this.waypoints = waypoints;
 	}
 	
@@ -45,14 +44,6 @@ public class EnemyItem {
 	public List<Position> getWaypoints() {
 		return waypoints;
 	}
-	
-	/**
-	 * @return the shortest distance between the enemy and the end position.
-	 */
-	public double getDistanceTraveled() {
-		return distanceTraveled;
-	}
-	
 	/**
 	 * Move the enemy forward.
 	 * @param delta - the amount of time (in milliseconds) since the last movement.	
@@ -65,6 +56,7 @@ public class EnemyItem {
 		Position waypoint = waypoints.get(0);
 		if(!minorDifference(waypoint, enemyPos)) {
 			float speedDelta = enemy.getSpeed() * delta;
+			enemyDistanceTraveled = enemyDistanceTraveled + speedDelta;
 			float x = enemyPos.getX();
 			float y = enemyPos.getY();
 			float wayX = waypoint.getX();
@@ -96,10 +88,23 @@ public class EnemyItem {
 	/** Decides if the difference between two values are negligible */
 	private boolean minorDifference(float f1, float f2) {
 		float diff = f1 - f2;
-		return Math.abs(diff) < 2F;
+		return Math.abs(diff) < 5F;
 	}
 	
 	private boolean minorDifference(Position p1, Position p2) {
 		return minorDifference(p1.getX(), p2.getX()) && minorDifference(p1.getY(), p2.getY());
+	}
+	
+	public float getEnemyDistanceTraveled(){
+		return enemyDistanceTraveled;
+	}
+	public int compareTo(EnemyItem item){
+		if (this.getEnemyDistanceTraveled() < item.getEnemyDistanceTraveled()){
+			return -1;
+		} else if (this.getEnemyDistanceTraveled() > item.getEnemyDistanceTraveled()){
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 }

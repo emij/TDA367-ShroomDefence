@@ -79,6 +79,7 @@ public class GameBoard {
 				inRadius.add(ei);
 			}
 		}
+		Collections.sort(inRadius);
 		return inRadius; // TODO: Sort by enemies closest to player base.
 	}
 	
