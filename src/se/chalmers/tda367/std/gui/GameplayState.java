@@ -52,7 +52,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Player player;
 	private GameController gameControl;
 	private Nifty nifty;
-	private Element lifeLabel, scoreLabel, defaultFocusElement,
+	private Element lifeLabel, scoreLabel, levelLabel, defaultFocusElement,
 					optionsPopup, gameOverPopup;
 	private List<AttackAnimation> attacksList;
 	private Image[] explosion;
@@ -140,6 +140,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		Screen tmpScreen = nifty.getCurrentScreen();
 		lifeLabel = tmpScreen.findElementByName("lifeLabel");
 		scoreLabel = tmpScreen.findElementByName("scoreLabel");
+		levelLabel = tmpScreen.findElementByName("levelLabel");
 		defaultFocusElement = tmpScreen.findElementByName("startWaveButton");
 		optionsPopup = nifty.createPopup("optionsPopup");
 		gameOverPopup = nifty.createPopup("gameOverPopup");
@@ -264,6 +265,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private void renderStats() {
 	    lifeLabel.getNiftyControl(Label.class).setText("" + board.getPlayerBase().getHealth());
 	    scoreLabel.getNiftyControl(Label.class).setText("" + player.getCurrentScore());
+	    levelLabel.getNiftyControl(Label.class).setText("" + gameControl.getWavesReleased());
 	}
 	
 	private void renderBuildingFeedback(Graphics g) {

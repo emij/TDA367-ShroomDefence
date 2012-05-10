@@ -108,4 +108,13 @@ public class GameController {
 	public boolean playerCanAffordTower(ITower tower) {
 		return buildControl.playerCanAffordTower(tower);
 	}
+	
+	/**
+	 *  Returns how many waves that have been released
+	 * 
+	 * @return number of waves released
+	 */
+	public int getWavesReleased() {
+		return releasedWaves;
+	}
 }
