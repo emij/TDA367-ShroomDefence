@@ -1,5 +1,7 @@
 package se.chalmers.tda367.std.utilities;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
@@ -19,16 +21,17 @@ public class Sprite {
 	
 	/**
 	 * Create a sprite with the image loaded from a resource string.
-	 * @param - nativeSprite the native sprite to use (dependency injected).
-	 * @param - resourceString the resource string from which to load the image.
+	 * @param nativeSprite - the native sprite to use (dependency injected).
+	 * @param resourceString - the resource string from which to load the image.
+	 * @throws URISyntaxException - if unable to fetch and convert the {@code resourceString} to a correct URI.
 	 */
 	@Inject
-	public Sprite(NativeSprite nativeSprite, @Assisted("resourceString") String resourceString){
+	public Sprite(NativeSprite nativeSprite, @Assisted("resourceString") String resourceString) throws URISyntaxException{
 		this.nativeSprite = nativeSprite;
-		String s = getClass().getResource(resourceString).getPath();
-		if(s != null) {
-			imagePath = Paths.get(s.substring(1)); // Must for some reason remove a '/' at the beginning.
-			nativeSprite.create(imagePath);
+		URI uri = getClass().getResource(resourceString).toURI();
+		if(uri != null) {
+			imagePath = Paths.get(uri);
+			nativeSprite.create(imagePath.toAbsolutePath());
 		}
 		else {
 			Logger.getLogger("se.chalmers.tda367.std.utilities").severe("Unable to find the resource: " + resourceString);

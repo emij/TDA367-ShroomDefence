@@ -95,8 +95,8 @@ public class EnemyItem {
 	
 	/** Decides if the difference between two values are negligible */
 	private boolean minorDifference(float f1, float f2) {
-		int diff = Float.compare(Math.abs(f1 - f2), 0.5F);
-		return diff <= 0;
+		float diff = f1 - f2;
+		return Math.abs(diff) < 5F;
 	}
 	
 	private boolean minorDifference(Position p1, Position p2) {
