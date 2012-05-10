@@ -3,7 +3,11 @@ package se.chalmers.tda367.std.core.tiles.towers;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.chalmers.tda367.std.core.EnemyItem;
 import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.events.TowerShootingEvent;
+import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -30,9 +34,8 @@ public abstract class AbstractAttackTower implements IAttackTower{
 		this.attackSpeed     = attackSpeed;
 		this.sprite          = sprite;
 		this.towerName		 = name;
-		if(effects != null){
-			this.effects		 = new ArrayList<IEffect>(effects);
-		}
+		this.effects = effects != null ? new ArrayList<IEffect>(effects): new ArrayList<IEffect>();
+		
 	}
 
 	@Override
@@ -43,6 +46,24 @@ public abstract class AbstractAttackTower implements IAttackTower{
 
 	@Override
 	public abstract void upgrade();
+	
+	
+
+	@Override
+	public void shoot(List<EnemyItem> enemies, Position pos) {
+		if(!enemies.isEmpty()){
+
+			enemies.get(0).getEnemy().decreaseHealth(this.getDmg());
+		
+			for(IEffect ie:this.getEffects()){
+				enemies.get(0).getEnemy().addEffect(ie);	//TODO refactor
+			}
+
+
+			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemies.get(0).getEnemyPos()));
+
+		}
+	}
 
 	@Override
 	public int refund() {

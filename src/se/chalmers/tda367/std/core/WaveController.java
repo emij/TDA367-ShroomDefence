@@ -170,20 +170,21 @@ class WaveController {
 	private void shoot(IAttackTower tile, Position pos) {
 		int radius = tile.getRadius() * Properties.INSTANCE.getTileScale();
 		List<EnemyItem> enemies = board.getEnemiesInRadius(pos, radius);
-		
-		//TODO, make more advanced logic.
-		if(!enemies.isEmpty()){
+		tile.shoot(enemies, pos);
+//		
+//		//TODO, make more advanced logic.
+//		if(!enemies.isEmpty()){
+//
+//			enemies.get(0).getEnemy().decreaseHealth(tile.getDmg());
+//		
+//			for(IEffect ie:tile.getEffects()){
+//				enemies.get(0).getEnemy().addEffect(ie);	//TODO refactor
+//			}
+//
+//
+//			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemies.get(0).getEnemyPos()));
 
-			enemies.get(0).getEnemy().decreaseHealth(tile.getDmg());
-			System.out.println("Shot at "+enemies.get(0).getEnemy());
-			for(IEffect ie:tile.getEffects()){
-				enemies.get(0).getEnemy().addEffect(ie);	//TODO refactor
-			}
-
-
-			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemies.get(0).getEnemyPos()));
-
-		}
+//		}
 	}
 
 	/**
