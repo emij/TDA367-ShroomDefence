@@ -200,8 +200,10 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 				BoardPosition p = BoardPosition.valueOf(x, y);
 				if(board.getTileAt(p) instanceof IBuildableTile) {
 					board.placeTile(choosenTower, p);
-					towerIsChoosen = false;
-					defaultFocusElement.setFocus();
+					if(!input.isKeyDown(Input.KEY_LSHIFT)) {
+						towerIsChoosen = false;
+						defaultFocusElement.setFocus();
+					}
 				}
 	    	}
 			if(board.getPlayerBase().getHealth() == 0) {
