@@ -65,13 +65,22 @@ class WaveController {
 		moveEnemies(delta);
 		shootAtEnemiesInRange(delta);
 		applyHealthEffects();
-		decreaseEffectsDuration();
+		decreaseEffectsDuration(delta);
 		removeDeadEnemies();
 		checkIfPlayerAlive();
 	}
 
-	private void decreaseEffectsDuration() {
-		// TODO Auto-generated method stub
+	private void decreaseEffectsDuration(int delta) {
+		List<EnemyItem> enemyItems = board.getEnemies();
+		for(EnemyItem ei:enemyItems){
+			List<IEffect> effects = ei.getEnemy().getEffects();
+			for(IEffect effect:effects){
+				effect.decrementDuration(delta);
+				if(effect.getDuration() < 0.01){
+					ei.getEnemy().removeEffect(effect);
+				}
+			}
+		}
 		
 	}
 
