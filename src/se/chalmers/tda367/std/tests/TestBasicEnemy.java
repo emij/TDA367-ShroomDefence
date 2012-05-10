@@ -20,6 +20,7 @@ public class TestBasicEnemy {
 	
 	@Test
 	public void testGetBaseSpeed() {
+		//0.2F standard speed of enemy
 		assertTrue(enemy.getBaseSpeed() - 0.2F < 0.0001 );
 	}
 
