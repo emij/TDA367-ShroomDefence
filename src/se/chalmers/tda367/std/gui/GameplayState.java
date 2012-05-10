@@ -35,11 +35,9 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
-import de.lessvoid.nifty.controls.Controller;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.controls.label.LabelControl;
-import de.lessvoid.nifty.controls.nullobjects.LabelNull;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -47,9 +45,7 @@ import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
 
 
 public class GameplayState extends NiftyOverlayBasicGameState implements ScreenController {
-	private int stateID;
-	private int tileScale;
-	private int mouseX, mouseY;
+	private int stateID, tileScale, mouseX, mouseY, delta;
 	private boolean towerIsChoosen, optionsScreenIsOpen, gameOver;
 	private GameBoard board;
 	private Properties properties = Properties.INSTANCE;
@@ -175,7 +171,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	
 	@Subscribe
 	public void renderTowerShooting(TowerShootingEvent event){
-		AttackAnimation attack = new AttackAnimation(event, 50);
+		AttackAnimation attack = new AttackAnimation(event, 1000);
 		attacksList.add(attack);
 	}
 	
@@ -183,6 +179,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Override
 	protected void updateGame(GameContainer container, StateBasedGame state, int delta)
 			throws SlickException {
+		this.delta = delta;
 		if(!gameOver) {
 			gameControl.updateGameState(delta);
 			
@@ -293,7 +290,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			g.drawLine(from.getX()+tileScale/2, from.getY()+tileScale/2,
 					to.getX()+tileScale/2, to.getY()+tileScale/2);
 			g.drawAnimation(explosionAnimation, to.getX(), to.getY());
-			attack.decreaseDuration();
+			attack.decreaseDuration(delta);
 			if(attack.getRemainigDuration() == 0) {
 				attacksList.remove(attack);
 			}
@@ -353,9 +350,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			this.event = event;
 		}
 		
-		public void decreaseDuration() {
-			if(duration != 0) {
-				duration -= 1;
+		public void decreaseDuration(int delta) {
+			if(duration > 0) {
+				duration -= delta*500;
 			}
 			else {
 				duration = 0;
