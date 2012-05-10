@@ -21,6 +21,9 @@ import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.border.BevelBorder;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 /**
  * The main frame of the Map Editor.
@@ -55,7 +58,7 @@ public final class MainFrame extends JFrame {
 	private final MapJPanel mapPanel = new MapJPanel();
 	private final JPanel nothingLoadedPanel = new JPanel();
 	
-	private MapItem selectedMapItem;
+	private PlaceableTile selectedTile = PlaceableTile.TERRAIN_TILE;
 	
 	public MainFrame(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,75 +89,54 @@ public final class MainFrame extends JFrame {
 	    leftPanel.add(panel, BorderLayout.WEST);
 	    GridBagLayout gbl_panel = new GridBagLayout();
 	    gbl_panel.rowHeights = new int[]{23, 0, 0, 0, 0, 0, 0, 0};
-	    gbl_panel.columnWeights = new double[]{0.0};
-	    gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+	    gbl_panel.columnWeights = new double[]{1.0};
+	    gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 	    panel.setLayout(gbl_panel);
 	    
 	    
 	    JLabel lblChooseTile = new JLabel("Choose tile");
 	    GridBagConstraints gbc_lblChooseTile = new GridBagConstraints();
-	    gbc_lblChooseTile.anchor = GridBagConstraints.WEST;
-	    gbc_lblChooseTile.insets = new Insets(0, 0, 5, 5);
+	    gbc_lblChooseTile.insets = new Insets(0, 0, 5, 0);
 	    gbc_lblChooseTile.gridx = 0;
 	    gbc_lblChooseTile.gridy = 0;
 	    panel.add(lblChooseTile, gbc_lblChooseTile);
 	    lblChooseTile.setFont(new Font("Tahoma", Font.BOLD, 12));
 	    
-	    ButtonGroup buttonGroup = new ButtonGroup();
-	    JRadioButton rdbtnTerrainTile = new JRadioButton("Terrain tile");
-	    GridBagConstraints gbc_rdbtnTerrainTile = new GridBagConstraints();
-	    gbc_rdbtnTerrainTile.anchor = GridBagConstraints.NORTHWEST;
-	    gbc_rdbtnTerrainTile.insets = new Insets(0, 0, 5, 5);
-	    gbc_rdbtnTerrainTile.gridx = 0;
-	    gbc_rdbtnTerrainTile.gridy = 1;
-	    panel.add(rdbtnTerrainTile, gbc_rdbtnTerrainTile);
-	    rdbtnTerrainTile.setSelected(true);
-	    buttonGroup.add(rdbtnTerrainTile);
+	    JComboBox<PlaceableTile> comboBox = new JComboBox<PlaceableTile>();
+	    comboBox.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		@SuppressWarnings("rawtypes")
+				JComboBox src = (JComboBox)e.getSource();
+	    		
+	    		// Update the selected tile.
+	    		selectedTile = (PlaceableTile)src.getSelectedItem();
+	    	}
+	    });
+	    comboBox.setModel(new DefaultComboBoxModel<PlaceableTile>(PlaceableTile.values()));
+	    GridBagConstraints gbc_comboBox = new GridBagConstraints();
+	    gbc_comboBox.insets = new Insets(0, 0, 5, 0);
+	    gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+	    gbc_comboBox.gridx = 0;
+	    gbc_comboBox.gridy = 1;
+	    panel.add(comboBox, gbc_comboBox);
 	    
-	    JRadioButton rdbtnBuildableTile = new JRadioButton("Buildable tile");
-	    GridBagConstraints gbc_rdbtnBuildableTile = new GridBagConstraints();
-	    gbc_rdbtnBuildableTile.anchor = GridBagConstraints.NORTHWEST;
-	    gbc_rdbtnBuildableTile.insets = new Insets(0, 0, 5, 5);
-	    gbc_rdbtnBuildableTile.gridx = 0;
-	    gbc_rdbtnBuildableTile.gridy = 2;
-	    panel.add(rdbtnBuildableTile, gbc_rdbtnBuildableTile);
-	    buttonGroup.add(rdbtnBuildableTile);
+	    JLabel lblPreview = new JLabel("Preview");
+	    lblPreview.setFont(new Font("Tahoma", Font.BOLD, 12));
+	    GridBagConstraints gbc_lblPreview = new GridBagConstraints();
+	    gbc_lblPreview.insets = new Insets(0, 0, 5, 0);
+	    gbc_lblPreview.gridx = 0;
+	    gbc_lblPreview.gridy = 2;
+	    panel.add(lblPreview, gbc_lblPreview);
 	    
-	    JRadioButton rdbtnPathTile = new JRadioButton("Path tile");
-	    GridBagConstraints gbc_rdbtnPathTile = new GridBagConstraints();
-	    gbc_rdbtnPathTile.anchor = GridBagConstraints.NORTHWEST;
-	    gbc_rdbtnPathTile.insets = new Insets(0, 0, 5, 5);
-	    gbc_rdbtnPathTile.gridx = 0;
-	    gbc_rdbtnPathTile.gridy = 3;
-	    panel.add(rdbtnPathTile, gbc_rdbtnPathTile);
-	    buttonGroup.add(rdbtnPathTile);
+	    JPanel previewPanel = new JPanel();
+	    previewPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+	    GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+	    gbc_panel_1.insets = new Insets(0, 0, 5, 0);
+	    gbc_panel_1.fill = GridBagConstraints.BOTH;
+	    gbc_panel_1.gridx = 0;
+	    gbc_panel_1.gridy = 3;
+	    panel.add(previewPanel, gbc_panel_1);
 	    
-	    JRadioButton rdbtnPlayerBaseTile = new JRadioButton("Player base tile");
-	    GridBagConstraints gbc_rdbtnPlayerBaseTile = new GridBagConstraints();
-	    gbc_rdbtnPlayerBaseTile.anchor = GridBagConstraints.NORTHWEST;
-	    gbc_rdbtnPlayerBaseTile.insets = new Insets(0, 0, 5, 5);
-	    gbc_rdbtnPlayerBaseTile.gridx = 0;
-	    gbc_rdbtnPlayerBaseTile.gridy = 4;
-	    panel.add(rdbtnPlayerBaseTile, gbc_rdbtnPlayerBaseTile);
-	    buttonGroup.add(rdbtnPlayerBaseTile);
-	    
-	    JRadioButton rdbtnEnemyStartTile = new JRadioButton("Enemy start tile");
-	    GridBagConstraints gbc_rdbtnEnemyStartTile = new GridBagConstraints();
-	    gbc_rdbtnEnemyStartTile.anchor = GridBagConstraints.NORTHWEST;
-	    gbc_rdbtnEnemyStartTile.insets = new Insets(0, 0, 5, 5);
-	    gbc_rdbtnEnemyStartTile.gridx = 0;
-	    gbc_rdbtnEnemyStartTile.gridy = 5;
-	    panel.add(rdbtnEnemyStartTile, gbc_rdbtnEnemyStartTile);
-	    buttonGroup.add(rdbtnEnemyStartTile);
-	    
-	    JRadioButton rdbtnPlaceWaypoint = new JRadioButton("Place Waypoint");
-	    GridBagConstraints gbc_rdbtnPlaceWaypoint = new GridBagConstraints();
-	    gbc_rdbtnPlaceWaypoint.insets = new Insets(0, 0, 0, 5);
-	    gbc_rdbtnPlaceWaypoint.anchor = GridBagConstraints.NORTHWEST;
-	    gbc_rdbtnPlaceWaypoint.gridx = 0;
-	    gbc_rdbtnPlaceWaypoint.gridy = 6;
-	    panel.add(rdbtnPlaceWaypoint, gbc_rdbtnPlaceWaypoint);
-	    buttonGroup.add(rdbtnPlaceWaypoint);
 	    mapPanel.addMouseListener(new MouseAdapter() {
 	    	@Override
 	    	public void mouseClicked(MouseEvent e) {
@@ -163,7 +145,8 @@ public final class MainFrame extends JFrame {
 	    		int x = e.getX() / scale;
 	    		int y = e.getY() / scale;
 	    		
-	    		mapPanel.setMapItem(x, y, MapItem.createBuildableMapItem());
+	    		MapItem item = selectedTile.getMapItem(x, y);
+	    		mapPanel.setMapItem(x, y, item);
 	    	}
 	    });
 	    
