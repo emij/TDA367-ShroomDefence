@@ -13,7 +13,6 @@ import se.chalmers.tda367.std.utilities.Position;
 public class EnemyItem implements Comparable<EnemyItem>{
 	private IEnemy enemy;
 	private Position enemyPos;
-	private double distanceTraveled;
 	private List<Position> waypoints;
 	private Properties p = Properties.INSTANCE;
 	private float enemyDistanceTraveled = 0;
@@ -21,7 +20,6 @@ public class EnemyItem implements Comparable<EnemyItem>{
 	public EnemyItem(IEnemy enemy, Position enemyPos, List<Position> waypoints) {
 		this.enemy = enemy;
 		this.enemyPos = new Position(enemyPos.getX()*p.getTileScale(), enemyPos.getY()*p.getTileScale());
-		this.distanceTraveled = 0;
 		this.waypoints = waypoints;
 	}
 	
@@ -46,14 +44,6 @@ public class EnemyItem implements Comparable<EnemyItem>{
 	public List<Position> getWaypoints() {
 		return waypoints;
 	}
-	
-	/**
-	 * @return the shortest distance between the enemy and the end position.
-	 */
-	public double getDistanceTraveled() {
-		return distanceTraveled;
-	}
-	
 	/**
 	 * Move the enemy forward.
 	 * @param delta - the amount of time (in milliseconds) since the last movement.	
