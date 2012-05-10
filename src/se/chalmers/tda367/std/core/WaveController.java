@@ -66,11 +66,12 @@ class WaveController {
 	 * @param delta - the amount of time (in milliseconds) since the last update.
 	 */
 	public void updateWaveRelated(final int delta){
-		moveEnemies(delta);
-		shootAtEnemiesInRange(delta);
-		applyEffects();
-		removeDeadEnemies();
-		checkIfPlayerAlive();
+		if(!isPlayerDead()) {
+			moveEnemies(delta);
+			shootAtEnemiesInRange(delta);
+			applyEffects();
+			removeDeadEnemies();
+		}
 	}
 
 	/**
@@ -100,7 +101,7 @@ class WaveController {
 	 * Add a enemy to the game board from a {@code WaveItem}
 	 */
 	private void addEnemy(WaveItem wi){
-		List<EnemyItem> enemies = board.getEnemies();
+		List<EnemyItem> enemies = board.getModifiableEnemies();
 		
 		EnemyItem item = new EnemyItem(wi.getEnemy(), board.getStartPos().toPosition(), board.getWaypoints());
 		enemies.add(item);
@@ -111,21 +112,21 @@ class WaveController {
 	 * @param delta - the amount of time (in milliseconds) since the last update.	
 	 */
 	private void moveEnemies(final int delta){
-		List<EnemyItem> enemies = board.getEnemies();
+		List<EnemyItem> enemies = board.getModifiableEnemies();
+		Iterator<EnemyItem> it = enemies.iterator();
 		
-		for (EnemyItem ei : enemies) {
+		while(it.hasNext()) {
+			EnemyItem ei = it.next();
+			
 			ei.moveEnemy(delta);
-			if(ei.getWaypoints().isEmpty()){ // I.e. the enemy is done walking.
-				enemyEnteredBase(ei.getEnemy());
+			if(ei.getWaypoints().isEmpty()){ 
+				// I.e. the enemy is done walking and has entered the player base.
+				board.getPlayerBase().decreaseHealth();
+				it.remove(); // Remove the enemy from the board.
+
+				// TODO: Send event that player has entered the base?
 			}
 		}
-	}
-	
-	/** Method that controls what happens when an enemy enters the player base. */
-	private void enemyEnteredBase(IEnemy enemy){
-		board.getPlayerBase().decreaseHealth();
-		board.getEnemies().remove(enemy); // Remove the "offending" enemy from the game board.
-		// TODO: Send event that player has entered the base?
 	}
 
 	/**
@@ -185,10 +186,12 @@ class WaveController {
 		}
 	}
 
-	private void checkIfPlayerAlive(){
+	private boolean isPlayerDead(){
 		if(board.getPlayerBase().getHealth() <= 0){
 			playerDead();
+			return true;
 		}
+		return false;
 	}
 
 	private void playerDead(){
@@ -200,7 +203,7 @@ class WaveController {
 	 * Removes the enemies that are dead from the game board.
 	 */
 	private void removeDeadEnemies(){
-		List<EnemyItem> enemies = board.getEnemies();
+		List<EnemyItem> enemies = board.getModifiableEnemies();
 		Iterator<EnemyItem> it = enemies.iterator();
 		
 		while(it.hasNext()){
