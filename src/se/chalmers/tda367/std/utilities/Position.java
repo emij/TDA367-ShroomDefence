@@ -1,5 +1,10 @@
 package se.chalmers.tda367.std.utilities;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 /**
  * Represents a position/coordinate on the game board. 
  * Position coordinates ranging from {@code Float.MIN_VALUE} to {@code Float.MAX_VALUE}
@@ -7,8 +12,9 @@ package se.chalmers.tda367.std.utilities;
  * @modified Emil Edholm (Apr 28, 2012), Johan Andersson (Mar 28, 2012)
  * @date Mar 22, 2012
  */
-public class Position {
-	private float x, y;
+public class Position implements Serializable {
+	private static final long serialVersionUID = -1002505327189491904L;
+	private transient float x, y;
 	
 	public Position(float x, float y){
 		this.x = x;
@@ -114,5 +120,21 @@ public class Position {
 		
 		// The Pythagorean theorem gives us
 		return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+	}
+	
+	/**
+	 * Serialize this {@code Position}.
+	 * @serialData the x value is written first, then the y value.
+	 */
+	private void writeObject(ObjectOutputStream s) throws IOException {
+		s.defaultWriteObject();
+		s.writeFloat(x);
+		s.writeFloat(y);
+	}
+	
+	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+		s.defaultReadObject();
+		this.x = s.readFloat();
+		this.y = s.readFloat();
 	}
 }

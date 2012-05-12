@@ -1,5 +1,9 @@
 package se.chalmers.tda367.std.mapeditor;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +19,12 @@ import se.chalmers.tda367.std.utilities.Position;
  * @modified Emil Edholm (May 12, 2012)
  * @date Apr 16, 2012
  */
-public class LevelMap implements Map {
+public class LevelMap implements Map, Serializable {
+	private static final long serialVersionUID = -7348783894640743904L;
+	
 	private PlaceableTile[][] mapArray;
-	private BoardPosition enemyStartPos;
-	private BoardPosition playerBasePos; // End position.
+	private transient BoardPosition enemyStartPos;
+	private transient BoardPosition playerBasePos; // End position.
 	private final List<Position> waypointsList;
 	private final int level;
 	private final int width;
@@ -86,7 +92,6 @@ public class LevelMap implements Map {
 			
 		} else if(pTile == PlaceableTile.ENEMY_START_TILE) {
 			setPlayerEnemyStartPos(x, y);
-			mapArray[x][y] = PlaceableTile.PATH_TILE;
 			
 		} else if(pTile == PlaceableTile.WAYPOINT) {
 			int scale = Properties.INSTANCE.getTileScale();
@@ -94,7 +99,6 @@ public class LevelMap implements Map {
 			float nY = y * scale + scale / 2;
 			
 			waypointsList.add(Position.valueOf(nX, nY));
-			mapArray[x][y] = PlaceableTile.PATH_TILE;
 		}
 	}
 	
@@ -113,5 +117,30 @@ public class LevelMap implements Map {
 	@Override
 	public List<Position> getWaypointList() {
 		return new ArrayList<Position>(waypointsList); // Note: defensive copy but Position is mutable.
+	}
+	
+	/**
+	 * Serialize this {@code LevelMap}.
+	 * @serialData the x,y values for the player base and enemy start positions are read
+	 * 			   separately. The player base position is written first, followed by enemy start position.
+	 */
+	private void writeObject(ObjectOutputStream s) throws IOException {
+		s.defaultWriteObject();
+		s.writeInt(playerBasePos.getX());
+		s.writeInt(playerBasePos.getY());
+		
+		s.writeInt(enemyStartPos.getX());
+		s.writeInt(enemyStartPos.getY());
+	}
+	
+	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+		s.defaultReadObject();
+		int x = s.readInt();
+		int y = s.readInt();
+		playerBasePos = BoardPosition.valueOf(x, y);
+		
+		x = s.readInt();
+		y = s.readInt();
+		enemyStartPos = BoardPosition.valueOf(x, y);
 	}
 }
