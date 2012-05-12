@@ -22,6 +22,7 @@ import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
 import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Player;
 import se.chalmers.tda367.std.core.Properties;
+import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.core.exported.BasicAttackTower;
 import se.chalmers.tda367.std.core.exported.PoisonAttackTower;
 import se.chalmers.tda367.std.core.exported.SlowingAttackTower;
@@ -36,7 +37,6 @@ import se.chalmers.tda367.std.utilities.Position;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
-import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.SliderChangedEvent;
@@ -112,9 +112,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	}
 
 	private void initGUIButtons() {
-		//TODO: Fix the implemenation of this so it shows a name of the tower and also so it adds them in right order.
+		boolean equal = true;
 		Element leftBtnPanel = nifty.getCurrentScreen().findElementByName("leftButtonPanel");
-		//Element rightBtnPanel = nifty.getCurrentScreen().findElementByName("rightButtonPanel");
+		Element rightBtnPanel = nifty.getCurrentScreen().findElementByName("rightButtonPanel");
 		ButtonBuilder bb = new ButtonBuilder("icons");
 		bb.width("85%");
 		bb.height("15%");
@@ -123,10 +123,14 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		List<Class<ITower>> exportedTowers = DynamicLoader.getTowers();
 		
 		for(Class<ITower> towerClass : exportedTowers) {
-			ITower tmpInst = DynamicLoader.createInstance(towerClass);
-			bb.label(tmpInst.getName());
-			bb.interactOnClick("buildTower("+ tmpInst.getName() + ")");
-			bb.build(nifty, nifty.getCurrentScreen(), leftBtnPanel);
+			Element panel = (equal) ? leftBtnPanel : rightBtnPanel;
+			Tower anno = towerClass.getAnnotation(Tower.class);
+			if(anno != null) {
+				bb.label(anno.name());
+				bb.interactOnClick("buildTower("+ anno.name() + ")");
+			}
+			bb.build(nifty, nifty.getCurrentScreen(), panel);
+			equal = !equal;
 		}
 	}
 
@@ -324,17 +328,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 						selectedTower.getCurrentLevel());
 	}
 	
-	public void buildTower(String tower) {
+	public void buildTower(String anno) {
 		towerIsChoosen = true;
-		if(tower.equals("BasicTower")) {
-			choosenTower = new BasicAttackTower();
-		}
-		else if(tower.equals("PoisonTower")) {
-			choosenTower = new PoisonAttackTower();
-		}
-		else if(tower.equals("SlowingTower")) {
-			choosenTower = new SlowingAttackTower();
-		}
+		choosenTower = DynamicLoader.createTowerInstance(anno);
 	}
 	
 	public void toggleOptions() {

@@ -48,12 +48,6 @@ public interface ITower extends IBoardTile {
 	public List<IEffect> getEffects();
 	
 	/**
-	 * Returns a name of the tower.
-	 * @return name of the tower
-	 */
-	public String getName();
-	
-	/**
 	 * Returns the towers current level.
 	 * @return current level of tower
 	 */

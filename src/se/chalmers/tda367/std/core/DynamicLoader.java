@@ -79,6 +79,23 @@ public final class DynamicLoader {
 		return tmpInstance;
 	}
 	
+	/**
+	 * Create a instance of the tower class represented by given annotation.
+	 * @param string representing the annotation of tower.
+	 * @return A instanced class of a tower with corresponding annotation or null if unable to find.
+	 */
+	public static ITower createTowerInstance(String anno) {
+		if(anno != null) {
+			List<Class<ITower>> exportedTowers = DynamicLoader.getTowers();
+			for(Class<ITower> towerClass : exportedTowers) {
+				if(anno.equals(towerClass.getAnnotation(Tower.class).name())) {
+					return createInstance(towerClass);
+				}
+			}
+		}
+		return null;
+	}
+	
 	
 	/**
 	 * @return Retrieves all dynamically read {@code Enemies} with a correct annotation sorted by enemy strength.

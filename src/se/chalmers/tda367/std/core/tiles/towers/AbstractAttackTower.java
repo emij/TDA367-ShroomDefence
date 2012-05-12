@@ -26,14 +26,13 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	private int timeSinceLastAttack = 0;
 
 	public AbstractAttackTower(int baseCost, int baseDamage, 
-			int effectiveRadius, int aoeRadius, int attackSpeed, List<IEffect> effects, Sprite sprite, String name){
+			int effectiveRadius, int aoeRadius, int attackSpeed, List<IEffect> effects, Sprite sprite){
 		this.baseCost        = baseCost;
 		this.baseDamage      = baseDamage;
 		this.effectiveRadius = effectiveRadius;
 		this.aoeRadius       = aoeRadius;
 		this.attackSpeed     = attackSpeed;
 		this.sprite          = sprite;
-		this.towerName		 = name;
 		this.effects = effects != null ? new ArrayList<IEffect>(effects): new ArrayList<IEffect>();
 		this.currentLevel	 = 1;
 	}
@@ -124,11 +123,6 @@ public abstract class AbstractAttackTower implements IAttackTower{
 
 		// This should probably not be "closed" and it should be up to each
 		// concrete implementation to do that and add their specific values.
-	}
-	
-	@Override
-	public String getName() {
-		return towerName;
 	}
 	
 	@Override

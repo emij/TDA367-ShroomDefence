@@ -22,7 +22,7 @@ import se.chalmers.tda367.std.utilities.SpriteCreator;
  * @author Emil Johansson
  * @date   12 may 2012
  */
-@Tower(name = "Slowing attack tower", description = "AttackTower with slow effect", towerStrength = 2)
+@Tower(name = "Slowing", description = "AttackTower with slow effect", towerStrength = 2)
 public final class SlowingAttackTower extends AbstractAttackTower {
 
 	private static final int baseCost        = 200, 
@@ -34,7 +34,6 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 	static {
 		effects.add(new SlowEffect(1));
 	}
-	private static final String name = "SlowingTower";
 	
 	//TODO: change sprite for the slowing tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/slow_tower_tile.png");
@@ -44,7 +43,7 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 	
 	public SlowingAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
-				effects, sprite, name);
+				effects, sprite);
 	}
 
 	@Override

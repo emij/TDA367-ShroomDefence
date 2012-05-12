@@ -23,7 +23,7 @@ import se.chalmers.tda367.std.utilities.SpriteCreator;
  * @author Emil Johansson
  * @date   12 may 2012
  */
-@Tower(name = "Poison attack tower", description = "AttackTower with poison effect", towerStrength = 2)
+@Tower(name = "Poison", description = "AttackTower with poison effect", towerStrength = 2)
 public final class PoisonAttackTower extends AbstractAttackTower {
 
 	private static final int baseCost        = 200, 
@@ -35,7 +35,6 @@ public final class PoisonAttackTower extends AbstractAttackTower {
 	static {
 		effects.add(new PoisonEffect(1));
 	}
-	private static final String name = "PoisonTower";
 	
 	//TODO: change sprite for the slowing tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/poison_tower_tile.png");
@@ -45,7 +44,7 @@ public final class PoisonAttackTower extends AbstractAttackTower {
 	
 	public PoisonAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
-				effects, sprite, name);
+				effects, sprite);
 	}
 
 	@Override

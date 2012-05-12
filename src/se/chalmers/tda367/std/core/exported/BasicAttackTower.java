@@ -17,7 +17,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Emil Edholm
  * @date   25 mar 2012
  */
-@Tower(name = "Basic attack tower", description = "The most common basic attack tower.", towerStrength = 1)
+@Tower(name = "Basic", description = "The most common basic attack tower.", towerStrength = 1)
 public final class BasicAttackTower extends AbstractAttackTower {
 
 	private static final int baseCost        = 100, 
@@ -25,7 +25,6 @@ public final class BasicAttackTower extends AbstractAttackTower {
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
 							 attackSpeed     = 100;
-	private static final String name = "BasicTower";
 	
 	//TODO: change sprite for the basic tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/basic_tower_tile.png");
@@ -35,7 +34,7 @@ public final class BasicAttackTower extends AbstractAttackTower {
 	
 	public BasicAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
-				null, sprite, name);
+				null, sprite);
 	}
 
 	@Override
