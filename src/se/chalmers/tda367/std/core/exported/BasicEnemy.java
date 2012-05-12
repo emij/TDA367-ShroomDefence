@@ -24,7 +24,7 @@ public final class BasicEnemy extends AbstractEnemy {
 	 * Creates a basic enemy.
 	 */
 	public BasicEnemy() {
-		super(100, 0.2F, 5, 0, sprite);
+		super(100, 0.2F, 5, 50, sprite);
 	}
 	
 	/**

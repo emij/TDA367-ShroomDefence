@@ -7,6 +7,7 @@ import se.chalmers.tda367.std.core.tiles.towers.ITower;
  * The class that contains the game logic for build phase of the game.
  * @author Johan Andersson
  * @modified Emil Edholm (Apr 27, 2012)
+ * @modified Johan Gustafsson (May 12, 2012)
  * @date Apr 22, 2012
  */
 
@@ -31,6 +32,7 @@ class BuildController {
 	public boolean buildTower(ITower tower, GameBoard.BoardPosition pos){
 		if(isBuildableSpot(pos) && playerCanAffordTower(tower)){
 			board.placeTile(tower, pos);
+			player.removeMoney(tower.getBaseCost());
 			return true;
 		} else {
 			return false;
@@ -63,6 +65,7 @@ class BuildController {
 	public boolean upgradeTower(ITower tower){
 		if(playerCanAffordUpgrade(tower)){
 			tower.upgrade();
+			player.removeMoney(tower.getUpgradeCost());
 			return true;
 		} else {
 			return false;

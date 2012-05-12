@@ -23,6 +23,7 @@ import se.chalmers.tda367.std.utilities.Position;
  * The class that contains the game logic for wave phase of the game.
  * @author Johan Andersson
  * @modified Emil Edholm (Apr 27, 2012)
+ * @modified Johan Gustafsson (May 12, 2012)
  * @date Apr 22, 2012
  */
 
@@ -242,6 +243,7 @@ class WaveController {
 			EnemyItem item = it.next();
 			if(item.getEnemy().getHealth() <= 0){
 				it.remove();
+				player.addMoney(item.getEnemy().getLootValue());
 			}
 		}
 	}

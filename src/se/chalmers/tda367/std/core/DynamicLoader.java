@@ -21,6 +21,7 @@ import se.chalmers.tda367.std.utilities.Filter;
  * A class used to load exported classes from a previously
  * specified location dynamically.
  * @author Emil Edholm
+ * @modified Johan Gustafsson
  * @date   Apr 22, 2012
  */
 public final class DynamicLoader {

@@ -3,6 +3,7 @@ package se.chalmers.tda367.std.core;
 /**
  * Represents a player. Contains name, score etc.
  * @author Unchanged
+ * @modified Johan Gustafsson
  * @date Mar 22, 2012
  */
 public class Player {
@@ -41,6 +42,21 @@ public class Player {
 	public void setMoney(int money) {
 		this.money = money;
 	}
+	
+	/**
+	 * @param amount which will be removed
+	 */
+	public void removeMoney(int money) {
+		this.money -= money;
+	}
+	
+	/**
+	 * @param amount which will be added
+	 */
+	public void addMoney(int money) {
+		this.money += money;
+	}
+	
 	/**
 	 * @return the name
 	 */
