@@ -6,8 +6,7 @@ import javax.swing.*;
 import com.google.common.eventbus.Subscribe;
 
 import se.chalmers.tda367.std.core.Properties;
-import se.chalmers.tda367.std.core.maps.MapItem;
-import se.chalmers.tda367.std.mapeditor.events.NewMapEvent;
+import se.chalmers.tda367.std.mapeditor.events.*;
 import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.SpriteCreator;
 
@@ -53,14 +52,15 @@ public final class MainFrame extends JFrame {
 	}
 	
 	private final JSplitPane splitPane = new JSplitPane();
-	private final MapJPanel mapPanel = new MapJPanel();
 	private final JPanel nothingLoadedPanel = new JPanel();
+	private JMenuItem menuItemSaveAs;
 	
 	private PlaceableTile selectedTile = PlaceableTile.TERRAIN_TILE;
 	
+	
 	public MainFrame(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// Add this class to the eventbus.
+		// Register this class to the eventbus.
 		EventBus.INSTANCE.register(this);
 		
 		initializeFrame();
@@ -135,16 +135,17 @@ public final class MainFrame extends JFrame {
 	    gbc_panel_1.gridy = 3;
 	    panel.add(previewPanel, gbc_panel_1);
 	    
+	    MapJPanel mapPanel = new MapJPanel();
 	    mapPanel.addMouseListener(new MouseAdapter() {
 	    	@Override
 	    	public void mouseClicked(MouseEvent e) {
+	    		// Handle the placement of map items in the board.
 	    		int scale = Properties.INSTANCE.getTileScale();
 	    		
+	    		// Calculate the true coordinate.
 	    		int x = e.getX() / scale;
 	    		int y = e.getY() / scale;
-	    		
-	    		MapItem item = selectedTile.getMapItem(x, y);
-	    		mapPanel.setMapItem(x, y, item);
+	    		EventBus.INSTANCE.post(new TilePlacementEvent(selectedTile, x, y));
 	    	}
 	    });
 	    
@@ -162,6 +163,7 @@ public final class MainFrame extends JFrame {
 	    JMenuItem mntmNewMap = new JMenuItem("New...");
 	    mntmNewMap.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
+	    		// Handle the click on "New..."
 	    		NewMapWizard wizard = new NewMapWizard();
 	    		wizard.setLocationRelativeTo(null);
 	    		wizard.setVisible(true);
@@ -170,13 +172,36 @@ public final class MainFrame extends JFrame {
 	    mnFile.add(mntmNewMap);
 	    
 	    JMenuItem mntmOpen = new JMenuItem("Open...");
+	    mntmOpen.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		// Handles the click on "Open..."
+	    		JFileChooser fileChooser = new JFileChooser();
+	    		int retVal = fileChooser.showOpenDialog(MainFrame.this);
+	    		
+	    		if(retVal == JFileChooser.APPROVE_OPTION) {
+	    			EventBus.INSTANCE.post(new OpenMapEvent(fileChooser.getSelectedFile()));
+	    		}
+	    	}
+	    });
 	    mnFile.add(mntmOpen);
 	    
 	    JSeparator separator_1 = new JSeparator();
 	    mnFile.add(separator_1);
 	    
-	    JMenuItem mntmSaveAs = new JMenuItem("Save as...");
-	    mnFile.add(mntmSaveAs);
+	    menuItemSaveAs = new JMenuItem("Save as...");
+	    menuItemSaveAs.setEnabled(false);
+	    menuItemSaveAs.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		// Handles the click on "Save as..."
+	    		JFileChooser fileChooser = new JFileChooser();
+	    		int retVal = fileChooser.showSaveDialog(MainFrame.this);
+	    		
+	    		if(retVal == JFileChooser.APPROVE_OPTION) {
+	    			EventBus.INSTANCE.post(new SaveMapEvent(fileChooser.getSelectedFile()));
+	    		}
+	    	}
+	    });
+	    mnFile.add(menuItemSaveAs);
 	    
 	    JSeparator separator = new JSeparator();
 	    mnFile.add(separator);
@@ -188,18 +213,17 @@ public final class MainFrame extends JFrame {
 	    	}
 	    });
 	    mnFile.add(mntmExit);
-	    
-	    JMenu mnEdit = new JMenu("Edit");
-	    menuBar.add(mnEdit);
-	    
-	    JMenuItem mntmMenuItemGoes = new JMenuItem("Menu item goes here...");
-	    mnEdit.add(mntmMenuItemGoes);
 	}
 	
 	@Subscribe
-	public void createNewMap(NewMapEvent event) {
-		splitPane.setVisible(true);
-		splitPane.setEnabled(true);
-		nothingLoadedPanel.setVisible(false);
+	public void mapLoaded(MapLoadedEvent e) {
+		if(e.didLoadSuccessfully()) {
+			splitPane.setVisible(true);
+			splitPane.setEnabled(true);
+			nothingLoadedPanel.setVisible(false);
+			menuItemSaveAs.setEnabled(true);
+		} else {
+			JOptionPane.showMessageDialog(this, e.getErrorMessage(), "Problem loading the map", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }

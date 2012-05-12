@@ -18,7 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
 import se.chalmers.tda367.std.core.Properties;
-import se.chalmers.tda367.std.mapeditor.events.NewMapEvent;
+import se.chalmers.tda367.std.mapeditor.events.CreateMapEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
 
 import java.awt.event.ActionListener;
@@ -188,7 +188,7 @@ public class NewMapWizard extends JDialog {
 						DefaultTile defTile = (DefaultTile)NewMapWizard.this.defaultTileComboBox.getSelectedItem();
 						int level = (int)NewMapWizard.this.levelSpinner.getValue();
 								
-						NewMapEvent event = new NewMapEvent(width, height, defTile, level);
+						CreateMapEvent event = new CreateMapEvent(width, height, defTile, level);
 						EventBus.INSTANCE.post(event);
 						NewMapWizard.this.setVisible(false);
 					}

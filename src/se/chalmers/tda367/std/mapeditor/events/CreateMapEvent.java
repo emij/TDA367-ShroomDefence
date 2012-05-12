@@ -7,10 +7,10 @@ import se.chalmers.tda367.std.mapeditor.DefaultTile;
  * @author Emil Edholm
  * @date   May 9, 2012
  */
-public final class NewMapEvent {
+public final class CreateMapEvent {
 	private final int width, height, level;
 	private final DefaultTile defaultTile;
-	public NewMapEvent(int width, int height, DefaultTile defaultTile, int level) {
+	public CreateMapEvent(int width, int height, DefaultTile defaultTile, int level) {
 		this.width = width;
 		this.height = height;
 		this.defaultTile = defaultTile;

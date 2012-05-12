@@ -8,7 +8,7 @@ import com.google.common.eventbus.Subscribe;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.maps.LevelMap;
 import se.chalmers.tda367.std.core.maps.MapItem;
-import se.chalmers.tda367.std.mapeditor.events.NewMapEvent;
+import se.chalmers.tda367.std.mapeditor.events.*;
 import se.chalmers.tda367.std.utilities.EventBus;
 
 @SuppressWarnings("serial")
@@ -55,23 +55,46 @@ public class MapJPanel extends JPanel {
 	}
 
 	@Subscribe
-	public void createNewMap(NewMapEvent event) {
+	public void createNewMap(CreateMapEvent event) {
 		MapItem defaultItem = new MapItem(event.getDefaultTile().getTile());
 		int width = event.getWidth();
 		int height = event.getHeight();
 		int level = event.getLevel();
 		
 		mapModel = new LevelMap(level, width, height);
+		
+		// Populate the newly created map with the selected default item.
 		for(int y = 0; y < height; y++) {
 			for(int x = 0; x < width; x++) {
 				mapModel.setMapItem(x, y, defaultItem);
 			}
 		}
 		
+		EventBus.INSTANCE.post(new MapLoadedEvent()); // Notify all listeners that a map has been loaded.
 		this.repaint();
 	}
 	
-	public void setMapItem(int x, int y, MapItem item) {
+	@Subscribe
+	public void placeTileOnMap(TilePlacementEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		
+		MapItem item = e.getTile().getMapItem(x, y);
+		setMapItem(x, y, item);
+	}
+	
+	@Subscribe
+	public void openMap(OpenMapEvent e) {
+		// TODO: implement the opening of the map.
+		EventBus.INSTANCE.post(new MapLoadedEvent("The open map option has not been implemented yet."));
+	}
+	
+	@Subscribe
+	public void saveMap(SaveMapEvent e) {
+		// TODO: implement the map save.
+	}
+	
+	private void setMapItem(int x, int y, MapItem item) {
 		mapModel.setMapItem(x, y, item);
 		this.repaint();
 	}

@@ -7,6 +7,7 @@ import se.chalmers.tda367.std.core.tiles.TerrainTile;
 import se.chalmers.tda367.std.utilities.Position;
 
 /**
+ * Represents the the info on each tile on a Map/Level.
  * @author Emil Edholm
  * @date   Apr 29, 2012
  */
