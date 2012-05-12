@@ -32,7 +32,7 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 							 attackSpeed     = 80;
 	private static List<IEffect> effects = new ArrayList<IEffect>();
 	static {
-		effects.add(new SlowEffect(10));
+		effects.add(new SlowEffect(1));
 	}
 	private static final String name = "SlowingTower";
 	
