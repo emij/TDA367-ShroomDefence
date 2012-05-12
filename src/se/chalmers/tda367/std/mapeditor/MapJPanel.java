@@ -1,6 +1,8 @@
 package se.chalmers.tda367.std.mapeditor;
 
 import java.awt.Graphics;
+import java.io.IOException;
+
 import javax.swing.JPanel;
 
 import com.google.common.eventbus.Subscribe;
@@ -8,6 +10,7 @@ import com.google.common.eventbus.Subscribe;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.mapeditor.events.*;
 import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.IO;
 
 @SuppressWarnings("serial")
 public class MapJPanel extends JPanel {
@@ -83,13 +86,22 @@ public class MapJPanel extends JPanel {
 	
 	@Subscribe
 	public void openMap(OpenMapEvent e) {
-		// TODO: implement the opening of the map.
-		EventBus.INSTANCE.post(new MapLoadedEvent("The open map option has not been implemented yet."));
+		String errorMessage = null;
+		try {
+			mapModel = IO.loadObject(LevelMap.class, e.getSelectedMap());
+		} catch (ClassNotFoundException | IOException e1) {
+			errorMessage = e1.getMessage();
+		}
+		EventBus.INSTANCE.post(new MapLoadedEvent(errorMessage));
 	}
 	
 	@Subscribe
-	public void saveMap(SaveMapEvent e) {
-		// TODO: implement the map save.
+	public void saveMap(SaveMapEvent event) {
+		try {
+			IO.saveObject(mapModel ,event.getNewMapFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void setMapItem(int x, int y, PlaceableTile tile) {
