@@ -35,10 +35,13 @@ import se.chalmers.tda367.std.utilities.Position;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.builder.ControlBuilder;
+import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.events.NiftyMousePrimaryClickedEvent;
+import de.lessvoid.nifty.input.NiftyMouseInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
@@ -58,8 +61,10 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Image[] explosion;
 	private Animation explosionAnimation;
 	private ITower choosenTower;
+	private IAttackTower selectedTower;
 	private Music backgroundMusic;
 	private StateBasedGame state;
+	private BoardPosition towerPos;
 
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
@@ -206,14 +211,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 					}
 				}
 				else if(board.getTileAt(p) instanceof IAttackTower) {
-					towerPopup.findNiftyControl("towerDMGLabel", Label.class).setText("" + 
-												((IAttackTower)board.getTileAt(p)).getDmg());
-					towerPopup.findNiftyControl("towerSPDLabel", Label.class).setText("" + 
-												((IAttackTower)board.getTileAt(p)).getAttackSpeed());
-					towerPopup.findNiftyControl("towerUpgradeCostLabel", Label.class).setText("" + 
-												((IAttackTower)board.getTileAt(p)).getUpgradeCost());
-					towerPopup.findNiftyControl("towerLVLLabel", Label.class).setText("" + 
-												((IAttackTower)board.getTileAt(p)).getCurrentLevel());
+					selectedTower = (IAttackTower)board.getTileAt(p);
+					towerPos = p;
+					updateTowerPopup();
 					nifty.showPopup(nifty.getCurrentScreen(), towerPopup.getId(), null);
 				}
 	    	}
@@ -309,6 +309,17 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 	}
 	
+	private void updateTowerPopup() {
+		towerPopup.findNiftyControl("towerDMGLabel", Label.class).setText("" + 
+						selectedTower.getDmg());
+		towerPopup.findNiftyControl("towerSPDLabel", Label.class).setText("" + 
+						selectedTower.getAttackSpeed());
+		towerPopup.findNiftyControl("towerUpgradeCostLabel", Label.class).setText("" + 
+						selectedTower.getUpgradeCost());
+		towerPopup.findNiftyControl("towerLVLLabel", Label.class).setText("" + 
+						selectedTower.getCurrentLevel());
+	}
+	
 	public void buildTower(String tower) {
 		towerIsChoosen = true;
 		if(tower.equals("BasicTower")) {
@@ -346,6 +357,20 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@NiftyEventSubscriber(id="musicVolumeSlider")
 	public void onSliderEvent(String id, SliderChangedEvent event) {
 		backgroundMusic.setVolume(event.getValue()/100);
+	}
+	
+	public void sellTower() {
+		nifty.closePopup(towerPopup.getId());
+		gameControl.sellTower(selectedTower, towerPos);
+	}
+	
+	public void upgradeTower() {
+		gameControl.upgradeTower(selectedTower);
+		updateTowerPopup();
+	}
+	
+	public void closePopup() {
+		nifty.closePopup(towerPopup.getId());
 	}
 	
 	/**

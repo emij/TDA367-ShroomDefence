@@ -97,11 +97,11 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                 <control id="towerUpgradeCostLabel" name="label" width="100%" height="10%" align="center" textHAlign="center"/>
             </panel>
             <panel childLayout="horizontal" align="center" width="85%" height="20%">
-                <control name="button" label="Sell" width="50%" height="80%" align="right" valign="bottom">
-                    <interact onClick="closePopup()"/>
+                <control id="sellTowerButton" name="button" label="Sell" width="50%" height="80%" align="right" valign="bottom">
+                    <interact onClick="sellTower()"/>
                 </control>
-                <control name="button" label="Upgrade" width="50%" height="80%" align="right" valign="bottom">
-                    <interact onClick="closePopup()"/>
+                <control id="upgradeTowerButton" name="button" label="Upgrade" width="50%" height="80%" align="right" valign="bottom">
+                    <interact onClick="upgradeTower()"/>
                 </control>
             </panel>
             <panel childLayout="vertical" width="*" height="*" paddin="10%">
