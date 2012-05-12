@@ -23,9 +23,6 @@ import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Player;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.anno.Tower;
-import se.chalmers.tda367.std.core.exported.BasicAttackTower;
-import se.chalmers.tda367.std.core.exported.PoisonAttackTower;
-import se.chalmers.tda367.std.core.exported.SlowingAttackTower;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
@@ -42,6 +39,7 @@ import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.events.NiftyMousePrimaryClickedEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
@@ -57,7 +55,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Nifty nifty;
 	private Element lifeLabel, scoreLabel, levelLabel, playerMoneyLabel, defaultFocusElement,
 					optionsPopup, gameOverPopup, towerPopup;
-	private List<AttackAnimation> attacksList;
+	private List<AttackAnimationDuration> attacksList;
 	private Image[] explosion;
 	private Animation explosionAnimation;
 	private ITower choosenTower;
@@ -77,7 +75,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		towerIsChoosen = false;
 		optionsScreenIsOpen = false;
 		gameOver = false;
-		attacksList = new LinkedList<AttackAnimation>();
+		attacksList = new LinkedList<AttackAnimationDuration>();
 		
 		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
 		player = new Player("GustenTestar");
@@ -91,7 +89,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	protected void leaveState(GameContainer container, StateBasedGame state)
 			throws SlickException {
 		backgroundMusic.stop();
-		nifty.closePopup(gameOverPopup.getId());
 	}
 
 	@Override
@@ -110,7 +107,11 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		
 		EventBus.INSTANCE.register(this);
 	}
-
+	
+	/**This will call {@code DynamicLoader} and receive a list of all towers currently implemented.
+	 * It will then dynamically create a button in the button panel to the right in the GUI.
+	 * Every button will have it's representing tower's annotation saved which will be used to identify the button when pressed.
+	 */
 	private void initGUIButtons() {
 		boolean equal = true;
 		Element leftBtnPanel = nifty.getCurrentScreen().findElementByName("leftButtonPanel");
@@ -120,6 +121,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		bb.height("15%");
 		bb.name("button");
 		bb.font("verdana-smallregular.fnt");
+		//Load all the towers.
 		List<Class<ITower>> exportedTowers = DynamicLoader.getTowers();
 		
 		for(Class<ITower> towerClass : exportedTowers) {
@@ -127,13 +129,15 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			Tower anno = towerClass.getAnnotation(Tower.class);
 			if(anno != null) {
 				bb.label(anno.name());
+				//This will cause the button when pressed to call the buildTower() method with it's annotation as argument.
 				bb.interactOnClick("buildTower("+ anno.name() + ")");
 			}
 			bb.build(nifty, nifty.getCurrentScreen(), panel);
 			equal = !equal;
 		}
 	}
-
+	
+	/**Creates {@code Animation} which will be used by game renderer*/
 	private void initAnimations() throws SlickException {
 		Image exp_1 = new Image(getResourcePath("/animations/explosion_1.png"));
 		Image exp_2 = new Image(getResourcePath("/animations/explosion_2.png"));
@@ -147,7 +151,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		backgroundMusic = new Music(getResourcePath("/audio/main_menu/music.wav"));
 	}
 	
-	public void initElements() {
+	private void initElements() {
 		Screen tmpScreen = nifty.getCurrentScreen();
 		lifeLabel = tmpScreen.findElementByName("lifeLabel");
 		scoreLabel = tmpScreen.findElementByName("scoreLabel");
@@ -181,12 +185,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
         if(attacksList != null && !attacksList.isEmpty()) {
         	renderAttacks(g);
         }
-	}
-	
-	@Subscribe
-	public void renderTowerShooting(TowerShootingEvent event){
-		AttackAnimation attack = new AttackAnimation(event, 1000);
-		attacksList.add(attack);
 	}
 	
 	@Override
@@ -237,6 +235,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		return stateID;
 	}
 	
+	/**Helper method to get correct path to files.*/
 	private String getResourcePath(String path){
 		return getClass().getResource(path).getPath();
 	}
@@ -253,8 +252,15 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	public void onStartScreen() {
 	}
 	
-	public void startWave() {
-		gameControl.nextWave();
+	/**
+	 * Will add create a new {@code AttackAnimationDuration} with provided {@code TowerShootingEvent} and add
+	 * it to the list of attacks that will be render by the game.
+	 * @param event instance of {@code TowerShootingEvent} that will be used in the wrapper.
+	 */
+	@Subscribe
+	public void renderTowerShooting(TowerShootingEvent event){
+		AttackAnimationDuration attack = new AttackAnimationDuration(event, 1000);
+		attacksList.add(attack);
 	}
 	
 	private void renderTiles() {
@@ -286,6 +292,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	    playerMoneyLabel.getNiftyControl(Label.class).setText("" + player.getMoney());
 	}
 	
+	/**Renders the small square around the mouse location that gives the player visual feedback
+	   showing if he can build on that tile or not.*/
 	private void renderBuildingFeedback(Graphics g) {
 		int x = mouseX/tileScale;
 		int y = mouseY/tileScale;
@@ -301,9 +309,10 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 	}
 	
+	/**Render attacks from the tower attacking to the enemy being attacked. Uses inner class {@code AttackAnimationDuration}.*/
 	private void renderAttacks(Graphics g) {
-		List<AttackAnimation> tmpList = new LinkedList<AttackAnimation>(attacksList);
-		for(AttackAnimation attack : tmpList) {
+		List<AttackAnimationDuration> tmpList = new LinkedList<AttackAnimationDuration>(attacksList);
+		for(AttackAnimationDuration attack : tmpList) {
 			TowerShootingEvent event = attack.getAttackEvent();
 			Position from = event.getFromPosition();
 			Position to = event.getToPosition();
@@ -317,6 +326,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 	}
 	
+	/** This will cause the labels in the tower properties popup to re-render with updated values */
 	private void updateTowerPopup() {
 		towerPopup.findNiftyControl("towerDMGLabel", Label.class).setText("" + 
 						selectedTower.getDmg());
@@ -328,27 +338,13 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 						selectedTower.getCurrentLevel());
 	}
 	
-	public void buildTower(String anno) {
-		towerIsChoosen = true;
-		choosenTower = DynamicLoader.createTowerInstance(anno);
-	}
-	
-	public void toggleOptions() {
-		if(optionsScreenIsOpen) {
-			nifty.closePopup(optionsPopup.getId());
-		}
-		else {
-			nifty.showPopup(nifty.getCurrentScreen(), optionsPopup.getId(), null);
-		}
-		optionsScreenIsOpen = !optionsScreenIsOpen;
-	}
-	
-	public void endGame() {
-		state.enterState(STDGame.MAINMENUSTATE);
-	}
-	
+	/**
+	 * Listener to musicCheckbox element in the gui that will pause or resume background music. 
+	 * @param id of the element that has published the event.
+	 * @param event instance of {@code CheckBoxStateChangedEvent} class provided by nifty.
+	 */
 	@NiftyEventSubscriber(id="musicCheckbox")
-	public void onTextfieldChange(final String id, final CheckBoxStateChangedEvent event) {
+	public void onMusicCheckboxEvent(String id, CheckBoxStateChangedEvent event) {
 		if(backgroundMusic.playing()) {
 			backgroundMusic.pause();
 		}
@@ -356,24 +352,74 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			backgroundMusic.resume();
 		}
 	}
-	
+
+	/**
+	 * Listener to musicVolumeSlider element in the gui that will pause or resume background music. 
+	 * @param id of the element that has published the event.
+	 * @param event instance of {@code SliderChangedEvent} class provided by nifty.
+	 */
 	@NiftyEventSubscriber(id="musicVolumeSlider")
 	public void onSliderEvent(String id, SliderChangedEvent event) {
 		backgroundMusic.setVolume(event.getValue()/100);
 	}
 	
+	/**
+	 * Listener to all primary mouse click events from elements which has an id that starts with "close".
+	 * It will then depending on what element which caused the event act accordingly.
+	 * @param id of the element that has published the event.
+	 * @param event instance of {@code NiftyMousePrimaryClickedEvent} class provided by nifty.
+	 */
+	@NiftyEventSubscriber(pattern="close.*")
+	public void onClick(String id, NiftyMousePrimaryClickedEvent event) {
+		if(optionsPopup.findElementByName(id) != null) {
+			if(optionsScreenIsOpen) {
+				nifty.closePopup(optionsPopup.getId());
+			}
+			else {
+				nifty.showPopup(nifty.getCurrentScreen(), optionsPopup.getId(), null);
+			}
+			optionsScreenIsOpen = !optionsScreenIsOpen;
+		}
+		else if(towerPopup.findElementByName(id) != null) {
+			nifty.closePopup(towerPopup.getId());
+		}
+		else if(gameOverPopup.findElementByName(id) != null) {
+			state.enterState(STDGame.MAINMENUSTATE);
+			nifty.closePopup(gameOverPopup.getId());
+		}
+	}
+	
+	/**
+	 * If given string matches any annotation of dynamic loaded towers,
+	 * this will create a new instance of that tower and save the reference for further use in {@code GameplayState}.
+	 * @param anno is the string that will be matched against towers annotations.
+	 */
+	public void buildTower(String anno) {
+		towerIsChoosen = true;
+		choosenTower = DynamicLoader.createTowerInstance(anno);
+	}
+	
+	/** 
+	 * When called the last selected tower will be sold.
+	 */
 	public void sellTower() {
 		nifty.closePopup(towerPopup.getId());
 		gameControl.sellTower(selectedTower, towerPos);
 	}
 	
+	/** 
+	 * When called the last selected tower will be upgraded if player has enough money.
+	 */
 	public void upgradeTower() {
 		gameControl.upgradeTower(selectedTower);
 		updateTowerPopup();
 	}
 	
-	public void closePopup() {
-		nifty.closePopup(towerPopup.getId());
+	/** 
+	 * When called will start the next enemy wave.
+	 */
+	public void startWave() {
+		gameControl.nextWave();
 	}
 	
 	/**
@@ -381,11 +427,11 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	 * @author Johan Gustafsson
 	 * @date   May 08, 2012
 	 */
-	private class AttackAnimation {
+	private class AttackAnimationDuration {
 		private int duration;
 		private TowerShootingEvent event;
 		
-		public AttackAnimation(TowerShootingEvent event, int duration) {
+		public AttackAnimationDuration(TowerShootingEvent event, int duration) {
 			this.duration = duration;
 			this.event = event;
 		}

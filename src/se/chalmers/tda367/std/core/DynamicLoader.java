@@ -82,7 +82,7 @@ public final class DynamicLoader {
 	
 	/**
 	 * Create a instance of the tower class represented by given annotation.
-	 * @param string representing the annotation of tower.
+	 * @param anno representing the annotation of tower.
 	 * @return A instanced class of a tower with corresponding annotation or null if unable to find.
 	 */
 	public static ITower createTowerInstance(String anno) {
