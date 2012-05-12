@@ -3,6 +3,7 @@ package se.chalmers.tda367.std.core;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -76,8 +77,9 @@ class WaveController {
 	}
 
 	private void decreaseEffectsDuration(int delta) {
-		List<EnemyItem> enemyItems = board.getEnemies();
-		for(EnemyItem ei:enemyItems){
+		List<EnemyItem> enemyItems = board.getModifiableEnemies();
+		List<EnemyItem> tmpEnemyItems = new LinkedList<EnemyItem>(enemyItems);
+		for(EnemyItem ei:tmpEnemyItems){
 			List<IEffect> effects = ei.getEnemy().getEffects();
 			for(IEffect effect:effects){
 				effect.decrementDuration(delta);
@@ -86,9 +88,9 @@ class WaveController {
 				}
 			}
 		}
-		
 	}
 
+	
 	/**
 	 * Releases the next enemy in queue from the wave
 	 */
