@@ -35,13 +35,10 @@ import se.chalmers.tda367.std.utilities.Position;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.builder.ControlBuilder;
-import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.elements.events.NiftyMousePrimaryClickedEvent;
-import de.lessvoid.nifty.input.NiftyMouseInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
@@ -55,7 +52,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Player player;
 	private GameController gameControl;
 	private Nifty nifty;
-	private Element lifeLabel, scoreLabel, levelLabel, defaultFocusElement,
+	private Element lifeLabel, scoreLabel, levelLabel, playerMoneyLabel, defaultFocusElement,
 					optionsPopup, gameOverPopup, towerPopup;
 	private List<AttackAnimation> attacksList;
 	private Image[] explosion;
@@ -81,6 +78,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		
 		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
 		player = new Player("GustenTestar");
+		player.setMoney(500);
 		gameControl = new GameController(player, board);
 		
 		backgroundMusic.loop(1, 1);
@@ -146,6 +144,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		lifeLabel = tmpScreen.findElementByName("lifeLabel");
 		scoreLabel = tmpScreen.findElementByName("scoreLabel");
 		levelLabel = tmpScreen.findElementByName("levelLabel");
+		playerMoneyLabel = tmpScreen.findElementByName("playerMoneyLabel");
 		defaultFocusElement = tmpScreen.findElementByName("startWaveButton");
 		optionsPopup = nifty.createPopup("optionsPopup");
 		gameOverPopup = nifty.createPopup("gameOverPopup");
@@ -204,7 +203,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 				int y = mouseY / tileScale;
 				BoardPosition p = BoardPosition.valueOf(x, y);
 				if(towerIsChoosen && board.getTileAt(p) instanceof IBuildableTile) {
-					board.placeTile(choosenTower, p);
+					gameControl.buildTower(choosenTower, p);
 					if(!input.isKeyDown(Input.KEY_LSHIFT)) {
 						towerIsChoosen = false;
 						defaultFocusElement.setFocus();
@@ -276,6 +275,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	    lifeLabel.getNiftyControl(Label.class).setText("" + board.getPlayerBase().getHealth());
 	    scoreLabel.getNiftyControl(Label.class).setText("" + player.getCurrentScore());
 	    levelLabel.getNiftyControl(Label.class).setText("" + gameControl.getWavesReleased());
+	    playerMoneyLabel.getNiftyControl(Label.class).setText("" + player.getMoney());
 	}
 	
 	private void renderBuildingFeedback(Graphics g) {
@@ -327,6 +327,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 		else if(tower.equals("PoisonTower")) {
 			choosenTower = new BasicAttackTower();
+		}
+		else if(tower.equals("SlowTower")) {
+			
 		}
 	}
 	
