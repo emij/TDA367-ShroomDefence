@@ -1,0 +1,69 @@
+package se.chalmers.tda367.std.core.exported;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.core.effects.PoisonEffect;
+import se.chalmers.tda367.std.core.effects.SlowEffect;
+import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
+import se.chalmers.tda367.std.utilities.Sprite;
+import se.chalmers.tda367.std.core.anno.Tower;
+import se.chalmers.tda367.std.utilities.SpriteCreator;
+
+/**
+ * Represents a Slowing attack tower for use in a textual game board.
+ * <p>
+ * Base cost        = <b>200</b><br />
+ * Base damage      = <b>5</b><br />
+ * Effective radius = <b>2</b><br />
+ * Damage radius    = <b>0</b><br />
+ * Attack speed     = <b>60</b><br />
+ * </p>
+ * @author Emil Johansson
+ * @date   12 may 2012
+ */
+@Tower(name = "Poison attack tower", description = "AttackTower with poison effect", towerStrength = 2)
+public final class PoisonAttackTower extends AbstractAttackTower {
+
+	private static final int baseCost        = 200, 
+							 baseDamage      = 5, 
+							 effectiveRadius = 2, 
+							 aoeRadius       = 0, 
+							 attackSpeed     = 60;
+	private static List<IEffect> effects = new ArrayList<IEffect>();
+	static {
+		effects.add(new PoisonEffect(1));
+	}
+	private static final String name = "SlowingTower";
+	
+	//TODO: change sprite for the slowing tower.
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/tower_tile1.png");
+	
+	private int upgradeLevel = 1;
+	private int dmgModifier = 1;
+	
+	public PoisonAttackTower() {
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+				effects, sprite, name);
+	}
+
+	@Override
+	public void upgrade() {
+		super.upgrade();
+		dmgModifier++;
+	}
+
+	@Override
+	public int getUpgradeCost() {
+		return 10 * upgradeLevel;
+	}
+
+	/**
+	 * The textual representation of the tower on a text based game board.
+	 */
+	@Override
+	public String toString(){
+		return "P";
+	}
+}
