@@ -84,4 +84,23 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
             </panel>
         </panel>
     </popup>
+    <popup id="towerSelectedPopup" childLayout="center" backgroundColor="#000a">
+        <panel style="nifty-panel-red" childLayout="vertical" padding="18px,28px,40px,16px" width="21%" height="80%" align="right" valign="center">
+            <panel childLayout="vertical" width="85%" align="center" height="80%">
+                <text text="Attack dmg:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" textHAlign="center"/>
+                <control id="towerDMGLabel" name="label" width="100%" height="20%" align="center" textHAlign="center"/>
+                <text text="Attack speed:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
+                <control id="towerSPDLabel" name="label" width="100%" height="20%" align="center" textHAlign="center"/>
+                <text text="Upgrade cost:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
+                <control id="towerUpgradeCostLabel" name="label" width="100%" height="20%" align="center" textHAlign="center"/>
+                <text text="Current level:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
+                <control id="towerLVLLabel" name="label" width="100%" height="20%" align="center" textHAlign="center"/>
+            </panel>
+            <panel childLayout="vertical" width="*" height="*">
+                <control name="button" label="Close" width="50%" height="60%" align="right" valign="bottom">
+                    <interact onClick="closePopup()"/>
+                </control>
+            </panel>
+        </panel>
+    </popup>
 </nifty>
