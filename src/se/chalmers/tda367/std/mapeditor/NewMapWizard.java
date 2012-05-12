@@ -23,8 +23,6 @@ import se.chalmers.tda367.std.utilities.EventBus;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -176,7 +174,6 @@ public class NewMapWizard extends JDialog {
 			gbc_spinner.gridy = 3;
 			contentPanel.add(levelSpinner, gbc_spinner);
 		}
-		contentPanel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblHeight, lblDefaultTile, heightSpinner, defaultTileComboBox, widthSpinner, lblMapWidth, lblMapLevel, levelSpinner}));
 		{
 			buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));

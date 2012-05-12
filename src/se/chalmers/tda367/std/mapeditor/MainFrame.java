@@ -22,8 +22,6 @@ import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.BevelBorder;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 
 /**
  * The main frame of the Map Editor.

@@ -24,17 +24,22 @@ public final class MapItem {
 	private static MapItem buildableMapItem = null;
 	
 	private final IBoardTile tile;
-	private final boolean isWaypoint;
+	private final boolean isWaypoint, isStartPosition;
 	private final Position waypointPosition;
 	
-	public MapItem(IBoardTile tile, Position waypointPosition) {
+	public MapItem(IBoardTile tile, Position waypointPosition, boolean isStartPosition) {
 		this.tile = tile;
 		this.isWaypoint = waypointPosition != null;
+		this.isStartPosition = isStartPosition;
 		this.waypointPosition = waypointPosition;
 	}
 	
+	public MapItem(IBoardTile tile, Position waypointPosition) {
+		this(tile, waypointPosition, false);
+	}
+	
 	public MapItem(IBoardTile tile) {
-		this(tile, null);
+		this(tile, null, false);
 	}
 	
 	/**
@@ -86,5 +91,13 @@ public final class MapItem {
 	 */
 	public Position getWaypointPosition() {
 		return this.waypointPosition;
+	}
+	
+	/**
+	 * Whether or not the {@code MapItem} represents the tile that enemies are inserted on the map
+	 * @return true if it id the enemy start position.
+	 */
+	public boolean isStartPosition() {
+		return this.isStartPosition;
 	}
 }

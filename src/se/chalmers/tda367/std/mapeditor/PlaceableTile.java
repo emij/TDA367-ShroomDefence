@@ -38,7 +38,8 @@ public enum PlaceableTile {
 	ENEMY_START_TILE("Enemy start position") {
 		@Override
 		public MapItem getMapItem(int x, int y) {
-			return new MapItem(MapItem.PATH_TILE, getCenterPosition(x, y));
+			// No need for the first position the enemies are inserted to be a waypoint.
+			return new MapItem(MapItem.PATH_TILE, null, true);
 		}
 	},
 	WAYPOINT("Waypoint") {
@@ -55,8 +56,8 @@ public enum PlaceableTile {
 	
 	/** The x, y coordinate should be in the upper left corner. */
 	private static Position getCenterPosition(int x, int y) {
-		float cX = x + Properties.INSTANCE.getTileScale();
-		float cY = y + Properties.INSTANCE.getTileScale();
+		float cX = x + Properties.INSTANCE.getTileScale() / 2;
+		float cY = y + Properties.INSTANCE.getTileScale() / 2;
 		return Position.valueOf(cX, cY);
 	}
 	public abstract MapItem getMapItem(int x, int y);

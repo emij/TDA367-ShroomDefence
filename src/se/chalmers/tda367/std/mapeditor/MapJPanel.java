@@ -37,7 +37,17 @@ public class MapJPanel extends JPanel {
 				NativeSwingSprite nss = (NativeSwingSprite)item.getTile().getSprite().getNativeSprite();
 				nss.setGraphics(g);
 				
-				nss.draw(x*scale, y*scale, scale, scale);
+				int nX = x * scale;
+				int nY = y * scale;
+				nss.draw(nX, nY, scale, scale);
+				
+				// Draw indication of "special" tiles (center the text).
+				nY = nY + scale / 2;
+				if(item.isStartPosition()) {
+					g.drawString("START", nX, nY);
+				} else if(item.isWaypoint()) {
+					g.drawString("W", nX + scale / 2, nY);
+				}
 			}
 		}
 		
