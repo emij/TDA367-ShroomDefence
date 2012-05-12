@@ -35,10 +35,10 @@ public final class PoisonAttackTower extends AbstractAttackTower {
 	static {
 		effects.add(new PoisonEffect(1));
 	}
-	private static final String name = "SlowingTower";
+	private static final String name = "PoisonTower";
 	
 	//TODO: change sprite for the slowing tower.
-	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/tower_tile1.png");
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/poison_tower_tile.png");
 	
 	private int upgradeLevel = 1;
 	private int dmgModifier = 1;
