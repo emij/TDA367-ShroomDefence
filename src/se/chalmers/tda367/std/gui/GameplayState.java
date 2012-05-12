@@ -40,6 +40,7 @@ import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.SliderChangedEvent;
+import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -114,17 +115,18 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		//TODO: Fix the implemenation of this so it shows a name of the tower and also so it adds them in right order.
 		Element leftBtnPanel = nifty.getCurrentScreen().findElementByName("leftButtonPanel");
 		//Element rightBtnPanel = nifty.getCurrentScreen().findElementByName("rightButtonPanel");
-		ControlBuilder cb = new ControlBuilder("icons");
-		cb.width("85%");
-		cb.height("15%");
-		cb.name("button");
-		cb.font("verdana-smallregular.fnt");
+		ButtonBuilder bb = new ButtonBuilder("icons");
+		bb.width("85%");
+		bb.height("15%");
+		bb.name("button");
+		bb.font("verdana-smallregular.fnt");
 		List<Class<ITower>> exportedTowers = DynamicLoader.getTowers();
 		
 		for(Class<ITower> towerClass : exportedTowers) {
 			ITower tmpInst = DynamicLoader.createInstance(towerClass);
-			cb.interactOnClick("buildTower("+ tmpInst.getName() + ")");
-			cb.build(nifty, nifty.getCurrentScreen(), leftBtnPanel);
+			bb.label(tmpInst.getName());
+			bb.interactOnClick("buildTower("+ tmpInst.getName() + ")");
+			bb.build(nifty, nifty.getCurrentScreen(), leftBtnPanel);
 		}
 	}
 
@@ -211,7 +213,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 						defaultFocusElement.setFocus();
 					}
 				}
-				else if(board.getTileAt(p) instanceof IAttackTower) {
+				else if(board.getTileAt(p) instanceof IAttackTower && !towerIsChoosen) {
 					selectedTower = (IAttackTower)board.getTileAt(p);
 					towerPos = p;
 					updateTowerPopup();

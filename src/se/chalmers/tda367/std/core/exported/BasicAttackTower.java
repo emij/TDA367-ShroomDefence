@@ -28,7 +28,7 @@ public final class BasicAttackTower extends AbstractAttackTower {
 	private static final String name = "BasicTower";
 	
 	//TODO: change sprite for the basic tower.
-	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/tower_tile1.png");
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/basic_tower_tile.png");
 	
 	private int upgradeLevel = 1;
 	private int dmgModifier = 1;

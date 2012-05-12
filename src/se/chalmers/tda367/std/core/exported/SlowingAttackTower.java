@@ -37,7 +37,7 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 	private static final String name = "SlowingTower";
 	
 	//TODO: change sprite for the slowing tower.
-	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/tower_tile1.png");
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/slow_tower_tile.png");
 	
 	private int upgradeLevel = 1;
 	private int dmgModifier = 1;
