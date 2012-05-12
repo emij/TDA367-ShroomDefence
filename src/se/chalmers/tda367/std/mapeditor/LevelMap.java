@@ -89,16 +89,13 @@ public class LevelMap implements Map, Serializable {
 		// Handle the fringe cases.
 		if(pTile == PlaceableTile.PLAYER_BASE_TILE) {
 			setPlayerBasePos(x, y);
+			waypointsList.add(calculateWaypoint(x, y));
 			
 		} else if(pTile == PlaceableTile.ENEMY_START_TILE) {
 			setPlayerEnemyStartPos(x, y);
 			
 		} else if(pTile == PlaceableTile.WAYPOINT) {
-			int scale = Properties.INSTANCE.getTileScale();
-			float nX = x * scale + scale / 2;
-			float nY = y * scale + scale / 2;
-			
-			waypointsList.add(Position.valueOf(nX, nY));
+			waypointsList.add(calculateWaypoint(x, y));
 		}
 	}
 	
@@ -117,6 +114,15 @@ public class LevelMap implements Map, Serializable {
 	@Override
 	public List<Position> getWaypointList() {
 		return new ArrayList<Position>(waypointsList); // Note: defensive copy but Position is mutable.
+	}
+	
+	/** The x,y coordinate should be in a {@code BoardPosition} format. */
+	private Position calculateWaypoint(int x, int y) {
+		int scale = Properties.INSTANCE.getTileScale();
+		float nX = x * scale + scale / 2;
+		float nY = y * scale + scale / 2;
+		
+		return Position.valueOf(nX, nY);
 	}
 	
 	/**

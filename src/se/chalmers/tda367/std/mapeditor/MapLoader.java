@@ -1,27 +1,37 @@
-package se.chalmers.tda367.std.core.maps;
+package se.chalmers.tda367.std.mapeditor;
 
 import java.io.*;
-import java.util.*;
-
-import se.chalmers.tda367.std.mapeditor.LevelMap;
-import se.chalmers.tda367.std.mapeditor.Map;
-import se.chalmers.tda367.std.mapeditor.PlaceableTile;
+import se.chalmers.tda367.std.utilities.IO;
 
 /**
  * A class for loading maps
  * @author Emil Johansson
- * @modified Emil Edholm (Apr 29, 2012)
+ * @modified Emil Edholm (May 12, 2012)
  * @date Apr 22, 2012
  */
 public class MapLoader {
-	private final int level;
 	private LevelMap map;
+	
 	public MapLoader(int level) {
-		this.level = level;
-		loadMap(new File("maps/level" + level + ".txt"));
+		this(new File("maps/level" + level + ".map"));
+	}
+	
+	public MapLoader(File mapFile) {
+		map = loadMap(mapFile);
+	}
+	
+	private LevelMap loadMap(File f) {
+		LevelMap map = null;
+		try {
+			map = IO.loadObject(LevelMap.class, f);
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return map;
 	}
 
-	private void loadMap(File file){
+	/*private void loadMap(File file){
 		Scanner scanner;
 		try {
 			scanner = new Scanner(new FileReader(file));
@@ -73,7 +83,7 @@ public class MapLoader {
 	    		map.setMapItem(xCord, yCord, PlaceableTile.BUILDABLE_TILE);
 	    	}
 	    } 
-	}
+	}*/
 	
 	/**
 	 * Get the map that was loaded by the {@code MapLoader}
