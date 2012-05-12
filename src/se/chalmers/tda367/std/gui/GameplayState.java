@@ -11,6 +11,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.state.StateBasedGame;
 
 import com.google.common.eventbus.Subscribe;
@@ -292,8 +293,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	    playerMoneyLabel.getNiftyControl(Label.class).setText("" + player.getMoney());
 	}
 	
-	/**Renders the small square around the mouse location that gives the player visual feedback
-	   showing if he can build on that tile or not.*/
+	/**Renders the small square and the big circle around the mouse location that gives the player visual feedback
+	   showing if he can build on that tile or not and how far the tower can fire.*/
 	private void renderBuildingFeedback(Graphics g) {
 		int x = mouseX/tileScale;
 		int y = mouseY/tileScale;
@@ -301,6 +302,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			g.setColor(Color.green);
 			g.drawRect(x * tileScale, y * tileScale, tileScale, tileScale);
 			g.setColor(Color.black);
+			g.draw(new Circle(x * tileScale+tileScale/2, y * tileScale+tileScale/2, choosenTower.getRadius()*100));
 		}
 		else {
 			g.setColor(Color.red);
