@@ -20,7 +20,7 @@ import se.chalmers.tda367.std.utilities.SpriteCreator;
  * Attack speed     = <b>80</b><br />
  * </p>
  * @author Emil Johansson
- * @date   25 mar 2012
+ * @date   12 may 2012
  */
 @Tower(name = "Slowing attack tower", description = "AttackTower with slow effect", towerStrength = 2)
 public final class SlowingAttackTower extends AbstractAttackTower {
@@ -32,7 +32,7 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 							 attackSpeed     = 80;
 	private static List<IEffect> effects = new ArrayList<IEffect>();
 	static {
-		effects.add(new SlowEffect(1));
+		effects.add(new SlowEffect(10));
 	}
 	private static final String name = "SlowingTower";
 	
