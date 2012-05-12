@@ -25,6 +25,7 @@ import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.exported.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
+import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
@@ -204,7 +205,15 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 						defaultFocusElement.setFocus();
 					}
 				}
-				else if(board.getTileAt(p) instanceof ITower) {
+				else if(board.getTileAt(p) instanceof IAttackTower) {
+					towerPopup.findNiftyControl("towerDMGLabel", Label.class).setText("" + 
+												((IAttackTower)board.getTileAt(p)).getDmg());
+					towerPopup.findNiftyControl("towerSPDLabel", Label.class).setText("" + 
+							((IAttackTower)board.getTileAt(p)).getAttackSpeed());
+					towerPopup.findNiftyControl("towerUpgradeCostLabel", Label.class).setText("" + 
+							((IAttackTower)board.getTileAt(p)).getUpgradeCost());
+					towerPopup.findNiftyControl("towerLVLLabel", Label.class).setText("" + 
+							((IAttackTower)board.getTileAt(p)).getCurrentLevel());
 					nifty.showPopup(nifty.getCurrentScreen(), towerPopup.getId(), null);
 				}
 	    	}
