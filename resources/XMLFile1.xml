@@ -11,16 +11,16 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
              <panel childLayout="vertical" width="79%" height="10%" align="left" valign="bottom">
                  <panel childLayout="horizontal" width="100%" height="50%" backgroundColor="#444444" align="left" valign="bottom">
                     <panel height="100%" width="25%" childLayout="horizontal" visibleToMouse="true">
-                        <control name="label" text="Remaining life: " width="90%" height="100%" align="center"/>
+                        <control name="label" text="Remaining life: " width="*" height="100%" align="center" textHAlign="center"/>
                     </panel>
                     <panel height="100%" width="25%" childLayout="horizontal" visibleToMouse="true">
-                        <control name="label" text="Score: " width="42%" height="100%" align="center"/>
+                        <control name="label" text="Score: " width="*" height="100%" align="center" textHAlign="center"/>
                     </panel>
                     <panel height="100%" width="25%" childLayout="horizontal" visibleToMouse="true">
-                        <control name="label" text="Current level: " width="80%" height="100%" align="center"/>
+                        <control name="label" text="Current level: " width="*" height="100%" align="center" textHAlign="center"/>
                     </panel>
                     <panel height="100%" width="25%" childLayout="horizontal" visibleToMouse="true">
-                        <control name="label" text="Player money: " width="70%" height="100%" align="center"/>
+                        <control name="label" text="Player money: " width="*" height="100%" align="center" textHAlign="center"/>
                     </panel>
                 </panel>
                 <panel childLayout="horizontal" width="100%" height="50%" backgroundColor="#444444" align="left" valign="bottom">
