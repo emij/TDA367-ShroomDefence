@@ -46,7 +46,7 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	public void shoot(List<EnemyItem> enemies, Position pos) {
 		if(!enemies.isEmpty()){
 
-			enemies.get(0).getEnemy().decreaseHealth(this.getDmg());
+			enemies.get(0).getEnemy().decreaseHealth(this.getDmg()*currentLevel);
 		
 			for(IEffect ie:this.getEffects()){
 				enemies.get(0).getEnemy().addEffect(ie);	//TODO refactor
@@ -64,7 +64,7 @@ public abstract class AbstractAttackTower implements IAttackTower{
 
 	@Override
 	public int refund() {
-		return (int)(0.75 * baseCost); //TODO change calculation
+		return (int)(0.75 * (baseCost + (0.5*currentLevel*baseCost))); //TODO change calculation
 	}
 
 	@Override
