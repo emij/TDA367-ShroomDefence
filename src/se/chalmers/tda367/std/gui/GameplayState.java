@@ -302,7 +302,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			g.setColor(Color.green);
 			g.drawRect(x * tileScale, y * tileScale, tileScale, tileScale);
 			g.setColor(Color.black);
-			g.draw(new Circle(x * tileScale+tileScale/2, y * tileScale+tileScale/2, choosenTower.getRadius()*100));
+			g.draw(new Circle(x * tileScale+tileScale/2, y * tileScale+tileScale/2, choosenTower.getRadius()*tileScale));
 		}
 		else {
 			g.setColor(Color.red);
