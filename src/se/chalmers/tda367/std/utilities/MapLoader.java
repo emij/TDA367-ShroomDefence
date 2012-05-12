@@ -23,6 +23,7 @@ public class MapLoader {
 		return wayPointList;
 	}
 	public static void setLevel(int level){
+		wayPointList = new ArrayList<Position>();
 		file = new File("maps/level" + level + ".txt");
 		Scanner scanner;
 		try {

@@ -25,6 +25,7 @@ import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.exported.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
+import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
@@ -34,11 +35,13 @@ import se.chalmers.tda367.std.utilities.Position;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.builder.ControlBuilder;
+import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.SliderChangedEvent;
-import de.lessvoid.nifty.controls.label.LabelControl;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.events.NiftyMousePrimaryClickedEvent;
+import de.lessvoid.nifty.input.NiftyMouseInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
@@ -53,13 +56,15 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private GameController gameControl;
 	private Nifty nifty;
 	private Element lifeLabel, scoreLabel, levelLabel, defaultFocusElement,
-					optionsPopup, gameOverPopup;
+					optionsPopup, gameOverPopup, towerPopup;
 	private List<AttackAnimation> attacksList;
 	private Image[] explosion;
 	private Animation explosionAnimation;
 	private ITower choosenTower;
+	private IAttackTower selectedTower;
 	private Music backgroundMusic;
 	private StateBasedGame state;
+	private BoardPosition towerPos;
 
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
@@ -144,6 +149,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		defaultFocusElement = tmpScreen.findElementByName("startWaveButton");
 		optionsPopup = nifty.createPopup("optionsPopup");
 		gameOverPopup = nifty.createPopup("gameOverPopup");
+		towerPopup = nifty.createPopup("towerSelectedPopup");
 	}
 
 	@Override
@@ -176,12 +182,11 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		attacksList.add(attack);
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void updateGame(GameContainer container, StateBasedGame state, int delta)
 			throws SlickException {
 		this.delta = delta;
-		if(!gameOver) {
+		if(!gameOver && !optionsScreenIsOpen) {
 			gameControl.updateGameState(delta);
 			
 			Input input = container.getInput();
@@ -194,21 +199,26 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			}
 			
 			if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()
-					 && towerIsChoosen && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					 && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				int x = mouseX / tileScale;
 				int y = mouseY / tileScale;
 				BoardPosition p = BoardPosition.valueOf(x, y);
-				if(board.getTileAt(p) instanceof IBuildableTile) {
+				if(towerIsChoosen && board.getTileAt(p) instanceof IBuildableTile) {
 					board.placeTile(choosenTower, p);
-					towerIsChoosen = false;
-					defaultFocusElement.setFocus();
+					if(!input.isKeyDown(Input.KEY_LSHIFT)) {
+						towerIsChoosen = false;
+						defaultFocusElement.setFocus();
+					}
+				}
+				else if(board.getTileAt(p) instanceof IAttackTower) {
+					selectedTower = (IAttackTower)board.getTileAt(p);
+					towerPos = p;
+					updateTowerPopup();
+					nifty.showPopup(nifty.getCurrentScreen(), towerPopup.getId(), null);
 				}
 	    	}
 			if(board.getPlayerBase().getHealth() == 0) {
-				if(optionsScreenIsOpen) {
-					nifty.closePopup(optionsPopup.getId());
-				}
-				gameOverPopup.findControl("gameOverScoreLabel", LabelControl.class).setText("" + player.getCurrentScore());
+				gameOverPopup.findNiftyControl("gameOverScoreLabel", Label.class).setText("" + player.getCurrentScore());
 				nifty.showPopup(nifty.getCurrentScreen(), gameOverPopup.getId(), null);
 				gameOver=true;
 			}
@@ -299,6 +309,17 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 	}
 	
+	private void updateTowerPopup() {
+		towerPopup.findNiftyControl("towerDMGLabel", Label.class).setText("" + 
+						selectedTower.getDmg());
+		towerPopup.findNiftyControl("towerSPDLabel", Label.class).setText("" + 
+						selectedTower.getAttackSpeed());
+		towerPopup.findNiftyControl("towerUpgradeCostLabel", Label.class).setText("" + 
+						selectedTower.getUpgradeCost());
+		towerPopup.findNiftyControl("towerLVLLabel", Label.class).setText("" + 
+						selectedTower.getCurrentLevel());
+	}
+	
 	public void buildTower(String tower) {
 		towerIsChoosen = true;
 		if(tower.equals("BasicTower")) {
@@ -336,6 +357,20 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@NiftyEventSubscriber(id="musicVolumeSlider")
 	public void onSliderEvent(String id, SliderChangedEvent event) {
 		backgroundMusic.setVolume(event.getValue()/100);
+	}
+	
+	public void sellTower() {
+		nifty.closePopup(towerPopup.getId());
+		gameControl.sellTower(selectedTower, towerPos);
+	}
+	
+	public void upgradeTower() {
+		gameControl.upgradeTower(selectedTower);
+		updateTowerPopup();
+	}
+	
+	public void closePopup() {
+		nifty.closePopup(towerPopup.getId());
 	}
 	
 	/**

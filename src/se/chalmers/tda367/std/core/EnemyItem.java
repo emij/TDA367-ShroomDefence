@@ -94,14 +94,20 @@ public class EnemyItem implements Comparable<EnemyItem>{
 	private boolean minorDifference(Position p1, Position p2) {
 		return minorDifference(p1.getX(), p2.getX()) && minorDifference(p1.getY(), p2.getY());
 	}
-	
+	/**
+	 * Return the distance the enemy has traveled on the gameboard
+	 * @return enemyDistanceTraveled
+	 */
 	public float getEnemyDistanceTraveled(){
 		return enemyDistanceTraveled;
 	}
+	/**
+	 * Compare enemies to see which has traveled the longest
+	 */
 	public int compareTo(EnemyItem item){
-		if (this.getEnemyDistanceTraveled() < item.getEnemyDistanceTraveled()){
+		if (this.getEnemyDistanceTraveled() > item.getEnemyDistanceTraveled()){
 			return -1;
-		} else if (this.getEnemyDistanceTraveled() > item.getEnemyDistanceTraveled()){
+		} else if (this.getEnemyDistanceTraveled() < item.getEnemyDistanceTraveled()){
 			return 1;
 		} else {
 			return 0;

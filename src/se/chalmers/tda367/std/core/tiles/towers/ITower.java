@@ -52,4 +52,10 @@ public interface ITower extends IBoardTile {
 	 * @return name of the tower
 	 */
 	public String getName();
+	
+	/**
+	 * Returns the towers current level.
+	 * @return current level of tower
+	 */
+	public int getCurrentLevel();
 }

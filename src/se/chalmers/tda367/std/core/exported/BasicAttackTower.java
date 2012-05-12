@@ -40,6 +40,7 @@ public final class BasicAttackTower extends AbstractAttackTower {
 
 	@Override
 	public void upgrade() {
+		super.upgrade();
 		dmgModifier++;
 	}
 

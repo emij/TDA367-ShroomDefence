@@ -18,7 +18,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @date Mar 25, 2012
  */
 public abstract class AbstractAttackTower implements IAttackTower{
-	private int baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed;
+	private int baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed, currentLevel;
 	private final Sprite sprite;
 	private List<IEffect> effects;
 	private String towerName;
@@ -35,20 +35,13 @@ public abstract class AbstractAttackTower implements IAttackTower{
 		this.sprite          = sprite;
 		this.towerName		 = name;
 		this.effects = effects != null ? new ArrayList<IEffect>(effects): new ArrayList<IEffect>();
-		
+		this.currentLevel	 = 1;
 	}
 
 	@Override
 	public List<IEffect> getEffects() {
 		return effects;
 	}
-
-
-	@Override
-	public abstract void upgrade();
-	
-	
-
 	@Override
 	public void shoot(List<EnemyItem> enemies, Position pos) {
 		if(!enemies.isEmpty()){
@@ -63,6 +56,10 @@ public abstract class AbstractAttackTower implements IAttackTower{
 			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemies.get(0).getEnemyPos()));
 
 		}
+	}
+	@Override
+	public void upgrade() {
+		currentLevel++;
 	}
 
 	@Override
@@ -132,5 +129,10 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	@Override
 	public String getName() {
 		return towerName;
+	}
+	
+	@Override
+	public int getCurrentLevel() {
+		return currentLevel;
 	}
 }

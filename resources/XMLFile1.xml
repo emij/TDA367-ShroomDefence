@@ -74,10 +74,39 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                 <text text="Game over!" font="verdana-smallregular.fnt" fontSize="40" align="center" width="100%" height="20%" textHAlign="center"/>
                 <text text="Your final score was:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
                 <control id="gameOverScoreLabel" name="label" width="100%" height="20%" align="center" textHAlign="center"/>
+                <text text="Enter name:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
+                <control id="playerNameField" name="textfield" width="50%" height="10%" align="center" />
             </panel>
             <panel childLayout="vertical" width="*" height="*">
                 <control id="endGameButton" name="button" label="Close" width="50%" height="90%" align="right" valign="bottom">
                     <interact onClick="endGame()"/>
+                </control>
+            </panel>
+        </panel>
+    </popup>
+    <popup id="towerSelectedPopup" childLayout="center" backgroundColor="#000a">
+        <panel style="nifty-panel-red" childLayout="vertical" padding="18px,28px,40px,16px" width="21%" height="80%" align="right" valign="center">
+            <panel childLayout="vertical" width="85%" align="center" height="60%">
+                <text text="Current level:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
+                <control id="towerLVLLabel" name="label" width="100%" height="10%" align="center" textHAlign="center"/>
+                <text text="Attack dmg:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="8%" textHAlign="center"/>
+                <control id="towerDMGLabel" name="label" width="100%" height="10%" align="center" textHAlign="center"/>
+                <text text="Attack speed:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
+                <control id="towerSPDLabel" name="label" width="100%" height="10%" align="center" textHAlign="center"/>
+                <text text="Upgrade cost:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
+                <control id="towerUpgradeCostLabel" name="label" width="100%" height="10%" align="center" textHAlign="center"/>
+            </panel>
+            <panel childLayout="horizontal" align="center" width="85%" height="20%">
+                <control id="sellTowerButton" name="button" label="Sell" width="50%" height="80%" align="right" valign="bottom">
+                    <interact onClick="sellTower()"/>
+                </control>
+                <control id="upgradeTowerButton" name="button" label="Upgrade" width="50%" height="80%" align="right" valign="bottom">
+                    <interact onClick="upgradeTower()"/>
+                </control>
+            </panel>
+            <panel childLayout="vertical" width="*" height="*" paddin="10%">
+                <control name="button" label="Close" width="50%" height="80%" align="right" valign="bottom">
+                    <interact onClick="closePopup()"/>
                 </control>
             </panel>
         </panel>

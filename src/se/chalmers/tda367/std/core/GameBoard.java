@@ -86,9 +86,18 @@ public class GameBoard {
 	/**
 	 * Retrieves the enemies that are currently on the game board.
 	 * The actual logic behind removing and adding enemies are 
-	 * @return a list of EnemyItems that are currently ON the game board. 
+	 * @return a unmodifiable list of EnemyItems that are currently ON the game board. 
 	 */
 	public List<EnemyItem> getEnemies() {
+		return Collections.unmodifiableList(enemies);
+	}
+	
+	/**
+	 * Same as {@code getEnemies()} but it is modifiable.
+	 * @see getEnemies()
+	 * @return a modifiable list of the enemies on the game board.
+	 */
+	public List<EnemyItem> getModifiableEnemies() {
 		return enemies;
 	}
 	
