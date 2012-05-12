@@ -23,6 +23,7 @@ import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Player;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.exported.BasicAttackTower;
+import se.chalmers.tda367.std.core.exported.PoisonAttackTower;
 import se.chalmers.tda367.std.core.exported.SlowingAttackTower;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
@@ -327,7 +328,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			choosenTower = new BasicAttackTower();
 		}
 		else if(tower.equals("PoisonTower")) {
-			choosenTower = new BasicAttackTower();
+			choosenTower = new PoisonAttackTower();
 		}
 		else if(tower.equals("SlowingTower")) {
 			choosenTower = new SlowingAttackTower();
