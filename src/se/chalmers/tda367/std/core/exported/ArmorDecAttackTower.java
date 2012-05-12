@@ -36,7 +36,7 @@ public final class ArmorDecAttackTower extends AbstractAttackTower {
 	}
 	
 	//TODO: change sprite for the armordec tower.
-	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/slow_tower_tile.png");
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/armor_tower_tile.png");
 	
 	public ArmorDecAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
