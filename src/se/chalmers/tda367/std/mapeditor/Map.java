@@ -1,6 +1,9 @@
-package se.chalmers.tda367.std.core.maps;
+package se.chalmers.tda367.std.mapeditor;
 
-import se.chalmers.tda367.std.core.GameBoard;
+import java.util.List;
+
+import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
+import se.chalmers.tda367.std.utilities.Position;
 
 /**
  * Represents a map that is used to crate the game board.
@@ -13,12 +16,12 @@ public interface Map {
 	/**
 	 * The enemy start position. The position where the enemies are to be inserted into the game board/map.
 	 */
-	public GameBoard.BoardPosition getEnemyStartPos();
+	public BoardPosition getEnemyStartPos();
 	
 	/**
 	 * The position of the player base. This is the position all enemies walk towards.
 	 */
-	public GameBoard.BoardPosition getPlayerBasePos();
+	public BoardPosition getPlayerBasePos();
 
 	/** The width of the map. */
 	public int getWidth();
@@ -33,17 +36,23 @@ public interface Map {
 	public int getLevel();
 	
 	/**
-	 * The Map field that contains the actual map content, such as tile and waypoint placement.
-	 * @return a MapItem array with length {@code getWidth()} and height {@code getHeight()}.
+	 * The Map field that contains the actual map content.
+	 * @return a {@code PlaceableTile} array with length {@code getWidth()} and height {@code getHeight()}.
 	 */
-	public MapItem[][] getMapField();
+	public PlaceableTile[][] getMapField();
 	
 	/**
 	 * Get the stored {@code MapItem} at the supplied position.
 	 * @param x - the x coordinate of the requested {@code MapItem}
 	 * @param y - the y coordinate of the requested {@code MapItem}
 	 * @throws IndexOutOfBoundsException - if x and/or y are outside the board field.
-	 * @return the {@code MapItem} at the x, y position.
+	 * @return the {@code PlaceableTile} at the x, y position.
 	 */
-	public MapItem getMapItem(int x, int y);
+	public PlaceableTile getMapItem(int x, int y);
+	
+	/**
+	 * Returns the list of waypoints associated with the {@code Map}
+	 * @return a list of waypoint positions.
+	 */
+	public List<Position> getWaypointList();
 }

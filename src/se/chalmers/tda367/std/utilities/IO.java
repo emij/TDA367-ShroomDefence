@@ -1,7 +1,6 @@
 package se.chalmers.tda367.std.utilities;
 
 import java.io.*;
-import java.nio.file.Path;
 
 /**
  * A IO class for use when (de)serializing objects.

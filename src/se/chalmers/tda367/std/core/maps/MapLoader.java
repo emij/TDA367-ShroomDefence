@@ -3,10 +3,9 @@ package se.chalmers.tda367.std.core.maps;
 import java.io.*;
 import java.util.*;
 
-import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
-import se.chalmers.tda367.std.core.Properties;
-import se.chalmers.tda367.std.core.tiles.*;
-import se.chalmers.tda367.std.utilities.Position;
+import se.chalmers.tda367.std.mapeditor.LevelMap;
+import se.chalmers.tda367.std.mapeditor.Map;
+import se.chalmers.tda367.std.mapeditor.PlaceableTile;
 
 /**
  * A class for loading maps
@@ -55,27 +54,25 @@ public class MapLoader {
 	    		// Default to TerrainTile.
 	    		for(int y = 0; y < yCord; y++){
 	    			for(int x = 0; x < xCord; x++){
-	    				map.setMapItem(x, y, MapItem.createTerrainMapItem());
+	    				map.setMapItem(x, y, PlaceableTile.TERRAIN_TILE);
 	    			}
 	    		}
 	    	} else if(tileType.equals("E")) { // E as in Enemy insert position
-	    		map.setPlayerEnemyStartPos(BoardPosition.valueOf(xCord, yCord));
+	    		map.setMapItem(xCord, yCord, PlaceableTile.ENEMY_START_TILE);
+	    		
 	    	} else if(tileType.equals("B")) { // B as in Player base position.
-	    		map.setPlayerBasePos(BoardPosition.valueOf(xCord, yCord));
-	    		map.setMapItem(xCord, yCord, new MapItem(new PlayerBase(3), calcWaypointPos(xCord, yCord)));
+	    		map.setMapItem(xCord, yCord, PlaceableTile.PLAYER_BASE_TILE);
+	    		
 	    	} else if(tileType.equals("P")) { // P as in PathTile
-	    		map.setMapItem(xCord, yCord, MapItem.createPathMapItem());
+	    		map.setMapItem(xCord, yCord, PlaceableTile.PATH_TILE);
+	    		
 	    	} else if(tileType.equals("W")) { // W as in WayPoint.
-	    		map.setMapItem(xCord, yCord, new MapItem(MapItem.PATH_TILE, calcWaypointPos(xCord, yCord)));
+	    		map.setMapItem(xCord, yCord, PlaceableTile.WAYPOINT);
+	    		
 	    	} else if(tileType.equals("T")) { // T as in Buildable Tower.
-	    		map.setMapItem(xCord, yCord, MapItem.createBuildableMapItem());
+	    		map.setMapItem(xCord, yCord, PlaceableTile.BUILDABLE_TILE);
 	    	}
 	    } 
-	}
-	
-	private Position calcWaypointPos(int x, int y) {
-		return Position.valueOf(x * Properties.INSTANCE.getTileScale(), 
-				   				y * Properties.INSTANCE.getTileScale());
 	}
 	
 	/**

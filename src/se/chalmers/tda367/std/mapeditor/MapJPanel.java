@@ -6,15 +6,14 @@ import javax.swing.JPanel;
 import com.google.common.eventbus.Subscribe;
 
 import se.chalmers.tda367.std.core.Properties;
-import se.chalmers.tda367.std.core.maps.LevelMap;
-import se.chalmers.tda367.std.core.maps.MapItem;
 import se.chalmers.tda367.std.mapeditor.events.*;
 import se.chalmers.tda367.std.utilities.EventBus;
 
 @SuppressWarnings("serial")
 public class MapJPanel extends JPanel {
 
-	LevelMap mapModel;
+	private LevelMap mapModel;
+	
 	public MapJPanel() {
 		EventBus.INSTANCE.register(this);
 	}
@@ -33,8 +32,8 @@ public class MapJPanel extends JPanel {
 		// Set the graphics to the native sprite and draw the tile.
 		for(int y = 0; y < height; y++) {
 			for(int x = 0; x < width; x++) {
-				MapItem item = mapModel.getMapItem(x, y);
-				NativeSwingSprite nss = (NativeSwingSprite)item.getTile().getSprite().getNativeSprite();
+				PlaceableTile pTile = mapModel.getMapItem(x, y);
+				NativeSwingSprite nss = (NativeSwingSprite)pTile.getInstance().getSprite().getNativeSprite();
 				nss.setGraphics(g);
 				
 				int nX = x * scale;
@@ -43,9 +42,9 @@ public class MapJPanel extends JPanel {
 				
 				// Draw indication of "special" tiles (center the text).
 				nY = nY + scale / 2;
-				if(item.isStartPosition()) {
+				if(pTile == PlaceableTile.ENEMY_START_TILE) {
 					g.drawString("START", nX, nY);
-				} else if(item.isWaypoint()) {
+				} else if(pTile == PlaceableTile.WAYPOINT) {
 					g.drawString("W", nX + scale / 2, nY);
 				}
 			}
@@ -55,11 +54,11 @@ public class MapJPanel extends JPanel {
 	}
 
 	@Subscribe
-	public void createNewMap(CreateMapEvent event) {
-		MapItem defaultItem = new MapItem(event.getDefaultTile().getTile());
-		int width = event.getWidth();
-		int height = event.getHeight();
-		int level = event.getLevel();
+	public void createNewMap(CreateMapEvent e) {
+		PlaceableTile defaultItem = e.getDefaultTile().convertToPlaceableTile();
+		int width = e.getWidth();
+		int height = e.getHeight();
+		int level = e.getLevel();
 		
 		mapModel = new LevelMap(level, width, height);
 		
@@ -79,8 +78,7 @@ public class MapJPanel extends JPanel {
 		int x = e.getX();
 		int y = e.getY();
 		
-		MapItem item = e.getTile().getMapItem(x, y);
-		setMapItem(x, y, item);
+		setMapItem(x, y, e.getTile());
 	}
 	
 	@Subscribe
@@ -94,8 +92,8 @@ public class MapJPanel extends JPanel {
 		// TODO: implement the map save.
 	}
 	
-	private void setMapItem(int x, int y, MapItem item) {
-		mapModel.setMapItem(x, y, item);
+	private void setMapItem(int x, int y, PlaceableTile tile) {
+		mapModel.setMapItem(x, y, tile);
 		this.repaint();
 	}
 }

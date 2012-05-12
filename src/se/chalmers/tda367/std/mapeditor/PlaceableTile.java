@@ -1,69 +1,62 @@
 package se.chalmers.tda367.std.mapeditor;
 
-import se.chalmers.tda367.std.core.Properties;
-import se.chalmers.tda367.std.core.maps.MapItem;
-import se.chalmers.tda367.std.core.tiles.PlayerBase;
-import se.chalmers.tda367.std.utilities.Position;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import se.chalmers.tda367.std.core.tiles.*;
 
 /**
  * Represents the choices of placeable tiles in the MapEditor.
  * @author Emil Edholm
- * @date   May 10, 2012
+ * @date   May 12, 2012
  */
 public enum PlaceableTile {
 	TERRAIN_TILE("Terrain tile") {
 		@Override
-		public MapItem getMapItem(int x, int y) {
-			return MapItem.createTerrainMapItem();
-		}
+		public IBoardTile getInstance() { return terrainTile; }
 	},
 	BUILDABLE_TILE("Buildable tile") {
 		@Override
-		public MapItem getMapItem(int x, int y) {
-			return MapItem.createBuildableMapItem();
-		}
+		public IBoardTile getInstance() { return buildableTile; }
 	},
 	PATH_TILE("Path tile") {
 		@Override
-		public MapItem getMapItem(int x, int y) {
-			return MapItem.createPathMapItem();
-		}
+		public IBoardTile getInstance() { return walkableTile; }
 	},
 	PLAYER_BASE_TILE("PlayerBase tile") {
 		@Override
-		public MapItem getMapItem(int x, int y) {
-			return new MapItem(new PlayerBase(2), getCenterPosition(x, y));
-		}
+		public IBoardTile getInstance() { return playerBaseTile; }
 	},
-	ENEMY_START_TILE("Enemy start position") {
+	ENEMY_START_TILE("Enemy start position") { 
 		@Override
-		public MapItem getMapItem(int x, int y) {
-			// No need for the first position the enemies are inserted to be a waypoint.
-			return new MapItem(MapItem.PATH_TILE, null, true);
-		}
+		public IBoardTile getInstance() { return walkableTile; }
 	},
 	WAYPOINT("Waypoint") {
 		@Override
-		public MapItem getMapItem(int x, int y) {
-			return new MapItem(MapItem.PATH_TILE, getCenterPosition(x, y));
-		}
+		public IBoardTile getInstance() { return walkableTile; }
 	};
+	
+	private final transient static IBuildableTile buildableTile = getInstance(IBuildableTile.class);
+	private final transient static IWalkableTile walkableTile   = getInstance(IWalkableTile.class);
+	private final transient static IPlayerBase playerBaseTile   = getInstance(IPlayerBase.class);
+	private final transient static IBoardTile terrainTile       = getInstance(IBoardTile.class);
 	
 	private final String fancyName;
 	private PlaceableTile(String fancyName) {
 		this.fancyName = fancyName;
 	}
 	
-	/** The x, y coordinate should be in the upper left corner. */
-	private static Position getCenterPosition(int x, int y) {
-		float cX = x + Properties.INSTANCE.getTileScale() / 2;
-		float cY = y + Properties.INSTANCE.getTileScale() / 2;
-		return Position.valueOf(cX, cY);
-	}
-	public abstract MapItem getMapItem(int x, int y);
+	/** Returns an instance of the tile represented by the {@code PlaceableTile}. */
+	public abstract IBoardTile getInstance();
 	
 	@Override
 	public String toString() {
 		return fancyName;
+	}
+	
+	/** Used to get an instance from Guice */
+	private static <T> T getInstance(Class<T> type) {
+		Injector injector = Guice.createInjector();
+		return injector.getInstance(type);
 	}
 }

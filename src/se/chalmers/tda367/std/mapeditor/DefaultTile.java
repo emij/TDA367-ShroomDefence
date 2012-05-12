@@ -1,8 +1,5 @@
 package se.chalmers.tda367.std.mapeditor;
 
-import se.chalmers.tda367.std.core.maps.MapItem;
-import se.chalmers.tda367.std.core.tiles.IBoardTile;
-
 /**
  * Represents the choices of default tile placement in the Map Editor new map wizard.
  * @author Emil Edholm
@@ -10,22 +7,25 @@ import se.chalmers.tda367.std.core.tiles.IBoardTile;
  */
 public enum DefaultTile {
 	
-	TERRAIN_TILE("Terrain tile", MapItem.TERRAIN_TILE),
-	BUILDABLE_TILE("Buildable tile", MapItem.BUILDABLE_TILE);
+	TERRAIN_TILE("Terrain tile") {
+		@Override
+		public PlaceableTile convertToPlaceableTile() { return PlaceableTile.TERRAIN_TILE; }
+	},
+	BUILDABLE_TILE("Buildable tile") {
+		@Override
+		public PlaceableTile convertToPlaceableTile() { return PlaceableTile.BUILDABLE_TILE; }
+	};
 	
 	private final String fancyName;
-	private final IBoardTile tile;
-	private DefaultTile(String fancyName, IBoardTile tile){
+	private DefaultTile(String fancyName){
 		this.fancyName = fancyName;
-		this.tile = tile;
 	}
+	
+	/** Convert the {@code DefaultTile} to a {@code PlaceableTile}. */
+	public abstract PlaceableTile convertToPlaceableTile();
 	
 	@Override
 	public String toString() {
 		return this.fancyName;
-	}
-	
-	public IBoardTile getTile() {
-		return this.tile;
 	}
 }
