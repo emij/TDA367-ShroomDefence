@@ -152,7 +152,7 @@ public final class MainFrame extends JFrame {
 	    splitPane.setRightComponent(mapPanel);
 	    this.setTitle("STD Map Editor");
 	    this.setLocationRelativeTo(null); // Center screen
-	    this.setSize(690,547);
+	    this.setSize(1000,880);
 	    
 	    JMenuBar menuBar = new JMenuBar();
 	    setJMenuBar(menuBar);
