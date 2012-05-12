@@ -29,23 +29,9 @@ public final class BasicAttackTower extends AbstractAttackTower {
 	//TODO: change sprite for the basic tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/basic_tower_tile.png");
 	
-	private int upgradeLevel = 1;
-	private int dmgModifier = 1;
-	
 	public BasicAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
 				null, sprite);
-	}
-
-	@Override
-	public void upgrade() {
-		super.upgrade();
-		dmgModifier++;
-	}
-
-	@Override
-	public int getUpgradeCost() {
-		return 10 * upgradeLevel;
 	}
 
 	/**

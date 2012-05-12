@@ -35,28 +35,12 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 		effects.add(new SlowEffect(1));
 	}
 	
-	//TODO: change sprite for the slowing tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/slow_tower_tile.png");
-	
-	private int upgradeLevel = 1;
-	private int dmgModifier = 1;
 	
 	public SlowingAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
 				effects, sprite);
 	}
-
-	@Override
-	public void upgrade() {
-		super.upgrade();
-		dmgModifier++;
-	}
-
-	@Override
-	public int getUpgradeCost() {
-		return 10 * upgradeLevel;
-	}
-
 	/**
 	 * The textual representation of the tower on a text based game board.
 	 */

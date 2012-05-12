@@ -36,26 +36,11 @@ public final class PoisonAttackTower extends AbstractAttackTower {
 		effects.add(new PoisonEffect(1));
 	}
 	
-	//TODO: change sprite for the slowing tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/poison_tower_tile.png");
-	
-	private int upgradeLevel = 1;
-	private int dmgModifier = 1;
 	
 	public PoisonAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
 				effects, sprite);
-	}
-
-	@Override
-	public void upgrade() {
-		super.upgrade();
-		dmgModifier++;
-	}
-
-	@Override
-	public int getUpgradeCost() {
-		return 10 * upgradeLevel;
 	}
 
 	/**

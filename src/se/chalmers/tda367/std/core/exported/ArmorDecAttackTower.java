@@ -35,7 +35,7 @@ public final class ArmorDecAttackTower extends AbstractAttackTower {
 		effects.add(new ReduceArmorEffect(1));
 	}
 	
-	//TODO: change sprite for the slowing tower.
+	//TODO: change sprite for the armordec tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/slow_tower_tile.png");
 	
 	public ArmorDecAttackTower() {
