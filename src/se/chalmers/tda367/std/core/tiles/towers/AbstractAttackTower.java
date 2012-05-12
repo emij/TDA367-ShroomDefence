@@ -15,6 +15,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Emil Edholm
  * @modified Johan Andersson.
  * @modified Johan Gustafsson
+ * @modified Emil Johansson 12-05-2012
  * @date Mar 25, 2012
  */
 public abstract class AbstractAttackTower implements IAttackTower{
@@ -59,11 +60,11 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	@Override
 	public void upgrade() {
 		currentLevel++;
-	}
+	} 
 
 	@Override
 	public int refund() {
-		return (int)(0.75 * baseCost);
+		return (int)(0.75 * baseCost); //TODO change calculation
 	}
 
 	@Override
@@ -108,8 +109,9 @@ public abstract class AbstractAttackTower implements IAttackTower{
 
 
 	@Override
-	public abstract int getUpgradeCost();
-
+	public int getUpgradeCost() {
+		return (int)((currentLevel*0.5)*baseCost); 
+	}
 	@Override
 	public String toString() {
 		return this.getClass().getName() + " {" +
