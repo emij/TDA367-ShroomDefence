@@ -146,6 +146,7 @@ public final class MainFrame extends JFrame {
 	    		int x = e.getX() / scale;
 	    		int y = e.getY() / scale;
 	    		EventBus.INSTANCE.post(new TilePlacementEvent(selectedTile, x, y));
+	    		repaint();
 	    	}
 	    });
 	    

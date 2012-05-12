@@ -27,7 +27,7 @@ public class MapJPanel extends JPanel {
 			super.paintComponents(g);
 			return;
 		}
-		
+	
 		int scale = Properties.INSTANCE.getTileScale();
 		int width = mapModel.getWidth();
 		int height = mapModel.getHeight();
@@ -106,6 +106,5 @@ public class MapJPanel extends JPanel {
 	
 	private void setMapItem(int x, int y, PlaceableTile tile) {
 		mapModel.setMapItem(x, y, tile);
-		this.repaint();
 	}
 }
