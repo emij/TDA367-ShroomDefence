@@ -209,11 +209,11 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 					towerPopup.findNiftyControl("towerDMGLabel", Label.class).setText("" + 
 												((IAttackTower)board.getTileAt(p)).getDmg());
 					towerPopup.findNiftyControl("towerSPDLabel", Label.class).setText("" + 
-							((IAttackTower)board.getTileAt(p)).getAttackSpeed());
+												((IAttackTower)board.getTileAt(p)).getAttackSpeed());
 					towerPopup.findNiftyControl("towerUpgradeCostLabel", Label.class).setText("" + 
-							((IAttackTower)board.getTileAt(p)).getUpgradeCost());
+												((IAttackTower)board.getTileAt(p)).getUpgradeCost());
 					towerPopup.findNiftyControl("towerLVLLabel", Label.class).setText("" + 
-							((IAttackTower)board.getTileAt(p)).getCurrentLevel());
+												((IAttackTower)board.getTileAt(p)).getCurrentLevel());
 					nifty.showPopup(nifty.getCurrentScreen(), towerPopup.getId(), null);
 				}
 	    	}
