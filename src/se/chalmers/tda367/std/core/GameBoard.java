@@ -4,7 +4,10 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
+import com.google.common.eventbus.Subscribe;
+
 import se.chalmers.tda367.std.core.enemies.IEnemy;
+import se.chalmers.tda367.std.core.events.EnemyDeadEvent;
 import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.*;
@@ -27,6 +30,8 @@ public class GameBoard {
 	private List<Position> waypoints;
 	
 	public GameBoard(Map map) {
+		EventBus.INSTANCE.register(this);
+		
 		this.width = map.getWidth();
 		this.height = map.getHeight();
 		this.board =  new IBoardTile[this.width][this.height];
@@ -71,6 +76,19 @@ public class GameBoard {
 	 */
 	public List<EnemyItem> getEnemies() {
 		return enemies;
+	}
+	
+	/**
+	 * Event handler that removes a dead enemy.
+	 */
+	@Subscribe
+	public void removeDeadEnemy(EnemyDeadEvent e) {
+		for(EnemyItem item : enemies) {
+			if(item.getEnemy() == e.getDeadEnemy()) {
+				enemies.remove(item);
+				return;
+			}
+		}
 	}
 	
 	public IPlayerBase getPlayerBase() {

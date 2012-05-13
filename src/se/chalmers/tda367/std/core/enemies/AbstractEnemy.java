@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.core.events.EnemyDeadEvent;
+import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -86,12 +88,11 @@ public abstract class AbstractEnemy implements IEnemy{
 		
 		if(dmg > currentHealth) {
 			currentHealth = 0;
+			EventBus.INSTANCE.post(new EnemyDeadEvent(this));
 			return;
 		}
 
 		currentHealth -= dmg;
-
-		// TODO: Send event that enemy has died.
 	}
 
 	@Override

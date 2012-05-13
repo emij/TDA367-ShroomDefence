@@ -77,7 +77,6 @@ class WaveController {
 			shootAtEnemiesInRange(delta);
 			applyHealthEffects();
 			decreaseEffectsDuration(delta);
-			removeDeadEnemies();
 		}
 	}
 
@@ -192,20 +191,6 @@ class WaveController {
 		int radius = tile.getRadius() * Properties.INSTANCE.getTileScale();
 		List<EnemyItem> enemies = board.getEnemiesInRadius(pos, radius);
 		tile.shoot(enemies, pos);
-//		
-//		//TODO, make more advanced logic.
-//		if(!enemies.isEmpty()){
-//
-//			enemies.get(0).getEnemy().decreaseHealth(tile.getDmg());
-//		
-//			for(IEffect ie:tile.getEffects()){
-//				enemies.get(0).getEnemy().addEffect(ie);	//TODO refactor
-//			}
-//
-//
-//			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemies.get(0).getEnemyPos()));
-
-//		}
 	}
 
 	/**
@@ -244,28 +229,6 @@ class WaveController {
 		Logger.getLogger("se.chalmers.tda367.std.core").info("Player dead, game over");
 		EventBus.INSTANCE.post(new PlayerDeadEvent(player));
 		EventBus.INSTANCE.post(new WaveEndedEvent());
-	}
-
-	/**
-	 * Removes the enemies that are dead from the game board.
-	 * Must use a for-loop and not an iterator because of how getEnemies are implemented.
-	 */
-	private void removeDeadEnemies(){
-		List<EnemyItem> enemies = board.getEnemies();
-		List<EnemyItem> morgue = new ArrayList<EnemyItem>(); 
-		
-		for(EnemyItem enemy : enemies) {
-			if(enemy.getEnemy().getHealth() <= 0){
-				player.addMoney(enemy.getEnemy().getLootValue());
-				
-				morgue.add(enemy);
-			}
-		}
-	
-		// Clear the morgue.
-		for(EnemyItem item : morgue) {
-			enemies.remove(item);
-		}
 	}
 	
 	private class WaveReleaseTimerListener implements ActionListener {
