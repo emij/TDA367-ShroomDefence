@@ -11,16 +11,20 @@ import javax.swing.Timer;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
+import se.chalmers.tda367.std.core.events.EnemyEnteredBaseEvent;
+import se.chalmers.tda367.std.core.events.PlayerDeadEvent;
+import se.chalmers.tda367.std.core.events.WaveEndedEvent;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
+import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.Position;
 
 
 /**
  * The class that contains the game logic for wave phase of the game.
  * @author Johan Andersson
- * @modified Emil Edholm (Apr 27, 2012)
+ * @modified Emil Edholm (May 13, 2012)
  * @modified Johan Gustafsson (May 12, 2012)
  * @date Apr 22, 2012
  */
@@ -132,6 +136,10 @@ class WaveController {
 	 */
 	private void moveEnemies(final int delta){
 		List<EnemyItem> enemies = board.getEnemies();
+		if(enemies.isEmpty()) {
+			EventBus.INSTANCE.post(new WaveEndedEvent());
+			return;
+		}
 		
 		// Must use a for-loop and this method since getEnemies returns a 
 		// CopyOnWriteArrayList which does not support iterator operations.
@@ -143,8 +151,7 @@ class WaveController {
 				// I.e. the enemy is done walking and has entered the player base.
 				board.getPlayerBase().decreaseHealth();
 				toBeRemoved.add(item);
-
-				// TODO: Send event that player has entered the base?
+				EventBus.INSTANCE.post(new EnemyEnteredBaseEvent(item));
 			}
 		}
 		
@@ -219,6 +226,7 @@ class WaveController {
 		enemy.decreaseHealth(enemy.getHealth()-(int)health);
 	}
 
+	/** Whether or not the player has died */
 	private boolean isPlayerDead(){
 		if(board.getPlayerBase().getHealth() <= 0){
 			playerDead();
@@ -227,9 +235,11 @@ class WaveController {
 		return false;
 	}
 
+	/** What to do when the player is dead. */
 	private void playerDead(){
 		Logger.getLogger("se.chalmers.tda367.std.core").info("Player dead, game over");
-		// TODO: Sent event that player is dead.
+		EventBus.INSTANCE.post(new PlayerDeadEvent(player));
+		EventBus.INSTANCE.post(new WaveEndedEvent());
 	}
 
 	/**

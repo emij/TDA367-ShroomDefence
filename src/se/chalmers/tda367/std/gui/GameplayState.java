@@ -24,11 +24,11 @@ import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Player;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.anno.Tower;
+import se.chalmers.tda367.std.core.events.TowerShootingEvent;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
-import se.chalmers.tda367.std.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;
@@ -49,21 +49,23 @@ import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
 public class GameplayState extends NiftyOverlayBasicGameState implements ScreenController {
 	private int stateID, tileScale, mouseX, mouseY, delta;
 	private boolean towerIsChoosen, optionsScreenIsOpen, gameOver;
-	private GameBoard board;
 	private Properties properties = Properties.INSTANCE;
+	
 	private Player player;
 	private GameController gameControl;
+	private ITower choosenTower;
+	private IAttackTower selectedTower;
+	private BoardPosition towerPos;
+	
 	private Nifty nifty;
 	private Element lifeLabel, scoreLabel, levelLabel, playerMoneyLabel, defaultFocusElement,
 					optionsPopup, gameOverPopup, towerPopup;
 	private List<AttackAnimationDuration> attacksList;
 	private Image[] explosion;
 	private Animation explosionAnimation;
-	private ITower choosenTower;
-	private IAttackTower selectedTower;
 	private Music backgroundMusic;
 	private StateBasedGame state;
-	private BoardPosition towerPos;
+	
 
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
@@ -78,11 +80,10 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		optionsScreenIsOpen = false;
 		gameOver = false;
 		attacksList = new LinkedList<AttackAnimationDuration>();
-		
-		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
-		player = new Player("GustenTestar");
+
+		player = new Player("Player1");
 		player.setMoney(500);
-		gameControl = new GameController(player, board);
+		gameControl = new GameController(player);
 		
 		backgroundMusic.loop(1, 1);
 	}
@@ -191,6 +192,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Override
 	protected void updateGame(GameContainer container, StateBasedGame state, int delta)
 			throws SlickException {
+		GameBoard board = gameControl.getGameBoard();
+		
 		this.delta = delta;
 		if(!gameOver && !optionsScreenIsOpen) {
 			gameControl.updateGameState(delta);
@@ -265,6 +268,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	}
 	
 	private void renderTiles() {
+		GameBoard board = gameControl.getGameBoard();
+		
         for(int y = 0; y < board.getHeight(); y++){
         	for(int x = 0; x < board.getWidth(); x++){
         		IBoardTile tile = board.getTileAt(x, y);
@@ -276,7 +281,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	}
 	
 	private void renderEnemies(Graphics g) {
+		GameBoard board = gameControl.getGameBoard();
 		List<EnemyItem> enemies = board.getEnemies();
+		
         for(EnemyItem ei : enemies) {
         	Position p = ei.getEnemyPos();
         	int health = ei.getEnemy().getHealth();
@@ -288,7 +295,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	}
 	
 	private void renderStats() {
-	    lifeLabel.getNiftyControl(Label.class).setText("" + board.getPlayerBase().getHealth());
+	    lifeLabel.getNiftyControl(Label.class).setText("" + gameControl.getGameBoard().getPlayerBase().getHealth());
 	    scoreLabel.getNiftyControl(Label.class).setText("" + player.getCurrentScore());
 	    levelLabel.getNiftyControl(Label.class).setText("" + gameControl.getWavesReleased());
 	    playerMoneyLabel.getNiftyControl(Label.class).setText("" + player.getMoney());
@@ -297,15 +304,17 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	/**Renders the small square and the big circle around the mouse location that gives the player visual feedback
 	   showing if he can build on that tile or not and how far the tower can fire.*/
 	private void renderBuildingFeedback(Graphics g) {
+		GameBoard board = gameControl.getGameBoard();
 		int x = mouseX/tileScale;
 		int y = mouseY/tileScale;
+		
 		if(board.canBuildAt(BoardPosition.valueOf(x, y))) {
 			g.setColor(Color.green);
 			g.drawRect(x * tileScale, y * tileScale, tileScale, tileScale);
 			g.setColor(Color.black);
 			g.draw(new Circle(x * tileScale+tileScale/2, y * tileScale+tileScale/2, choosenTower.getRadius()*tileScale));
-		}
-		else {
+			
+		} else {
 			g.setColor(Color.red);
 			g.drawRect(x * tileScale, y * tileScale, tileScale, tileScale);
 			g.setColor(Color.black);
@@ -315,14 +324,18 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	/**Render attacks from the tower attacking to the enemy being attacked. Uses inner class {@code AttackAnimationDuration}.*/
 	private void renderAttacks(Graphics g) {
 		List<AttackAnimationDuration> tmpList = new LinkedList<AttackAnimationDuration>(attacksList);
+		
 		for(AttackAnimationDuration attack : tmpList) {
 			TowerShootingEvent event = attack.getAttackEvent();
 			Position from = event.getFromPosition();
 			Position to = event.getToPosition();
+			
 			g.drawLine(from.getX()+tileScale/2, from.getY()+tileScale/2,
-					to.getX()+tileScale/2, to.getY()+tileScale/2);
+					   to.getX()+tileScale/2, to.getY()+tileScale/2);
 			g.drawAnimation(explosionAnimation, to.getX(), to.getY());
+			
 			attack.decreaseDuration(delta);
+			
 			if(attack.getRemainigDuration() == 0) {
 				attacksList.remove(attack);
 			}

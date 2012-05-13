@@ -3,20 +3,21 @@ package se.chalmers.tda367.std.factories;
 import se.chalmers.tda367.std.core.GameBoard;
 
 /**
- * A <code>GameBoardFactory</code> used to create different levels/maps of the game.
- * @author Unchanged
- * @date Mar 22, 2012
+ * A {@code GameBoardFactory} used to create different levels/maps of the game.
+ * @author Emil Edholm
+ * @date May 13, 2012
  */
 public class GameBoardFactory implements IFactory<GameBoard> {
 
 	/**
 	 * Create a new game board. 
 	 * Effectively a level of the game.
+	 * @param level - the level to create. Controls what map are loaded etc.
 	 */
 	@Override
-	public GameBoard create(Object param) {
-		// TODO Auto-generated method stub
-		return null;
+	public GameBoard create(Object level) {
+		// TODO: Map loading goes here.
+		return new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
 	}
 
 }

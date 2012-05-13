@@ -1,7 +1,10 @@
 package se.chalmers.tda367.std.core;
 
+import se.chalmers.tda367.std.core.events.WaveStartedEvent;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.factories.GameBoardFactory;
 import se.chalmers.tda367.std.factories.WaveFactory;
+import se.chalmers.tda367.std.utilities.EventBus;
 
 
 
@@ -18,7 +21,10 @@ public class GameController {
 	private BuildController buildControl;
 	private WaveController waveControl;
 	
+	private final GameBoardFactory boardFactory;
+	
 	private int releasedWaves = 0;
+	private int level;
 	
 	
 	/** Constructor for the GameController, requires a player and a board to work.
@@ -26,13 +32,16 @@ public class GameController {
 	 * @param player - player playing the game.
 	 * @param board - board to play the game on.
 	 */
-	public GameController(Player player, GameBoard board){
+	public GameController(Player player){
 		this.player = player;
-		this.board = board;
+		this.level = 1;
+		boardFactory = new GameBoardFactory();
+		
 		init();
 	}
 	
 	private void init(){
+		this.board = boardFactory.create(level);
 		buildControl = new BuildController(board, player);
 		waveControl = new WaveController(board, player);
 	}
@@ -51,6 +60,7 @@ public class GameController {
 	public void nextWave(){
 		Wave wave = new WaveFactory().create(++releasedWaves);
 		waveControl.startWave(wave);
+		EventBus.INSTANCE.post(new WaveStartedEvent(releasedWaves));
 	}
 	
 	/** Builds a tower on the board.
@@ -116,5 +126,20 @@ public class GameController {
 	 */
 	public int getWavesReleased() {
 		return releasedWaves;
+	}
+	
+	/**
+	 * Returns the current level.
+	 * @return the current level.
+	 */
+	public int getLevel() {
+		return this.level;
+	}
+
+	/**
+	 * @return the game board
+	 */
+	public GameBoard getGameBoard() {
+		return board;
 	}
 }

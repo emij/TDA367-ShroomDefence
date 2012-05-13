@@ -1,4 +1,4 @@
-package se.chalmers.tda367.std.events;
+package se.chalmers.tda367.std.core.events;
 
 import se.chalmers.tda367.std.utilities.Position;
 
