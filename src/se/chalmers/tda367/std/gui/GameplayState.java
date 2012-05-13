@@ -16,19 +16,12 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import com.google.common.eventbus.Subscribe;
 
-import se.chalmers.tda367.std.core.DynamicLoader;
-import se.chalmers.tda367.std.core.EnemyItem;
-import se.chalmers.tda367.std.core.GameBoard;
+import se.chalmers.tda367.std.core.*;
 import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
-import se.chalmers.tda367.std.core.GameController;
-import se.chalmers.tda367.std.core.Player;
-import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.anno.Tower;
-import se.chalmers.tda367.std.core.events.TowerShootingEvent;
-import se.chalmers.tda367.std.core.tiles.IBoardTile;
-import se.chalmers.tda367.std.core.tiles.IBuildableTile;
-import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
-import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.core.events.*;
+import se.chalmers.tda367.std.core.tiles.*;
+import se.chalmers.tda367.std.core.tiles.towers.*;
 import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;
@@ -226,11 +219,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 					nifty.showPopup(nifty.getCurrentScreen(), towerPopup.getId(), null);
 				}
 	    	}
-			if(board.getPlayerBase().getHealth() == 0) {
-				gameOverPopup.findNiftyControl("gameOverScoreLabel", Label.class).setText("" + player.getCurrentScore());
-				nifty.showPopup(nifty.getCurrentScreen(), gameOverPopup.getId(), null);
-				gameOver=true;
-			}
 		}
 	}
 
@@ -265,6 +253,28 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	public void renderTowerShooting(TowerShootingEvent event){
 		AttackAnimationDuration attack = new AttackAnimationDuration(event, 1000);
 		attacksList.add(attack);
+	}
+	
+	@Subscribe
+	public void enemyHasEnteredBase(EnemyEnteredBaseEvent e) {
+		// TODO: Implement
+	}
+	
+	@Subscribe
+	public void playerIsDead(PlayerDeadEvent e) {
+		gameOverPopup.findNiftyControl("gameOverScoreLabel", Label.class).setText("" + player.getCurrentScore());
+		nifty.showPopup(nifty.getCurrentScreen(), gameOverPopup.getId(), null);
+		gameOver = true;
+	}
+	
+	@Subscribe
+	public void waveHasEnded(WaveEndedEvent e) {
+		// TODO: Implement
+	}
+	
+	@Subscribe
+	public void waveHasStarted(WaveStartedEvent e) {
+		// TODO: Implement
 	}
 	
 	private void renderTiles() {
