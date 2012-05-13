@@ -312,7 +312,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	}
 	
 	private void renderPlayerCharacter(Graphics g) {
-		PlayerCharacter character = player.getCharacter();
+		IPlayerCharacter character = player.getCharacter();
 		NativeSprite image = character.getSprite().getNativeSprite();
 		
 		image.draw(character.getPos().getX(), character.getPos().getY(), tileScale, tileScale);

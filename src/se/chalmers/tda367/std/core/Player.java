@@ -13,7 +13,7 @@ public class Player {
 	private String name;
 	private int currentScore;
 	private int money;
-	private PlayerCharacter character;
+	private IPlayerCharacter character;
 	
 	public Player(){
 		
@@ -72,7 +72,7 @@ public class Player {
 	 * This will return a reference to this player's character
 	 * @return a reference to the player's {@code PlayerCharacter}
 	 */
-	public PlayerCharacter getCharacter() {
+	public IPlayerCharacter getCharacter() {
 		return character;
 	}
 }

@@ -20,9 +20,6 @@ public class GameInputMapping implements NiftyInputMapping {
 			else if(inputEvent.getKey() == KeyboardInputEvent.KEY_LEFT) {
 				return NiftyInputEvent.MoveCursorLeft;
 			}
-			else if(inputEvent.getKey() == KeyboardInputEvent.KEY_LEFT) {
-				return NiftyInputEvent.MoveCursorLeft;
-			}
 		return null;
 	}
 
