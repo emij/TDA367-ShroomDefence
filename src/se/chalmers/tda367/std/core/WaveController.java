@@ -2,8 +2,8 @@ package se.chalmers.tda367.std.core;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -14,8 +14,6 @@ import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
-import se.chalmers.tda367.std.events.TowerShootingEvent;
-import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.Position;
 
 
@@ -78,10 +76,11 @@ class WaveController {
 	}
 
 	private void decreaseEffectsDuration(int delta) {
-		List<EnemyItem> enemyItems = board.getModifiableEnemies();
-		List<EnemyItem> tmpEnemyItems = new LinkedList<EnemyItem>(enemyItems);
-		for(EnemyItem ei:tmpEnemyItems){
+		List<EnemyItem> enemyItems = board.getEnemies();
+
+		for(EnemyItem ei : enemyItems){
 			List<IEffect> effects = ei.getEnemy().getEffects();
+
 			Iterator<IEffect> it = effects.iterator();
 			while(it.hasNext()){
 				IEffect effect = it.next();
@@ -121,7 +120,7 @@ class WaveController {
 	 * Add a enemy to the game board from a {@code WaveItem}
 	 */
 	private void addEnemy(WaveItem wi){
-		List<EnemyItem> enemies = board.getModifiableEnemies();
+		List<EnemyItem> enemies = board.getEnemies();
 		
 		EnemyItem item = new EnemyItem(wi.getEnemy(), board.getStartPos().toPosition(), board.getWaypoints());
 		enemies.add(item);
@@ -132,30 +131,29 @@ class WaveController {
 	 * @param delta - the amount of time (in milliseconds) since the last update.	
 	 */
 	private void moveEnemies(final int delta){
-		List<EnemyItem> enemies = board.getModifiableEnemies();
-		Iterator<EnemyItem> it = enemies.iterator();
+		List<EnemyItem> enemies = board.getEnemies();
 		
-		while(it.hasNext()) {
-			EnemyItem ei = it.next();
+		// Must use a for-loop and this method since getEnemies returns a 
+		// CopyOnWriteArrayList which does not support iterator operations.
+		List<EnemyItem> toBeRemoved = new ArrayList<EnemyItem>();
+		for(EnemyItem item : enemies) {
+			item.moveEnemy(delta);
 			
-			ei.moveEnemy(delta);
-			if(ei.getWaypoints().isEmpty()){ 
+			if(item.getWaypoints().isEmpty()){ 
 				// I.e. the enemy is done walking and has entered the player base.
 				board.getPlayerBase().decreaseHealth();
-				it.remove(); // Remove the enemy from the board.
+				toBeRemoved.add(item);
 
 				// TODO: Send event that player has entered the base?
 			}
 		}
+		
+		// Remove all "marked" enemies from the board.
+		for(EnemyItem item : toBeRemoved) {
+			enemies.remove(item);
+		}
 	}
 	
-	/** Method that controls what happens when an enemy enters the player base. */
-	private void enemyEnteredBase(IEnemy enemy){
-		board.getPlayerBase().decreaseHealth();
-		board.getEnemies().remove(enemy); 
-		// Remove the "offending" enemy from the game board.
-		// TODO: Send event that player has entered the base?
-	}
 	/**
 	 * Towers fires at enemies in range.
 	 * @param delta - the amount of time (in milliseconds) since the last update.
@@ -236,17 +234,23 @@ class WaveController {
 
 	/**
 	 * Removes the enemies that are dead from the game board.
+	 * Must use a for-loop and not an iterator because of how getEnemies are implemented.
 	 */
 	private void removeDeadEnemies(){
-		List<EnemyItem> enemies = board.getModifiableEnemies();
-		Iterator<EnemyItem> it = enemies.iterator();
+		List<EnemyItem> enemies = board.getEnemies();
+		List<EnemyItem> morgue = new ArrayList<EnemyItem>(); 
 		
-		while(it.hasNext()){
-			EnemyItem item = it.next();
-			if(item.getEnemy().getHealth() <= 0){
-				it.remove();
-				player.addMoney(item.getEnemy().getLootValue());
+		for(EnemyItem enemy : enemies) {
+			if(enemy.getEnemy().getHealth() <= 0){
+				player.addMoney(enemy.getEnemy().getLootValue());
+				
+				morgue.add(enemy);
 			}
+		}
+	
+		// Clear the morgue.
+		for(EnemyItem item : morgue) {
+			enemies.remove(item);
 		}
 	}
 	

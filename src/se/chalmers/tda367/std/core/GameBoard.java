@@ -1,6 +1,7 @@
 package se.chalmers.tda367.std.core;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import se.chalmers.tda367.std.core.enemies.IEnemy;
@@ -55,7 +56,7 @@ public class GameBoard {
 		board = MapLoader.getMap();
 		this.waypoints = MapLoader.getWayPointList();
 		
-		enemies = new ArrayList<EnemyItem>();
+		enemies = new CopyOnWriteArrayList<EnemyItem>();
 		
 		// TODO: Refactor so that this is read from the map instead.
 		playerBasePosition = BoardPosition.valueOf(0, 0);
@@ -86,18 +87,9 @@ public class GameBoard {
 	/**
 	 * Retrieves the enemies that are currently on the game board.
 	 * The actual logic behind removing and adding enemies are 
-	 * @return a unmodifiable list of EnemyItems that are currently ON the game board. 
+	 * @return a list of EnemyItems that are currently ON the game board.
 	 */
 	public List<EnemyItem> getEnemies() {
-		return Collections.unmodifiableList(enemies);
-	}
-	
-	/**
-	 * Same as {@code getEnemies()} but it is modifiable.
-	 * @see getEnemies()
-	 * @return a modifiable list of the enemies on the game board.
-	 */
-	public List<EnemyItem> getModifiableEnemies() {
 		return enemies;
 	}
 	

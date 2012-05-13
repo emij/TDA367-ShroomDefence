@@ -275,7 +275,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	}
 	
 	private void renderEnemies(Graphics g) {
-        for(EnemyItem ei : board.getEnemies() ) {
+		List<EnemyItem> enemies = board.getEnemies();
+        for(EnemyItem ei : enemies) {
         	Position p = ei.getEnemyPos();
         	int health = ei.getEnemy().getHealth();
         	NativeSprite image = ei.getEnemy().getSprite().getNativeSprite();
