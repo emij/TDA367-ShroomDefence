@@ -128,6 +128,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			Element panel = (equal) ? leftBtnPanel : rightBtnPanel;
 			Tower anno = towerClass.getAnnotation(Tower.class);
 			if(anno != null) {
+				bb.id(anno.name());
 				bb.label(anno.name());
 				//This will cause the button when pressed to call the buildTower() method with it's annotation as argument.
 				bb.interactOnClick("buildTower("+ anno.name() + ")");

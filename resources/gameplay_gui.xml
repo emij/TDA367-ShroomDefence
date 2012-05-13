@@ -42,8 +42,7 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
         <layer id="rightUI" childLayout="center" visibleToMouse="true">
             <panel height="100%" width="21%" align="right" valign="center" 
                 backgroundColor="#444444" childLayout="vertical">
-                <control id="closeOptionsButton" name="button" label="Options" width="85%" height="10%" align="center">
-                    <interact onClick=""/>
+                <control id="closeOptionsButton" name="button" label="Options" width="85%" height="10%" align="center" visibleToMouse="true">
                 </control>
                 <panel id="buttonPanel" childLayout="horizontal" width="95%" height="80%" 
                     align="center" valing="top" backgroundColor="#575757" padding="10%,0,0,8%">
@@ -77,8 +76,7 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                 </panel>     
             </panel>
             <panel childLayout="vertical" width="*" height="*">
-                <control id="closeOptionsButton" name="button" label="Close" width="50%" height="90%" align="right" valign="bottom">
-                    <interact onClick=""/>
+                <control id="closeOptionsButton" name="button" label="Close" width="50%" height="90%" align="right" valign="bottom" visibleToMouse="true">
                 </control>
             </panel>
         </panel>
@@ -93,8 +91,7 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                 <control id="playerNameField" name="textfield" width="50%" height="10%" align="center" />
             </panel>
             <panel childLayout="vertical" width="*" height="*">
-                <control id="closeGameButton" name="button" label="Close" width="50%" height="90%" align="right" valign="bottom">
-                    <interact onClick=""/>
+                <control id="closeGameButton" name="button" label="Close" width="50%" height="90%" align="right" valign="bottom" visibleToMouse="true">
                 </control>
             </panel>
         </panel>
@@ -120,8 +117,7 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                 </control>
             </panel>
             <panel childLayout="vertical" width="*" height="*" paddin="10%">
-                <control id="closeTowerSelectedPopup" name="button" label="Close" width="50%" height="80%" align="right" valign="bottom">
-                    <interact onClick=""/>
+                <control id="closeTowerSelectedPopup" name="button" label="Close" width="50%" height="80%" align="right" valign="bottom" visibleToMouse="true">
                 </control>
             </panel>
         </panel>
