@@ -82,10 +82,12 @@ class WaveController {
 		List<EnemyItem> tmpEnemyItems = new LinkedList<EnemyItem>(enemyItems);
 		for(EnemyItem ei:tmpEnemyItems){
 			List<IEffect> effects = ei.getEnemy().getEffects();
-			for(IEffect effect:effects){
+			Iterator<IEffect> it = effects.iterator();
+			while(it.hasNext()){
+				IEffect effect = it.next();
 				effect.decrementDuration(delta);
-				if(effect.getDuration() < 0.01){
-					ei.getEnemy().removeEffect(effect);
+				if(effect.getDuration() < 0.001){
+					it.remove();
 				}
 			}
 		}
