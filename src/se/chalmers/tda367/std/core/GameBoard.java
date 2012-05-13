@@ -45,8 +45,6 @@ public class GameBoard {
 
 	}
 	
-	// TODO: Handle event that enemies has died.
-	
 	/**
 	 * Returns a list of enemies that is inside the radius of the supplied position
 	 * @param center the center position of the "circle" to check
@@ -63,7 +61,7 @@ public class GameBoard {
 			}
 		}
 		Collections.sort(inRadius);
-		return inRadius; // TODO: Sort by enemies closest to player base.
+		return inRadius;
 	}
 	
 	/**
@@ -197,7 +195,7 @@ public class GameBoard {
 	}
 	
 	/**
-	 * TODO: Fix javadoc
+	 * Returns a defensively copied list of the waypoint positions.
 	 */
 	public List<Position> getWaypoints() { 
 		return new ArrayList<Position>(waypoints);
