@@ -28,6 +28,7 @@ import se.chalmers.tda367.std.utilities.Position;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
+import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.SliderChangedEvent;
@@ -51,7 +52,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private BoardPosition towerPos;
 	
 	private Nifty nifty;
-	private Element lifeLabel, scoreLabel, levelLabel, playerMoneyLabel, defaultFocusElement,
+	private Element lifeLabel, scoreLabel, levelLabel, playerMoneyLabel, startWaveButton,
 					optionsPopup, gameOverPopup, towerPopup;
 	private List<AttackAnimationDuration> attacksList;
 	private Image[] explosion;
@@ -152,7 +153,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		scoreLabel = tmpScreen.findElementByName("scoreLabel");
 		levelLabel = tmpScreen.findElementByName("levelLabel");
 		playerMoneyLabel = tmpScreen.findElementByName("playerMoneyLabel");
-		defaultFocusElement = tmpScreen.findElementByName("startWaveButton");
+		startWaveButton = tmpScreen.findElementByName("startWaveButton");
 		optionsPopup = nifty.createPopup("optionsPopup");
 		gameOverPopup = nifty.createPopup("gameOverPopup");
 		towerPopup = nifty.createPopup("towerSelectedPopup");
@@ -197,7 +198,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			
 			if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 				towerIsChoosen = false;
-				defaultFocusElement.setFocus();
+				startWaveButton.setFocus();
 			}
 			
 			if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()
@@ -209,7 +210,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 					gameControl.buildTower(choosenTower, p);
 					if(!input.isKeyDown(Input.KEY_LSHIFT)) {
 						towerIsChoosen = false;
-						defaultFocusElement.setFocus();
+						startWaveButton.setFocus();
 					}
 				}
 				else if(board.getTileAt(p) instanceof IAttackTower && !towerIsChoosen) {
@@ -270,11 +271,13 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Subscribe
 	public void waveHasEnded(WaveEndedEvent e) {
 		// TODO: Implement
+		startWaveButton.getNiftyControl(Button.class).enable();
 	}
 	
 	@Subscribe
 	public void waveHasStarted(WaveStartedEvent e) {
 		// TODO: Implement
+		startWaveButton.getNiftyControl(Button.class).disable();
 	}
 	
 	private void renderTiles() {
@@ -410,8 +413,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			nifty.closePopup(towerPopup.getId());
 		}
 		else if(gameOverPopup.findElementByName(id) != null) {
-			state.enterState(STDGame.MAINMENUSTATE);
 			nifty.closePopup(gameOverPopup.getId());
+			state.enterState(STDGame.MAINMENUSTATE);
 		}
 	}
 	

@@ -39,11 +39,13 @@ class WaveController {
 	private Timer releaseTimer;
 	private WaveItem nextEnemy;
 	private Wave wave;
+	private boolean waveHasBeenCompleted;
 	
 
 	public WaveController(GameBoard board, Player player) {
 		this.board = board;
 		this.player = player;
+		waveHasBeenCompleted = false;
 		releaseTimer = new Timer(INITIAL_WAVE_DELAY, new WaveReleaseTimerListener());
 	}
 	
@@ -117,6 +119,7 @@ class WaveController {
 		}else {
 			// Stop the timer when all enemies has been "released"
 			releaseTimer.stop();
+			waveHasBeenCompleted = true;
 		}
 	}
 
@@ -136,8 +139,9 @@ class WaveController {
 	 */
 	private void moveEnemies(final int delta){
 		List<EnemyItem> enemies = board.getEnemies();
-		if(enemies.isEmpty()) {
+		if(enemies.isEmpty() && waveHasBeenCompleted) {
 			EventBus.INSTANCE.post(new WaveEndedEvent());
+			waveHasBeenCompleted = false;
 			return;
 		}
 		
