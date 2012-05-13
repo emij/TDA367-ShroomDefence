@@ -89,7 +89,7 @@ class WaveController {
 				effect.decrementDuration(delta);
 				if(effect.getDuration() < 0.001){
 					it.remove();
-					ei.getEnemy().removeEffect(effect);
+					enemy.removeEffect(effect);
 				}
 			}
 		}
