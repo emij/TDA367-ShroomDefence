@@ -1,6 +1,5 @@
 package se.chalmers.tda367.std.core.enemies;
 
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
@@ -8,13 +7,11 @@ import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * Represents a killable enemy.
- * Implements the PropertyChangeListener interface.
- * This is called when an enemy is in range of a tower and is shot on, or otherwise damaged.
  * @author Emil Edholm
  * @modified Emil Johansson, Johan Andersson
  * @date Mar 25, 2012
  */
-public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
+public interface IEnemy {
 	
 	/**
 	 * Returns the base health of the enemy, enemy health without any effects on it.
@@ -80,13 +77,6 @@ public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
 //	 */
 //	public float decreaseSpeed(float inc);
 	
-	/**
-	 * Returns the current boardValue of the enemy.
-	 * Higher value means closer to playerBase
-	 * @return current boardValue
-	 */
-	public int getBoardValue();
-	
 	/** 
 	 *  Add an effect to an enemy.
 	 * @param effect - Effect to be added.
@@ -108,23 +98,8 @@ public interface IEnemy extends PropertyChangeListener, Comparable<IEnemy> {
 	 */
 	public List<IEffect> getEffects();
 	
-	
 	/**
-	 * Sets the boardValue of the enemy
-	 * @param boardValue
-	 */
-	public void setBoardValue(int boardValue);
-	/**
-	 * Compares the enemies boardValue to check
-	 * which is closer to playerBase.
-	 * Returns 1 
-	 */
-	@Override
-	public int compareTo(IEnemy enemy);
-	
-	/**
-	 * 
-	 * @return
+	 * @return the sprite (image representation) of the Enemy.
 	 */
 	public Sprite getSprite();
 
