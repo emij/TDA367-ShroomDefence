@@ -1,21 +1,10 @@
 package se.chalmers.tda367.std.gui;
 
-import java.awt.Panel;
-
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.Layer;
 
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.NiftyEventSubscriber;
-import de.lessvoid.nifty.builder.LayerBuilder;
-import de.lessvoid.nifty.builder.PanelBuilder;
-import de.lessvoid.nifty.elements.events.NiftyMousePrimaryClickedEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyBasicGameState;
