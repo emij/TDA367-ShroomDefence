@@ -17,11 +17,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import com.google.common.eventbus.Subscribe;
 
 import se.chalmers.tda367.std.core.*;
-import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
 import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.core.events.*;
 import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.towers.*;
+import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;

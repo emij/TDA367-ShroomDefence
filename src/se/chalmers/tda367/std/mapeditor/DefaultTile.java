@@ -1,5 +1,7 @@
 package se.chalmers.tda367.std.mapeditor;
 
+import se.chalmers.tda367.std.core.PlaceableTile;
+
 /**
  * Represents the choices of default tile placement in the Map Editor new map wizard.
  * @author Emil Edholm

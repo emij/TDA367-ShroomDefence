@@ -1,8 +1,8 @@
-package se.chalmers.tda367.std.mapeditor;
+package se.chalmers.tda367.std.core;
 
 import java.util.List;
 
-import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
+import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.Position;
 
 /**

@@ -1,6 +1,6 @@
 package se.chalmers.tda367.std.mapeditor.events;
 
-import se.chalmers.tda367.std.mapeditor.PlaceableTile;
+import se.chalmers.tda367.std.core.PlaceableTile;
 
 /**
  * Represents the event that is fired when a user clicks on the map to place a tile.

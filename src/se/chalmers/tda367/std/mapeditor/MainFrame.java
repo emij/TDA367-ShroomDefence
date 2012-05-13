@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import com.google.common.eventbus.Subscribe;
 
+import se.chalmers.tda367.std.core.PlaceableTile;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.mapeditor.events.*;
 import se.chalmers.tda367.std.utilities.EventBus;

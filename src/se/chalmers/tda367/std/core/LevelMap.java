@@ -1,4 +1,4 @@
-package se.chalmers.tda367.std.mapeditor;
+package se.chalmers.tda367.std.core;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,9 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.chalmers.tda367.std.core.GameBoard;
-import se.chalmers.tda367.std.core.Properties;
-import se.chalmers.tda367.std.core.GameBoard.BoardPosition;
+import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.Position;
 
 /**
@@ -45,7 +43,7 @@ public class LevelMap implements Map, Serializable {
 	}
 	
 	@Override
-	public GameBoard.BoardPosition getEnemyStartPos() {
+	public BoardPosition getEnemyStartPos() {
 		return this.enemyStartPos;
 	}
 	
@@ -54,7 +52,7 @@ public class LevelMap implements Map, Serializable {
 	}
 	
 	@Override
-	public GameBoard.BoardPosition getPlayerBasePos() {
+	public BoardPosition getPlayerBasePos() {
 		return this.playerBasePos;
 	}
 	

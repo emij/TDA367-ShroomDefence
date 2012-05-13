@@ -1,4 +1,4 @@
-package se.chalmers.tda367.std.mapeditor;
+package se.chalmers.tda367.std.core;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

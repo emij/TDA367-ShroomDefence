@@ -4,6 +4,7 @@ import se.chalmers.tda367.std.core.events.WaveStartedEvent;
 import se.chalmers.tda367.std.core.factories.GameBoardFactory;
 import se.chalmers.tda367.std.core.factories.WaveFactory;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.EventBus;
 
 
@@ -69,7 +70,7 @@ public class GameController {
 	 * @param pos - Position to build upon.
 	 * @return - True if tower was build otherwise false
 	 */
-	public boolean buildTower(ITower tower, GameBoard.BoardPosition pos){
+	public boolean buildTower(ITower tower, BoardPosition pos){
 		return buildControl.buildTower(tower, pos);
 	}
 	
@@ -79,7 +80,7 @@ public class GameController {
 	 * @param pos - Position on which the tower is built.
 	 * @return - True if tower is sold.
 	 */
-	public boolean sellTower(ITower tower, GameBoard.BoardPosition pos){
+	public boolean sellTower(ITower tower, BoardPosition pos){
 		return buildControl.sellTower(tower, pos);
 	}
 	
@@ -106,7 +107,7 @@ public class GameController {
 	 * @param pos - Position to test buildability on.
 	 * @return - True if position is buildable on board.
 	 */
-	public boolean isBuildableSpot(GameBoard.BoardPosition pos) {
+	public boolean isBuildableSpot(BoardPosition pos) {
 		return buildControl.isBuildableSpot(pos);
 	}
 	

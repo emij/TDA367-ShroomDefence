@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core;
 
 import se.chalmers.tda367.std.core.tiles.BuildableTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.utilities.BoardPosition;
 
 /**
  * The class that contains the game logic for build phase of the game.
@@ -28,7 +29,7 @@ class BuildController {
 	 * @param pos - Position to build upon.
 	 * @return - True if tower was built otherwise false
 	 */
-	public boolean buildTower(ITower tower, GameBoard.BoardPosition pos){
+	public boolean buildTower(ITower tower, BoardPosition pos){
 		if(isBuildableSpot(pos) && playerCanAffordTower(tower)){
 			board.placeTile(tower, pos);
 			player.removeMoney(tower.getBaseCost());
@@ -43,7 +44,7 @@ class BuildController {
 	 * @param pos - Position to test buildability on.
 	 * @return - True if position is buildable on board.
 	 */
-	public boolean isBuildableSpot(GameBoard.BoardPosition pos) {
+	public boolean isBuildableSpot(BoardPosition pos) {
 		return board.canBuildAt(pos);
 	}
 
@@ -86,7 +87,7 @@ class BuildController {
 	 * @param pos - Position on which the tower is built.
 	 * @return - True if tower is sold.
 	 */
-	public boolean sellTower(ITower tower, GameBoard.BoardPosition pos){
+	public boolean sellTower(ITower tower, BoardPosition pos){
 		if(isTowerAt(tower,pos)){
 			player.setMoney(player.getMoney() + tower.refund());
 			board.placeTile(new BuildableTile(), pos);
@@ -96,7 +97,7 @@ class BuildController {
 		}
 	}
 
-	private boolean isTowerAt(ITower tower, GameBoard.BoardPosition pos) {
+	private boolean isTowerAt(ITower tower, BoardPosition pos) {
 		return tower == board.getTileAt(pos);
 	}
 		
