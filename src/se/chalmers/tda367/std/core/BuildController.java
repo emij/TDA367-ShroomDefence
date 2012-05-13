@@ -12,7 +12,6 @@ import se.chalmers.tda367.std.core.tiles.towers.ITower;
  */
 
 class BuildController {
-	private static final double SELL_MODIFER = 0.75; 
 	private GameBoard board;
 	private Player player;
 	

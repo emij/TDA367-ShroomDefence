@@ -5,7 +5,6 @@ import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.effects.PoisonEffect;
-import se.chalmers.tda367.std.core.effects.SlowEffect;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.utilities.Sprite;
 import se.chalmers.tda367.std.core.anno.Tower;

@@ -22,7 +22,6 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	private int baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed, currentLevel;
 	private final Sprite sprite;
 	private List<IEffect> effects;
-	private String towerName;
 	
 	private int timeSinceLastAttack = 0;
 
