@@ -6,60 +6,43 @@ import java.util.logging.Logger;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.mapeditor.Map;
+import se.chalmers.tda367.std.mapeditor.PlaceableTile;
 import se.chalmers.tda367.std.utilities.*;
 
 /**
  * Represents the whole game board in a grid system.
  * @author Johan Gustafsson
- * @modified Emil Johansson, Emil Edholm
+ * @modified Emil Johansson, Emil Edholm (Apr 28, 2012)
  * @date Mar 22, 2012
  */
 public class GameBoard {
-	//private MapLoader map = new MapLoader();
-	
 	private IBoardTile[][] board;
 	private List<EnemyItem> enemies;
 	
-	private BoardPosition startPos;
-	private BoardPosition endPos;
+	private BoardPosition enemyStartPos;
+	private BoardPosition playerBasePos;
 	
 	private final int width;
 	private final int height;
 	private List<Position> waypoints;
 	
-	// TODO: Implement this by reading a map.
-	private BoardPosition playerBasePosition;
-	
-	// TODO: Refactor the constructors to take a single map parameter instead.
-	public GameBoard(BoardPosition startPos, BoardPosition endPos){	
-		this(Properties.INSTANCE.getDefaultBoardWidth(), Properties.INSTANCE.getDefaultBoardHeight(), startPos, endPos);
-	}
-	
-	public GameBoard(int width, int height, BoardPosition startPos, BoardPosition endPos){
-		if(width <= 0 || height <= 0) {
-			throw new IllegalArgumentException("Width and/or height cannot be equal to or smaller than zero");
+	public GameBoard(Map map) {
+		this.width = map.getWidth();
+		this.height = map.getHeight();
+		this.board =  new IBoardTile[this.width][this.height];
+		this.enemyStartPos = map.getEnemyStartPos();
+		this.playerBasePos = map.getPlayerBasePos();
+		this.waypoints = map.getWaypointList();
+		this.enemies = new ArrayList<EnemyItem>();
+		
+		// Populate the game board with data from the Map.
+		for(int y = 0; y < height; y++) {
+			for(int x = 0; x < width; x++) {
+				PlaceableTile item = map.getMapItem(x, y);
+				board[x][y] = item.getInstance();
+			}
 		}
-		
-		
-		this.width = width;
-		this.height = height;
-		board =  new IBoardTile[this.width][this.height];
-		if(!posOnBoard(startPos) || !posOnBoard(endPos)) {
-			throw new IllegalArgumentException("Start and/or end position is not on the board.");
-		}
-		
-		this.startPos = startPos;
-		this.endPos = endPos;
-		
-		MapLoader.setLevel(1);
-		board = MapLoader.getMap();
-		this.waypoints = MapLoader.getWayPointList();
-		
-		enemies = new ArrayList<EnemyItem>();
-		
-		// TODO: Refactor so that this is read from the map instead.
-		playerBasePosition = BoardPosition.valueOf(0, 0);
-		placeTile(new PlayerBase(2), playerBasePosition);
 	}
 	
 	// TODO: Handle event that enemies has died.
@@ -92,7 +75,7 @@ public class GameBoard {
 	}
 	
 	public IPlayerBase getPlayerBase() {
-		return (IPlayerBase) getTileAt(playerBasePosition);
+		return (IPlayerBase) getTileAt(playerBasePos);
 	}
 
 	/**
@@ -114,10 +97,6 @@ public class GameBoard {
 	 */
 	public void placeTile(IBoardTile tile, BoardPosition p){
 		if(posOnBoard(p)) {
-//			if(tile instanceof WaypointTile) {
-//				Position tmp = new Position(p.getX()*32+16, p.getY()*32+16); // TODO: Remove constants. (16 + 8)
-//				waypoints.add(tmp);
-//			}
 			board[p.getX()][p.getY()] = tile;
 		} else {
 			Logger.getLogger("se.chalmers.tda367.std.core").info(p + " is a bad coordinate");
@@ -205,7 +184,7 @@ public class GameBoard {
 	 * @return a position containing the coordinates of the enemy starting position.
 	 */
 	public BoardPosition getStartPos() {
-		return startPos;
+		return enemyStartPos;
 	}
 	
 	/**
@@ -213,7 +192,7 @@ public class GameBoard {
 	 * @return a position containing the coordinates of the end/goal position.
 	 */
 	public BoardPosition getEndPos() {
-		return endPos;
+		return playerBasePos;
 	}
 	
 	/**

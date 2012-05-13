@@ -17,6 +17,7 @@ import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Player;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.exported.BasicAttackTower;
+import se.chalmers.tda367.std.mapeditor.MapLoader;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.events.TowerShootingEvent;
@@ -57,7 +58,8 @@ public class GameplayState extends BasicGameState {
 		
 		tileScale = properties.getTileScale();
 		
-		board = new GameBoard(25,20, GameBoard.BoardPosition.valueOf(0,12), GameBoard.BoardPosition.valueOf(19,12));
+		MapLoader mLoader = new MapLoader(1);
+		board = new GameBoard(mLoader.getLoadedMap());
 		player = new Player("GustenTestar");
 		gameControl = new GameController(player, board);
 		
