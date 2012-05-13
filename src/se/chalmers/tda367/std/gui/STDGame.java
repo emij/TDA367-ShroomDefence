@@ -8,6 +8,7 @@ public class STDGame extends StateBasedGame {
 
     public static final int MAINMENUSTATE = 0;
     public static final int GAMEPLAYSTATE = 1;
+    public static final int HIGHSCORESTATE = 2;
 	
 	public STDGame() {
 		super("STD - Shroom Tower Defense");
@@ -15,6 +16,7 @@ public class STDGame extends StateBasedGame {
 		
         this.addState(new MainMenuState(MAINMENUSTATE));
         this.addState(new GameplayState(GAMEPLAYSTATE));
+        this.addState(new HighscoreState(HIGHSCORESTATE));
         this.enterState(MAINMENUSTATE);
 	}
 

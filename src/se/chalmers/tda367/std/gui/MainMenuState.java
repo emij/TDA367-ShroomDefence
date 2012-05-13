@@ -78,7 +78,9 @@ public class MainMenuState extends BasicGameState {
 			exitButtonScale = 1.05f;
 			startButtonScale = 1;
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				container.exit();
+				//TODO: Test only, dont forget to fix this
+				//container.exit();
+				state.enterState(STDGame.HIGHSCORESTATE);
 			}
 		}
 		else {

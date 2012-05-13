@@ -73,6 +73,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Override
 	protected void enterState(GameContainer container, StateBasedGame state)
 			throws SlickException {
+		this.state = state;
 		towerIsChoosen = false;
 		optionsScreenIsOpen = false;
 		gameOver = false;
@@ -94,9 +95,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 
 	@Override
 	protected void initGameAndGUI(GameContainer container, StateBasedGame state)
-			throws SlickException {
-		this.state = state;
-		
+			throws SlickException {		
 		initSound();
 		initAnimations();
 		initNifty(container, state);
@@ -166,7 +165,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 
 	@Override
 	protected void prepareNifty(Nifty nifty, StateBasedGame state) {
-		nifty.fromXml(getResourcePath("/XMLFile1.xml"), "start", this);
+		nifty.fromXml(getResourcePath("/gameplay_gui.xml"), "start", this);
 		nifty.getSoundSystem().addMusic("backgroundmusic", getResourcePath("/audio/main_menu/music.wav"));
 	}
 
