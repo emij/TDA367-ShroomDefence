@@ -1,13 +1,12 @@
 package se.chalmers.tda367.std.core;
 
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
 import se.chalmers.tda367.std.core.enemies.IEnemy;
-import se.chalmers.tda367.std.core.events.EnemyDeadEvent;
+import se.chalmers.tda367.std.core.events.EnemyEnteredBaseEvent;
 import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.*;
@@ -20,14 +19,12 @@ import se.chalmers.tda367.std.utilities.*;
  */
 public class GameBoard {
 	private IBoardTile[][] board;
-	private List<EnemyItem> enemies;
+	private final EnemyList enemies;
 	
-	private BoardPosition enemyStartPos;
-	private BoardPosition playerBasePos;
+	private final BoardPosition playerBasePos;
 	
 	private final int width;
 	private final int height;
-	private List<Position> waypoints;
 	
 	public GameBoard(Map map) {
 		EventBus.INSTANCE.register(this);
@@ -35,10 +32,14 @@ public class GameBoard {
 		this.width = map.getWidth();
 		this.height = map.getHeight();
 		this.board =  new IBoardTile[this.width][this.height];
-		this.enemyStartPos = map.getEnemyStartPos();
 		this.playerBasePos = map.getPlayerBasePos();
-		this.waypoints = map.getWaypointList();
-		this.enemies = new CopyOnWriteArrayList<EnemyItem>();
+		
+		// Create the EnemyList but convert the start position to the Enemy-coordinate system first.
+		BoardPosition startPos = map.getEnemyStartPos();
+		int scale = Properties.INSTANCE.getTileScale();
+		float nX = startPos.getX() * scale;
+		float nY = startPos.getY() * scale;
+		this.enemies = new EnemyList(Position.valueOf(nX, nY), map.getWaypointList());
 		
 		// Populate the game board with data from the Map.
 		for(int y = 0; y < height; y++) {
@@ -56,13 +57,13 @@ public class GameBoard {
 	 * @param radius the radius to check
 	 * @return A list of the enemies inside the "circle". Note that the order of the list is unsorted.
 	 */
-	public List<EnemyItem> getEnemiesInRadius(Position center, int radius){
-		List<EnemyItem> inRadius = new ArrayList<EnemyItem>();
+	public List<IEnemy> getEnemiesInRadius(Position center, int radius){
+		List<IEnemy> inRadius = new ArrayList<IEnemy>();
 		InRadiusFilter filter = new InRadiusFilter(center, radius);
 		
-		for(EnemyItem ei : enemies){
-			if(filter.accept(ei.getEnemyPos())) {
-				inRadius.add(ei);
+		for(IEnemy enemy : enemies){
+			if(filter.accept(enemy.getPosition())) {
+				inRadius.add(enemy);
 			}
 		}
 		Collections.sort(inRadius);
@@ -74,25 +75,21 @@ public class GameBoard {
 	 * The actual logic behind removing and adding enemies are 
 	 * @return a list of EnemyItems that are currently ON the game board.
 	 */
-	public List<EnemyItem> getEnemies() {
+	public EnemyList getEnemies() {
 		return enemies;
 	}
 	
-	/**
-	 * Event handler that removes a dead enemy.
-	 */
-	@Subscribe
-	public void removeDeadEnemy(EnemyDeadEvent e) {
-		for(EnemyItem item : enemies) {
-			if(item.getEnemy() == e.getDeadEnemy()) {
-				enemies.remove(item);
-				return;
-			}
-		}
+	public int getPlayerBaseHealth() {
+		return getPlayerBase().getHealth();
 	}
 	
-	public IPlayerBase getPlayerBase() {
+	private IPlayerBase getPlayerBase() {
 		return (IPlayerBase) getTileAt(playerBasePos);
+	}
+	
+	@Subscribe
+	public void enemyEnteredBase(EnemyEnteredBaseEvent e) {
+		getPlayerBase().decreaseHealth();
 	}
 
 	/**
@@ -197,26 +194,11 @@ public class GameBoard {
 	}
 	
 	/**
-	 * Method to get the enemy's starting position on the game board.
-	 * @return a position containing the coordinates of the enemy starting position.
-	 */
-	public BoardPosition getStartPos() {
-		return enemyStartPos;
-	}
-	
-	/**
 	 * Method to get the end/goal position on the game board.
 	 * @return a position containing the coordinates of the end/goal position.
 	 */
 	public BoardPosition getEndPos() {
 		return playerBasePos;
-	}
-	
-	/**
-	 * Returns a defensively copied list of the waypoint positions.
-	 */
-	public List<Position> getWaypoints() { 
-		return new ArrayList<Position>(waypoints);
 	}
 	
 	/**

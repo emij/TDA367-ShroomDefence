@@ -3,7 +3,7 @@ package se.chalmers.tda367.std.core.tiles.towers;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.chalmers.tda367.std.core.EnemyItem;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
@@ -19,7 +19,8 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @date Mar 25, 2012
  */
 public abstract class AbstractAttackTower implements IAttackTower{
-	private int baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed, currentLevel;
+	private final int baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed;
+	private int currentLevel;
 	private final Sprite sprite;
 	private List<IEffect> effects;
 	
@@ -41,18 +42,20 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	public List<IEffect> getEffects() {
 		return effects;
 	}
+	
 	@Override
-	public void shoot(List<EnemyItem> enemies, Position pos) {
+	public void shoot(List<IEnemy> enemies, Position pos) {
 		if(!enemies.isEmpty()){
-
-			enemies.get(0).getEnemy().decreaseHealth(this.getDmg()*currentLevel);
+			IEnemy enemy = enemies.get(0);
+			
+			enemy.decreaseHealth(this.getDmg()*currentLevel);
 		
 			for(IEffect ie:this.getEffects()){
-				enemies.get(0).getEnemy().addEffect(ie.getCopy());	
+				enemy.addEffect(ie.getCopy());
 			}
 
 
-			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemies.get(0).getEnemyPos()));
+			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemy.getPosition()));
 
 		}
 	}

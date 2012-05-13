@@ -2,7 +2,7 @@ package se.chalmers.tda367.std.core.tiles.towers;
 
 import java.util.List;
 
-import se.chalmers.tda367.std.core.EnemyItem;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.utilities.Position;
 
 /**
@@ -40,8 +40,8 @@ public interface IAttackTower extends ITower{
 
 	/**  
 	 * Tower shoot at enemies. //TODO, better doc
-	 * @param ei - List of enemies to be able too shoot at.
+	 * @param enemies - List of enemies to be able too shoot at.
 	 * @param pos - Position of tower
 	 */
-	public void shoot(List<EnemyItem> ei, Position pos);
+	public void shoot(List<IEnemy> enemies, Position pos);
 }

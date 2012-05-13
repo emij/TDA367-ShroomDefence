@@ -2,7 +2,6 @@ package se.chalmers.tda367.std.core;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -11,11 +10,9 @@ import javax.swing.Timer;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
-import se.chalmers.tda367.std.core.events.EnemyEnteredBaseEvent;
 import se.chalmers.tda367.std.core.events.PlayerDeadEvent;
 import se.chalmers.tda367.std.core.events.WaveEndedEvent;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
-import se.chalmers.tda367.std.core.tiles.IWalkableTile;
 import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
 import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.Position;
@@ -81,10 +78,10 @@ class WaveController {
 	}
 
 	private void decreaseEffectsDuration(int delta) {
-		List<EnemyItem> enemyItems = board.getEnemies();
+		EnemyList enemies = board.getEnemies();
 
-		for(EnemyItem ei : enemyItems){
-			List<IEffect> effects = ei.getEnemy().getEffects();
+		for(IEnemy enemy : enemies){
+			List<IEffect> effects = enemy.getEffects();
 
 			Iterator<IEffect> it = effects.iterator();
 			while(it.hasNext()){
@@ -107,8 +104,7 @@ class WaveController {
 			nextEnemy = wave.getNext();
 		}
 
-		IBoardTile startTile = board.getTileAt(board.getStartPos());
-		if(startTile instanceof IWalkableTile  && nextEnemy != null){
+		if(nextEnemy != null){
 			addEnemy(nextEnemy);
 			nextEnemy = wave.getNext();
 			
@@ -127,10 +123,8 @@ class WaveController {
 	 * Add a enemy to the game board from a {@code WaveItem}
 	 */
 	private void addEnemy(WaveItem wi){
-		List<EnemyItem> enemies = board.getEnemies();
-		
-		EnemyItem item = new EnemyItem(wi.getEnemy(), board.getStartPos().toPosition(), board.getWaypoints());
-		enemies.add(item);
+		EnemyList enemies = board.getEnemies();
+		enemies.add(wi.getEnemy());
 	}
 
 	/**
@@ -138,30 +132,15 @@ class WaveController {
 	 * @param delta - the amount of time (in milliseconds) since the last update.	
 	 */
 	private void moveEnemies(final int delta){
-		List<EnemyItem> enemies = board.getEnemies();
+		EnemyList enemies = board.getEnemies();
 		if(enemies.isEmpty() && waveHasBeenCompleted) {
 			EventBus.INSTANCE.post(new WaveEndedEvent());
 			waveHasBeenCompleted = false;
 			return;
 		}
 		
-		// Must use a for-loop and this method since getEnemies returns a 
-		// CopyOnWriteArrayList which does not support iterator operations.
-		List<EnemyItem> toBeRemoved = new ArrayList<EnemyItem>();
-		for(EnemyItem item : enemies) {
-			item.moveEnemy(delta);
-			
-			if(item.getWaypoints().isEmpty()){ 
-				// I.e. the enemy is done walking and has entered the player base.
-				board.getPlayerBase().decreaseHealth();
-				toBeRemoved.add(item);
-				EventBus.INSTANCE.post(new EnemyEnteredBaseEvent(item));
-			}
-		}
-		
-		// Remove all "marked" enemies from the board.
-		for(EnemyItem item : toBeRemoved) {
-			enemies.remove(item);
+		for(IEnemy enemy : enemies) {
+			enemy.moveTowardsWaypoint(delta);
 		}
 	}
 	
@@ -190,7 +169,7 @@ class WaveController {
 	 */
 	private void shoot(IAttackTower tile, Position pos) {
 		int radius = tile.getRadius() * Properties.INSTANCE.getTileScale();
-		List<EnemyItem> enemies = board.getEnemiesInRadius(pos, radius);
+		List<IEnemy> enemies = board.getEnemiesInRadius(pos, radius);
 		tile.shoot(enemies, pos);
 	}
 
@@ -198,16 +177,15 @@ class WaveController {
 	 * Apply the effects on the enemies
 	 */
 	private void applyHealthEffects() {
-		List<EnemyItem> enemies = board.getEnemies();
+		EnemyList enemies = board.getEnemies();
 		
-		for (EnemyItem ei : enemies) {
-			applyHealthEffect(ei);
+		for (IEnemy enemy : enemies) {
+			applyHealthEffect(enemy);
 		}
 	}
 
 	
-	private void applyHealthEffect(EnemyItem ei) {
-		IEnemy enemy = ei.getEnemy();
+	private void applyHealthEffect(IEnemy enemy) {
 		double healthModifier = 1.0;
 		for (IEffect ie : enemy.getEffects()) {
 			healthModifier = healthModifier * ie.getHealthModifier();
@@ -218,7 +196,7 @@ class WaveController {
 
 	/** Whether or not the player has died */
 	private boolean isPlayerDead(){
-		if(board.getPlayerBase().getHealth() <= 0){
+		if(board.getPlayerBaseHealth() <= 0){
 			playerDead();
 			return true;
 		}

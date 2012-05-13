@@ -3,7 +3,7 @@ package se.chalmers.tda367.std.core.exported;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.chalmers.tda367.std.core.EnemyItem;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
@@ -53,13 +53,13 @@ public final class MultishotAttackTower extends AbstractAttackTower {
 	}
 	
 	@Override
-	public void shoot(List<EnemyItem> enemies, Position pos){
+	public void shoot(List<IEnemy> enemies, Position pos){
 		if(!enemies.isEmpty()){
 			
 //			enemies.get(0).getEnemy().decreaseHealth(this.getDmg() * this.getCurrentLevel());
 			for(int i = 0; i<nbrOfTargets && i<enemies.size(); i++){
-				enemies.get(i).getEnemy().decreaseHealth(this.getDmg() * this.getCurrentLevel());
-				EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemies.get(i).getEnemyPos()));
+				enemies.get(i).decreaseHealth(this.getDmg() * this.getCurrentLevel());
+				EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemies.get(i).getPosition()));
 			}
 		}
 	}

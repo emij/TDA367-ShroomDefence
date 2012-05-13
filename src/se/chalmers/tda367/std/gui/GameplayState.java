@@ -18,6 +18,7 @@ import com.google.common.eventbus.Subscribe;
 
 import se.chalmers.tda367.std.core.*;
 import se.chalmers.tda367.std.core.anno.Tower;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.events.*;
 import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.towers.*;
@@ -295,12 +296,12 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	
 	private void renderEnemies(Graphics g) {
 		GameBoard board = gameControl.getGameBoard();
-		List<EnemyItem> enemies = board.getEnemies();
+		EnemyList enemies = board.getEnemies();
 		
-        for(EnemyItem ei : enemies) {
-        	Position p = ei.getEnemyPos();
-        	int health = ei.getEnemy().getHealth();
-        	NativeSprite image = ei.getEnemy().getSprite().getNativeSprite();
+        for(IEnemy enemy : enemies) {
+        	Position p = enemy.getPosition();
+        	int health = enemy.getHealth();
+        	NativeSprite image = enemy.getSprite().getNativeSprite();
         	
         	image.draw(p.getX(), p.getY(), tileScale, tileScale);
         	g.drawString(""+health, p.getX(), p.getY()-tileScale);
@@ -308,7 +309,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	}
 	
 	private void renderStats() {
-	    lifeLabel.getNiftyControl(Label.class).setText("" + gameControl.getGameBoard().getPlayerBase().getHealth());
+	    lifeLabel.getNiftyControl(Label.class).setText("" + gameControl.getGameBoard().getPlayerBaseHealth());
 	    scoreLabel.getNiftyControl(Label.class).setText("" + player.getCurrentScore());
 	    levelLabel.getNiftyControl(Label.class).setText("" + gameControl.getWavesReleased());
 	    playerMoneyLabel.getNiftyControl(Label.class).setText("" + player.getMoney());

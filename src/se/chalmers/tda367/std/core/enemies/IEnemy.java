@@ -3,15 +3,17 @@ package se.chalmers.tda367.std.core.enemies;
 import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * Represents a killable enemy.
+ * The {@code IEnemy} is sortable/comparable by the amount of distance traveled.
  * @author Emil Edholm
  * @modified Emil Johansson, Johan Andersson
  * @date Mar 25, 2012
  */
-public interface IEnemy {
+public interface IEnemy extends Comparable<IEnemy> {
 	
 	/**
 	 * Returns the base health of the enemy, enemy health without any effects on it.
@@ -103,4 +105,24 @@ public interface IEnemy {
 	 */
 	public Sprite getSprite();
 
+	/**
+	 * Move the enemy to the supplied start position and set the waypoints.
+	 * @param p - the position to move to.
+	 */
+	public void placeOnBoard(Position start, List<Position> waypoints);
+	
+	/**
+	 * Move the enemy towards the next {@code waypoint} based on 
+	 * the {@code delta} value and the enemy speed.
+	 * @param delta - the amount of time in milliseconds since the last walk update.
+	 */
+	public void moveTowardsWaypoint(int delta);
+	
+	/**
+	 * @return the distance the {@code IEnemy} has traveled.
+	 */
+	public float getDistanceTraveled();
+	
+	/** @return a defensive copy of the Enemy position. */
+	public Position getPosition();
 }

@@ -1,6 +1,6 @@
 package se.chalmers.tda367.std.core.events;
 
-import se.chalmers.tda367.std.core.EnemyItem;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 
 /**
  * This event is fired when an enemy has entered the player base.
@@ -8,16 +8,16 @@ import se.chalmers.tda367.std.core.EnemyItem;
  * @date   May 13, 2012
  */
 public final class EnemyEnteredBaseEvent {
-	private final EnemyItem offendingEnemy;
+	private final IEnemy offendingEnemy;
 	
-	public EnemyEnteredBaseEvent(EnemyItem offendingEnemy) {
+	public EnemyEnteredBaseEvent(IEnemy offendingEnemy) {
 		this.offendingEnemy = offendingEnemy;
 	}
 
 	/**
 	 * @return the offending enemy
 	 */
-	public EnemyItem getOffendingEnemy() {
+	public IEnemy getOffendingEnemy() {
 		return offendingEnemy;
 	}
 }
