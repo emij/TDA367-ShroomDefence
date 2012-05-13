@@ -38,4 +38,16 @@ public interface IEffect {
 	 * @return a double representing the effect's armor modifier.
 	 */
 	public double getArmorModifier();
+	
+	/**
+	 * This will set the effects duration to given double.
+	 * @param duration double to set the duration to.
+	 */
+	public void setDuration(double duration);
+	
+	/**
+	 * This will give a new copy of the effect which called the method.
+	 * @return copy of the calling effect.
+	 */
+	public IEffect getCopy();
 }

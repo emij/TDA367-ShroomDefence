@@ -48,7 +48,7 @@ public abstract class AbstractAttackTower implements IAttackTower{
 			enemies.get(0).getEnemy().decreaseHealth(this.getDmg()*currentLevel);
 		
 			for(IEffect ie:this.getEffects()){
-				enemies.get(0).getEnemy().addEffect(ie);	//TODO refactor
+				enemies.get(0).getEnemy().addEffect(ie.getCopy());	
 			}
 
 

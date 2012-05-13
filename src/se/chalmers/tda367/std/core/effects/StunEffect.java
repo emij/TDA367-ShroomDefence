@@ -23,4 +23,9 @@ public class StunEffect extends AbstractEffect {
 	public String toString() {
 		return "StunEffect";
 	}
+	
+	@Override
+	public StunEffect getCopy() {
+		return new StunEffect(super.level);
+	}
 }

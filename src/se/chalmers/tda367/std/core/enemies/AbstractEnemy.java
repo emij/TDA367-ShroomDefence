@@ -41,7 +41,9 @@ public abstract class AbstractEnemy implements IEnemy{
 
 	@Override
 	public void addEffect(IEffect effect) {
-		effects.add(effect);
+		if(!renewEffect(effect)) {
+			effects.add(effect);
+		}
 	}
 
 	@Override
@@ -134,5 +136,21 @@ public abstract class AbstractEnemy implements IEnemy{
 		// This should probably not be "closed" and it should be up to each
 		// concrete implementation to do that and add their specific values.
 
+	}
+
+	/** 
+	 * This checks if the effect is already on the enemy and if so it will reset the duration.
+	 * @param effect to check for on the enemy.
+	 * @return true if effect has been found and duration reset. False if no similar effect is found.
+	 */
+	private boolean renewEffect(IEffect effect) {
+		for(IEffect e : getEffects()) {
+			if(e.getHealthModifier() == effect.getHealthModifier() && e.getArmorModifier() == effect.getArmorModifier()
+					&& e.getSpeedModifier() == effect.getSpeedModifier()) {
+				e.setDuration(effect.getDuration());
+				return true;
+			}
+		}
+		return false;
 	}
 }

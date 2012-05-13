@@ -16,6 +16,12 @@ public class SlowEffect extends AbstractEffect {
 	 * @param level must be a positive integer above 0.
 	 */
 	public SlowEffect(int level) {
-		super(5000, 1 - (0.1*Math.abs(level)), 1.0, 1.0);
+		super(5000, 1 - (0.5*Math.abs(level)), 1.0, 1.0);
+		super.level = level;
+	}
+	
+	@Override
+	public SlowEffect getCopy() {
+		return new SlowEffect(super.level);
 	}
 }

@@ -18,5 +18,10 @@ public class ReduceArmorEffect extends AbstractEffect {
 	public ReduceArmorEffect(int level) {
 		super(5000, 1.0, 1.0, 1 - (0.1*Math.abs(level)));
 	}
+	
+	@Override
+	public ReduceArmorEffect getCopy() {
+		return new ReduceArmorEffect(super.level);
+	}
 }
 

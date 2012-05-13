@@ -12,6 +12,7 @@ public abstract class AbstractEffect implements IEffect {
 					 speedMod,
 					 healthMod,
 					 armorMod;
+	protected int level;
 
 	public AbstractEffect(double duration, double speedModifier, double healthModifier, double armorModifier) {
 		this.duration 	= duration;
@@ -19,7 +20,7 @@ public abstract class AbstractEffect implements IEffect {
 		this.healthMod 	= healthModifier;
 		this.armorMod	= armorModifier;
 	}
-
+	
 	@Override
 	public double getDuration() {
 		return duration;
@@ -44,5 +45,9 @@ public abstract class AbstractEffect implements IEffect {
 	public double getArmorModifier() {
 		return armorMod;
 	}
-
+	
+	@Override
+	public void setDuration(double duration) {
+		this.duration = duration;
+	}
 }

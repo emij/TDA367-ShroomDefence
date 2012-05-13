@@ -17,5 +17,11 @@ public class PoisonEffect extends AbstractEffect {
 	 */
 	public PoisonEffect(int level) {
 		super(5000, 1.0, -10*Math.abs(level), 1.0);
+		super.level = level;
+	}
+	
+	@Override
+	public PoisonEffect getCopy() {
+		return new PoisonEffect(super.level);
 	}
 }
