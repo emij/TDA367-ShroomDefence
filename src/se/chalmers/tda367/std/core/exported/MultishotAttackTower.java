@@ -20,7 +20,7 @@ import se.chalmers.tda367.std.utilities.SpriteCreator;
  * Base damage      = <b>20</b><br />
  * Effective radius = <b>3</b><br />
  * Damage radius    = <b>0</b><br />
- * Attack speed     = <b>200</b><br />
+ * Attack speed     = <b>100</b><br />
  * </p>
  * @author Johan Andersson
  * @date   13 may 2012
