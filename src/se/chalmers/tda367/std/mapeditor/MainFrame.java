@@ -181,6 +181,7 @@ public final class MainFrame extends JFrame {
 	    		
 	    		if(retVal == JFileChooser.APPROVE_OPTION) {
 	    			EventBus.INSTANCE.post(new OpenMapEvent(fileChooser.getSelectedFile()));
+	    			JOptionPane.showMessageDialog(MainFrame.this, "Don't forget to replace the waypoints, player start and end positions. All in the correct order.");
 	    		}
 	    	}
 	    });

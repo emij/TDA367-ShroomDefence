@@ -116,11 +116,26 @@ public class LevelMap implements Map, Serializable {
 		return new ArrayList<Position>(waypointsList); // Note: defensive copy but Position is mutable.
 	}
 	
+	/** Used to clear waypoints after loading an existing map. This is to avoid problems with the waypoint ordering */
+	public void clearWaypoints() {
+		waypointsList.clear();
+		
+		for(int y = 0; y < height; y++) {
+			for(int x = 0; x < width; x++) {
+				if(mapArray[x][y] == PlaceableTile.WAYPOINT || 
+						mapArray[x][y] == PlaceableTile.ENEMY_START_TILE ||
+						mapArray[x][y] == PlaceableTile.PLAYER_BASE_TILE) {
+					mapArray[x][y] = PlaceableTile.PATH_TILE;
+				}
+			}
+		}
+	}
+	
 	/** The x,y coordinate should be in a {@code BoardPosition} format. */
 	private Position calculateWaypoint(int x, int y) {
 		int scale = Properties.INSTANCE.getTileScale();
-		float nX = x * scale + scale / 2;
-		float nY = y * scale + scale / 2;
+		float nX = x * scale;
+		float nY = y * scale;
 		
 		return Position.valueOf(nX, nY);
 	}

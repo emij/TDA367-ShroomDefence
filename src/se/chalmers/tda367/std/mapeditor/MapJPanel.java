@@ -92,6 +92,8 @@ public class MapJPanel extends JPanel {
 		} catch (ClassNotFoundException | IOException e1) {
 			errorMessage = e1.getMessage();
 		}
+		
+		mapModel.clearWaypoints();
 		EventBus.INSTANCE.post(new MapLoadedEvent(errorMessage));
 	}
 	
