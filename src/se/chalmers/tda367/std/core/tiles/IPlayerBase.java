@@ -1,6 +1,6 @@
 package se.chalmers.tda367.std.core.tiles;
 
-import se.chalmers.tda367.std.utilities.Sprite;
+import com.google.inject.ImplementedBy;
 
 
 /**
@@ -8,7 +8,9 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * i.e. the structure the enemies tries to destroy/get into.
  * @author Emil Johansson
  * @date Mar 22, 2012
+ * @modified Emil Edholm (12 mar, 2012)
  */
+@ImplementedBy(PlayerBase.class)
 public interface IPlayerBase extends IBoardTile{
 	/**
 	 * Returns the health of the player base.
@@ -32,9 +34,4 @@ public interface IPlayerBase extends IBoardTile{
 	 * @return health of player base
 	 */
 	public int decreaseHealth(int dmg);
-	/**
-	 * Returns the graphical representation of the player base.
-	 * @return sprite of the player base
-	 */
-	public Sprite getSprite();
 }

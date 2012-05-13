@@ -10,6 +10,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  */
 public class PlayerBase implements IPlayerBase {
 	
+	private static final int DEFAULT_HEALTH = 2;
 	private int health;
 	
 	//TODO: change sprite for the PlayerBase tile.
@@ -17,6 +18,10 @@ public class PlayerBase implements IPlayerBase {
 	
 	public PlayerBase(int health){
 		this.health = health;
+	}
+	
+	public PlayerBase() {
+		this.health = DEFAULT_HEALTH;
 	}
 
 	@Override

@@ -6,7 +6,9 @@ import java.util.logging.*;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
+import se.chalmers.tda367.std.gui.NativeSlickSprite;
 import se.chalmers.tda367.std.gui.STDGame;
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 
 /**
  * Contains the main method. The entrance to the game.
@@ -30,6 +32,7 @@ public final class Main {
 		}
 		
 		try {
+			SpriteCreator.setNativeSpriteClass(NativeSlickSprite.class);
             AppGameContainer app = new AppGameContainer(new STDGame(), 1024, 720, false);
             app.start();
 	    } catch (SlickException e) {
