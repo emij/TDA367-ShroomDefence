@@ -1,5 +1,8 @@
 package se.chalmers.tda367.std;
 
+
+import java.util.logging.*;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
@@ -17,6 +20,15 @@ public final class Main {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
+		Logger root = Logger.getLogger("");
+		Handler[] handlers = root.getHandlers();
+
+		for (int i = 0; i < handlers.length; i++) {
+		  if (handlers[i] instanceof ConsoleHandler) {
+		    ((ConsoleHandler)handlers[i]).setLevel(Level.WARNING);
+		  }
+		}
+		
 		try {
             AppGameContainer app = new AppGameContainer(new STDGame(), 1024, 720, false);
             app.start();
