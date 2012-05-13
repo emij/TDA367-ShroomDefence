@@ -24,19 +24,11 @@ public class MainMenuState extends NiftyBasicGameState implements ScreenControll
 	private int stateID;
 	private StateBasedGame state;
 	private GameContainer container;
-	private Image background;
-	private Image startGameButton;
-	private Image exitGameButton;
-	private float startButtonScale;
-	private float exitButtonScale;
-	private int menuX;
-	private int menuY;
 	
 	public MainMenuState(int stateID) {
 		this.stateID = stateID;
 	}
 	
-
 	@Override
 	protected void prepareNifty(Nifty nifty, StateBasedGame state) {
 		nifty.fromXml(getResourcePath("/mainmenu_gui.xml"), "start", this);
@@ -53,14 +45,23 @@ public class MainMenuState extends NiftyBasicGameState implements ScreenControll
 		return getClass().getResource(path).getPath();
 	}
 	
+	/** 
+	 * When called will cause state to enter state {@code STDGame.GAMEPLAYSTATE}.
+	 */
 	public void startGame() {
 		state.enterState(STDGame.GAMEPLAYSTATE);
 	}
 
+	/** 
+	 * When called will cause state to enter state {@code STDGame.HIGHSCORESTATE}.
+	 */
 	public void showHighscores() {
 		state.enterState(STDGame.HIGHSCORESTATE);
 	}
 	
+	/** 
+	 * When called will exit the game.
+	 */
 	public void exitGame() {
 		container.exit();
 	}
@@ -68,11 +69,6 @@ public class MainMenuState extends NiftyBasicGameState implements ScreenControll
 	@Override
 	public int getID() {
 		return stateID;
-	}
-	
-	@NiftyEventSubscriber(pattern="button.*")
-	public void onClick(String id, NiftyMousePrimaryClickedEvent event) {
-		state.enterState(STDGame.GAMEPLAYSTATE);
 	}
 
 	@Override
