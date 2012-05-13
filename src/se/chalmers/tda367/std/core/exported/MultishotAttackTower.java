@@ -7,7 +7,7 @@ import se.chalmers.tda367.std.core.EnemyItem;
 import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
-import se.chalmers.tda367.std.events.TowerShootingEvent;
+import se.chalmers.tda367.std.core.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
@@ -61,8 +61,6 @@ public final class MultishotAttackTower extends AbstractAttackTower {
 				enemies.get(i).getEnemy().decreaseHealth(this.getDmg() * this.getCurrentLevel());
 				EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemies.get(i).getEnemyPos()));
 			}
-
-
 		}
 	}
 }

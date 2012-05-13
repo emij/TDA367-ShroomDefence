@@ -1,4 +1,4 @@
-package se.chalmers.tda367.std.factories;
+package se.chalmers.tda367.std.core.factories;
 
 /**
  * A general interface for defining different factories.

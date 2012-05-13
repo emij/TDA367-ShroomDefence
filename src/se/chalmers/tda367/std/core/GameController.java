@@ -1,9 +1,9 @@
 package se.chalmers.tda367.std.core;
 
 import se.chalmers.tda367.std.core.events.WaveStartedEvent;
+import se.chalmers.tda367.std.core.factories.GameBoardFactory;
+import se.chalmers.tda367.std.core.factories.WaveFactory;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
-import se.chalmers.tda367.std.factories.GameBoardFactory;
-import se.chalmers.tda367.std.factories.WaveFactory;
 import se.chalmers.tda367.std.utilities.EventBus;
 
 

@@ -1,4 +1,4 @@
-package se.chalmers.tda367.std.factories;
+package se.chalmers.tda367.std.core.factories;
 
 import java.util.*;
 import se.chalmers.tda367.std.core.*;
