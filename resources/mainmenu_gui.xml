@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+    
+    <useStyles filename="nifty-default-styles.xml" />
+    <useControls filename="nifty-default-controls.xml" />
+    
+    <screen id="start" defaultFocusElement="buttonStartGame" 
+        controller="se.chalmers.tda367.std.gui.MainMenuState">
+        <layer childLayout="center">
+            <panel id="backgroundPanel" height="100%" width="100%" childLayout="vertical" 
+                    backgroundImage="images/main_menu/background.png" padding="40%, 5%">
+                <image id="startGameImage" filename="images/main_menu/start_button.png">
+                    <interact onClick="startGame()"/>
+                    <effect>
+                        <onHover name="imageSize" startSize="1.0" endSize="1.000001"/>
+                    </effect>
+                </image>
+                <image id="highscoreImage" filename="images/main_menu/highscore_button.png">
+                    <interact onClick="showHighscores()"/>
+                    <effect>
+                        <onHover name="imageSize" startSize="1.0" endSize="1.000001"/>
+                    </effect>
+                </image>
+                <image id="exitGameImage" filename="images/main_menu/exit_button.png">
+                    <interact onClick="exitGame()"/>
+                    <effect>
+                        <onHover name="imageSize" startSize="1.0" endSize="1.000001"/>
+                    </effect>
+                </image>
+            </panel>
+        </layer>
+    </screen>
+ </nifty>

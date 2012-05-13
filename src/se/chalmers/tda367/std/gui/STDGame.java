@@ -22,6 +22,5 @@ public class STDGame extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer gameCon) throws SlickException {
-		this.getState(MAINMENUSTATE).init(gameCon, this);
 	}
 }

@@ -1,5 +1,7 @@
 package se.chalmers.tda367.std.gui;
 
+import java.awt.Panel;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -7,9 +9,21 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.tiled.Layer;
 
-public class MainMenuState extends BasicGameState {
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.NiftyEventSubscriber;
+import de.lessvoid.nifty.builder.LayerBuilder;
+import de.lessvoid.nifty.builder.PanelBuilder;
+import de.lessvoid.nifty.elements.events.NiftyMousePrimaryClickedEvent;
+import de.lessvoid.nifty.screen.Screen;
+import de.lessvoid.nifty.screen.ScreenController;
+import de.lessvoid.nifty.slick2d.NiftyBasicGameState;
+
+public class MainMenuState extends NiftyBasicGameState implements ScreenController {
 	private int stateID;
+	private StateBasedGame state;
+	private GameContainer container;
 	private Image background;
 	private Image startGameButton;
 	private Image exitGameButton;
@@ -22,79 +36,57 @@ public class MainMenuState extends BasicGameState {
 		this.stateID = stateID;
 	}
 	
+
+	@Override
+	protected void prepareNifty(Nifty nifty, StateBasedGame state) {
+		nifty.fromXml(getResourcePath("/mainmenu_gui.xml"), "start", this);
+	}
+	
+	@Override
+	public void enterState(GameContainer container, StateBasedGame state) throws SlickException {
+		super.enterState(container, state);
+		this.container = container;
+		this.state = state;
+	}
+	
 	private String getResourcePath(String path) {
 		return getClass().getResource(path).getPath();
 	}
 	
-	@Override
-	public void init(GameContainer container, StateBasedGame state)
-			throws SlickException {
-		background = new Image(getResourcePath("/images/main_menu/background.png"));
-		startGameButton = new Image(getResourcePath("/images/main_menu/start_button.png"));
-		startButtonScale = 1;
-		exitGameButton = new Image(getResourcePath("/images/main_menu/exit_button.png"));
-		exitButtonScale = 1;
-		
-		menuX = container.getWidth()/35;
-		menuY = container.getHeight()/2;
+	public void startGame() {
+		state.enterState(STDGame.GAMEPLAYSTATE);
 	}
 
-	@Override
-	public void render(GameContainer container, StateBasedGame state, Graphics g)
-			throws SlickException {
-		background.draw(0, 0, container.getWidth(), container.getHeight());
+	public void showHighscores() {
+		state.enterState(STDGame.HIGHSCORESTATE);
+	}
 	
-		startGameButton.draw(menuX, menuY, startButtonScale);
-		exitGameButton.draw(menuX, menuY+startGameButton.getHeight(), exitButtonScale);
+	public void exitGame() {
+		container.exit();
 	}
-
-	@Override
-	public void update(GameContainer container, StateBasedGame state, int arg2)
-			throws SlickException {
-		Input input = container.getInput();
-		int mouseX = input.getMouseX();
-		int mouseY = input.getMouseY();
-		
-		boolean overStartButton = false;
-		boolean overExitButton = false;
-		
-		if((mouseX >= menuX && mouseX <= menuX+startGameButton.getWidth()) && 
-				(mouseY >= menuY && mouseY <= menuY+startGameButton.getHeight())) {
-			overStartButton = true;
-		}
-		else if((mouseX >= menuX && mouseX <= menuX+exitGameButton.getWidth()) && 
-				(mouseY >= menuY+startGameButton.getHeight() && 
-				 mouseY <= menuY+startGameButton.getHeight()+exitGameButton.getHeight())) {
-			overExitButton = true;
-		}
-		if(overStartButton) {
-			startButtonScale = 1.05f;
-			exitButtonScale = 1;
-			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				state.enterState(STDGame.GAMEPLAYSTATE);
-			}
-		}
-		else if(overExitButton){
-			exitButtonScale = 1.05f;
-			startButtonScale = 1;
-			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				//TODO: Test only, dont forget to fix this
-				//container.exit();
-				state.enterState(STDGame.HIGHSCORESTATE);
-			}
-		}
-		else {
-			startButtonScale = 1;
-			exitButtonScale = 1;
-		}
-		
-
-	}
-
+	
 	@Override
 	public int getID() {
 		return stateID;
 	}
+	
+	@NiftyEventSubscriber(pattern="button.*")
+	public void onClick(String id, NiftyMousePrimaryClickedEvent event) {
+		state.enterState(STDGame.GAMEPLAYSTATE);
+	}
 
+	@Override
+	public void bind(Nifty nifty, Screen screen) {
+		
+	}
 
+	@Override
+	public void onEndScreen() {
+		
+	}
+
+	@Override
+	public void onStartScreen() {
+		
+	}
 }
