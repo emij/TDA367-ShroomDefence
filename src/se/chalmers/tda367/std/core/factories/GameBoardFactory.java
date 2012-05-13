@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.mapeditor.LevelMap;
-import se.chalmers.tda367.std.mapeditor.MapLoader;
 import se.chalmers.tda367.std.utilities.IO;
 
 /**
