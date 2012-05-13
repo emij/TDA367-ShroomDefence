@@ -36,12 +36,14 @@ import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.events.NiftyMousePrimaryClickedEvent;
+import de.lessvoid.nifty.input.NiftyInputEvent;
+import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
 
 
-public class GameplayState extends NiftyOverlayBasicGameState implements ScreenController {
+public class GameplayState extends NiftyOverlayBasicGameState implements ScreenController, KeyInputHandler {
 	private int stateID, tileScale, mouseX, mouseY, delta;
 	private boolean towerIsChoosen, optionsScreenIsOpen, gameOver;
 	private Properties properties = Properties.INSTANCE;
@@ -173,6 +175,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
         renderStats();
         renderTiles();
         renderEnemies(g);
+        renderPlayerCharacter(g);
         
         //If a tower has been selected it will show a small rectangle where you hold the
         //mouse to indicate if one can build on that tile or not.
@@ -306,6 +309,13 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
         	image.draw(p.getX(), p.getY(), tileScale, tileScale);
         	g.drawString(""+health, p.getX(), p.getY()-tileScale);
         }
+	}
+	
+	private void renderPlayerCharacter(Graphics g) {
+		PlayerCharacter character = player.getCharacter();
+		NativeSprite image = character.getSprite().getNativeSprite();
+		
+		image.draw(character.getPos().getX(), character.getPos().getY(), tileScale, tileScale);
 	}
 	
 	private void renderStats() {
@@ -450,6 +460,29 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	 */
 	public void startWave() {
 		gameControl.nextWave();
+	}
+	
+	@Override
+	public boolean keyEvent(NiftyInputEvent inputEvent) {
+		if(inputEvent != null) {
+			if(inputEvent.equals(NiftyInputEvent.MoveCursorUp)) {
+				player.getCharacter().moveUp();
+				return true;
+			}
+			else if(inputEvent.equals(NiftyInputEvent.MoveCursorDown)) {
+				player.getCharacter().moveDown();
+				return true;
+			}
+			else if(inputEvent.equals(NiftyInputEvent.MoveCursorRight)) {
+				player.getCharacter().moveRight();
+				return true;
+			}
+			else if(inputEvent.equals(NiftyInputEvent.MoveCursorLeft)) {
+				player.getCharacter().moveLeft();
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

@@ -1,5 +1,7 @@
 package se.chalmers.tda367.std.core;
 
+import se.chalmers.tda367.std.utilities.Position;
+
 /**
  * Represents a player. Contains name, score etc.
  * @author Unchanged
@@ -11,12 +13,14 @@ public class Player {
 	private String name;
 	private int currentScore;
 	private int money;
+	private PlayerCharacter character;
 	
 	public Player(){
 		
 	}
 	public Player(String name){
 		this.name = name;
+		this.character = new PlayerCharacter(new Position(100, 100));
 	}
 	/**
 	 * @return the currentScore
@@ -64,6 +68,11 @@ public class Player {
 		return name;
 	}
 	
-	
-
+	/**
+	 * This will return a reference to this player's character
+	 * @return a reference to the player's {@code PlayerCharacter}
+	 */
+	public PlayerCharacter getCharacter() {
+		return character;
+	}
 }
