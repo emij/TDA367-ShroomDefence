@@ -28,10 +28,9 @@ public class GameController {
 	private int level;
 	
 	
-	/** Constructor for the GameController, requires a player and a board to work.
+	/** Constructor for the GameController, requires a player to work.
 	 * 
 	 * @param player - player playing the game.
-	 * @param board - board to play the game on.
 	 */
 	public GameController(Player player){
 		this.player = player;

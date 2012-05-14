@@ -25,7 +25,7 @@ public enum PlaceableTile {
 	},
 	PLAYER_BASE_TILE("PlayerBase tile") {
 		@Override
-		public IBoardTile getInstance() { return playerBaseTile; }
+		public IBoardTile getInstance() { return getInstance(IPlayerBase.class); }
 	},
 	ENEMY_START_TILE("Enemy start position") { 
 		@Override
@@ -37,9 +37,8 @@ public enum PlaceableTile {
 	};
 	
 	private final transient static IBuildableTile buildableTile = getInstance(IBuildableTile.class);
-	private final transient static IWalkableTile walkableTile   = getInstance(IWalkableTile.class);
-	private final transient static IPlayerBase playerBaseTile   = getInstance(IPlayerBase.class);
-	private final transient static IBoardTile terrainTile       = getInstance(IBoardTile.class);
+	private final transient static IWalkableTile  walkableTile  = getInstance(IWalkableTile.class);
+	private final transient static IBoardTile     terrainTile   = getInstance(IBoardTile.class);
 	
 	private final String fancyName;
 	private PlaceableTile(String fancyName) {
