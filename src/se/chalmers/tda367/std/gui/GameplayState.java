@@ -498,11 +498,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 	}
 	
-	@Override
-	public boolean isAcceptingInput() {
-		return true;
-	}
-	
 	private void checkForMovement(Input input, int delta) {
 		if(input.isKeyDown(Input.KEY_UP) ) {
 			gameControl.moveChar(MovementEnum.MOVE_UP, delta);
