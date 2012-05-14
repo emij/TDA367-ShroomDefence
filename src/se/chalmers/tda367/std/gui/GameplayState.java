@@ -465,22 +465,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Override
 	public boolean keyEvent(NiftyInputEvent inputEvent) {
 		if(inputEvent != null) {
-			if(inputEvent.equals(NiftyInputEvent.MoveCursorUp)) {
-				player.getCharacter().moveUp();
-				return true;
-			}
-			else if(inputEvent.equals(NiftyInputEvent.MoveCursorDown)) {
-				player.getCharacter().moveDown();
-				return true;
-			}
-			else if(inputEvent.equals(NiftyInputEvent.MoveCursorRight)) {
-				player.getCharacter().moveRight();
-				return true;
-			}
-			else if(inputEvent.equals(NiftyInputEvent.MoveCursorLeft)) {
-				player.getCharacter().moveLeft();
-				return true;
-			}
+			gameControl.movePlayerCharacter(inputEvent);
+			return true;
 		}
 		return false;
 	}

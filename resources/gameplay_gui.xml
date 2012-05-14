@@ -6,7 +6,7 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
     <useControls filename="nifty-default-controls.xml" />
     
     <screen id="start" defaultFocusElement="startWaveButton" 
-        controller="se.chalmers.tda367.std.gui.GameplayState" inputMapping="se.chalmers.tda367.std.utilities.GameInputMapping">
+        controller="se.chalmers.tda367.std.gui.GameplayState" inputMapping="se.chalmers.tda367.std.core.GameInputMapping">
          <layer id="bottomUI" childLayout="horizontal" valign="bottom">
              <panel childLayout="vertical" width="79%" height="10%" align="left" valign="bottom">
                  <panel childLayout="horizontal" width="100%" height="50%" backgroundColor="#444444" align="left" valign="bottom">

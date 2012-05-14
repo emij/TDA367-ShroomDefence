@@ -1,18 +1,20 @@
 package se.chalmers.tda367.std.core;
 
+import de.lessvoid.nifty.input.NiftyInputEvent;
 import se.chalmers.tda367.std.core.events.WaveStartedEvent;
 import se.chalmers.tda367.std.core.factories.GameBoardFactory;
 import se.chalmers.tda367.std.core.factories.WaveFactory;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.Position;
 
 
 
 /**
  * The class that contains the game logic and controls the game.
  * @author Johan Andersson
- * @modified 
+ * @modified Johan Gustafsson
  * @date Mar 22, 2012
  */
 public class GameController {
@@ -21,6 +23,8 @@ public class GameController {
 	private GameBoard board;
 	private BuildController buildControl;
 	private WaveController waveControl;
+	private Properties prop = Properties.INSTANCE;
+	private int tileScale;
 	
 	private final GameBoardFactory boardFactory;
 	
@@ -36,6 +40,7 @@ public class GameController {
 	public GameController(Player player){
 		this.player = player;
 		this.level = 1;
+		tileScale = prop.getTileScale();
 		boardFactory = new GameBoardFactory();
 		
 		init();
@@ -142,5 +147,33 @@ public class GameController {
 	 */
 	public GameBoard getGameBoard() {
 		return board;
+	}
+	
+	/**
+	 * Causes the player to move depending on the event provided.
+	 * @param event
+	 */
+	public void movePlayerCharacter(NiftyInputEvent event) {
+		Position pos = player.getCharacter().getPos();
+		float diff;
+		switch(event) {
+			case MoveCursorUp :
+				diff = ((pos.getY()-5) > 0) ? pos.getY()-5 : 0; 
+				pos.setY(diff);
+				break;
+			case MoveCursorDown : 
+				diff = ((pos.getY()+5) < board.getHeight()*tileScale) ? pos.getY()+5 : board.getHeight()*tileScale; 
+				pos.setY(diff);
+				break;
+			case MoveCursorRight :
+				diff = ((pos.getX()+5) < board.getWidth()*tileScale) ? pos.getX()+5 : board.getWidth()*tileScale;
+				pos.setX(diff);
+				break;
+			case MoveCursorLeft : 
+				diff = ((pos.getX()-5) > 0) ? pos.getX()-5 : 0; 
+				pos.setX(diff);
+				break;
+			default: break;
+		}
 	}
 }

@@ -1,9 +1,14 @@
-package se.chalmers.tda367.std.utilities;
+package se.chalmers.tda367.std.core;
 
 import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.input.NiftyInputMapping;
 import de.lessvoid.nifty.input.keyboard.KeyboardInputEvent;
 
+/**
+ * Custom inputMapping class that maps keyboard events from nifty.
+ * @author Johan Gustafsson
+ * @date   May 14, 2012
+ */
 public class GameInputMapping implements NiftyInputMapping {
 
 	@Override

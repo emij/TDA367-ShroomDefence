@@ -4,6 +4,11 @@ import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 import se.chalmers.tda367.std.utilities.SpriteCreator;
 
+/**
+ * Concrete implementation of the {@code PlayerCharacter} class, this is where all the character data is stored.
+ * @author Johan Gustafsson
+ * @date   May 14, 2012
+ */
 public class PlayerCharacter implements IPlayerCharacter {
 	private Position pos;
 	
@@ -21,26 +26,6 @@ public class PlayerCharacter implements IPlayerCharacter {
 	@Override
 	public Position getPos() {
 		return pos;
-	}
-	
-	@Override
-	public void moveUp() {
-		pos.setY(pos.getY()-5);
-	}
-	
-	@Override
-	public void moveDown() {
-		pos.setY(pos.getY()+5);
-	}
-	
-	@Override
-	public void moveRight() {
-		pos.setX(pos.getX()+5);
-	}
-	
-	@Override
-	public void moveLeft() {
-		pos.setX(pos.getX()-5);
 	}
 	
 	@Override
