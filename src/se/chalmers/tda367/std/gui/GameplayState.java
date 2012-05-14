@@ -9,6 +9,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
@@ -43,7 +44,7 @@ import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
 
 
-public class GameplayState extends NiftyOverlayBasicGameState implements ScreenController, KeyInputHandler {
+public class GameplayState extends NiftyOverlayBasicGameState implements ScreenController {
 	private int stateID, tileScale, mouseX, mouseY, delta;
 	private boolean towerIsChoosen, optionsScreenIsOpen, gameOver;
 	private Properties properties = Properties.INSTANCE;
@@ -102,6 +103,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		initElements();
 				
 		container.getGraphics().setLineWidth(3);
+		container.getInput().addKeyListener(this);
 		
 		EventBus.INSTANCE.register(this);
 	}
@@ -199,6 +201,19 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			Input input = container.getInput();
 			mouseX = input.getMouseX();
 			mouseY = input.getMouseY();
+			
+			if(input.isKeyDown(Input.KEY_UP) ) {
+				gameControl.moveChar(MovementEnum.MOVE_UP, delta);
+			}
+			if(input.isKeyDown(Input.KEY_RIGHT)) {
+				gameControl.moveChar(MovementEnum.MOVE_RIGHT, delta);
+			}
+			if(input.isKeyDown(Input.KEY_DOWN)) {
+				gameControl.moveChar(MovementEnum.MOVE_DOWN, delta);
+			}
+			if(input.isKeyDown(Input.KEY_LEFT)) {
+				gameControl.moveChar(MovementEnum.MOVE_LEFT, delta);
+			}
 			
 			if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 				towerIsChoosen = false;
@@ -462,15 +477,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		gameControl.nextWave();
 	}
 	
-	@Override
-	public boolean keyEvent(NiftyInputEvent inputEvent) {
-		if(inputEvent != null) {
-			gameControl.movePlayerCharacter(inputEvent);
-			return true;
-		}
-		return false;
-	}
-	
 	/**
 	 * Private helper class for representing a towers attack.
 	 * @author Johan Gustafsson
@@ -501,5 +507,27 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		public TowerShootingEvent getAttackEvent() {
 			return event;
 		}
+	}
+	
+	@Override
+	public boolean isAcceptingInput() {
+		return true;
+	}
+	
+	@Override
+	public void keyPressed(int key, char c) {
+		MovementEnum direction = MovementEnum.NO_MOVEMENT;
+		switch(key) {
+			case Input.KEY_UP : direction = MovementEnum.MOVE_UP;
+			break;
+			case Input.KEY_DOWN : direction = MovementEnum.MOVE_DOWN;
+			break;
+			case Input.KEY_RIGHT : direction = MovementEnum.MOVE_RIGHT;
+			break;
+			case Input.KEY_LEFT : direction = MovementEnum.MOVE_LEFT;
+			break;
+			default : break;
+		}
+		gameControl.moveChar(direction, 1);
 	}
 }

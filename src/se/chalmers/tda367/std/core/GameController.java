@@ -158,22 +158,25 @@ public class GameController {
 		float diff;
 		switch(event) {
 			case MoveCursorUp :
-				diff = ((pos.getY()-5) > 0) ? pos.getY()-5 : 0; 
+				diff = ((pos.getY()-(float)1/3) > 0) ? pos.getY()-(float)1/3 : 0; 
 				pos.setY(diff);
 				break;
 			case MoveCursorDown : 
-				diff = ((pos.getY()+5) < board.getHeight()*tileScale) ? pos.getY()+5 : board.getHeight()*tileScale; 
+				diff = ((pos.getY()+(float)1/3) < board.getHeight()*tileScale) ? pos.getY()+(float)1/3 : board.getHeight()*tileScale; 
 				pos.setY(diff);
 				break;
 			case MoveCursorRight :
-				diff = ((pos.getX()+5) < board.getWidth()*tileScale) ? pos.getX()+5 : board.getWidth()*tileScale;
+				diff = ((pos.getX()+(float)1/3) < board.getWidth()*tileScale) ? pos.getX()+(float)1/3 : board.getWidth()*tileScale;
 				pos.setX(diff);
 				break;
 			case MoveCursorLeft : 
-				diff = ((pos.getX()-5) > 0) ? pos.getX()-5 : 0; 
+				diff = (((pos.getX()-(float)1/3) > 0) ? pos.getX()-(float)1/3 : 0); 
 				pos.setX(diff);
 				break;
 			default: break;
 		}
+	}
+	public void moveChar(MovementEnum direction, int delta) {
+		direction.moveCharacter(player.getCharacter().getPos(), delta);
 	}
 }
