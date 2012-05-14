@@ -76,8 +76,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		gameOver = false;
 		attacksList = new LinkedList<AttackAnimationDuration>();
 
-		player = new Player("Player1");
-		player.setMoney(500);
+		player = new Player();
 		gameControl = new GameController(player);
 		
 		backgroundMusic.loop(1, 1);

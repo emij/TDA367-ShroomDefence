@@ -89,7 +89,7 @@ class BuildController {
 	 */
 	public boolean sellTower(ITower tower, BoardPosition pos){
 		if(isTowerAt(tower,pos)){
-			player.setMoney(player.getMoney() + tower.refund());
+			player.addMoney(tower.refund());
 			board.placeTile(new BuildableTile(), pos);
 			return true;
 		} else {
