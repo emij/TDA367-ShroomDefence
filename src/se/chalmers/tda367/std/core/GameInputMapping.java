@@ -5,7 +5,8 @@ import de.lessvoid.nifty.input.NiftyInputMapping;
 import de.lessvoid.nifty.input.keyboard.KeyboardInputEvent;
 
 /**
- * Custom inputmapping class for taking care of 
+ * Custom inputmapping class for overriding the default input mapping of 
+ * the space key. This solves nifty from activating elements when the player jumps.
  * @author Johan Gustafsson
  * @date   May 14, 2012
  */
