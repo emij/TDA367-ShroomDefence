@@ -160,6 +160,7 @@ public class GameController {
 		float moveSpd = player.getCharacter().getSpeed();
 		Position playerPos = player.getCharacter().getPos();
 		Position newPos = direction.newPosition(playerPos, delta, moveSpd);
+		
 		if(isAbleToWalkTo(newPos)) {
 			playerPos.copyFromPosition(newPos);
 		}
@@ -175,6 +176,7 @@ public class GameController {
 		//Calculate on which tile the position given is on.
 		int x = (int)(p.getX()/tileScale);
 		int y = (int)(p.getY()/tileScale);
+		
 		if(board.posOnBoard(x, y)) {
 			if(board.getTileAt(x, y) instanceof IBuildableTile
 					|| board.getTileAt(x, y) instanceof TerrainTile) {
@@ -182,5 +184,9 @@ public class GameController {
 			}
 		}
 		return false;
+	}
+	
+	public void tryToJump() {
+		System.out.println("TESTA HOPP");
 	}
 }

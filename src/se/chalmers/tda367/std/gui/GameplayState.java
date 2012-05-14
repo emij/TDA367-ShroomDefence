@@ -467,6 +467,28 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		gameControl.nextWave();
 	}
 	
+	private void checkForMovement(Input input, int delta) {
+		if(input.isKeyDown(Input.KEY_UP) ) {
+			gameControl.moveChar(MovementEnum.MOVE_UP, delta);
+		}
+		if(input.isKeyDown(Input.KEY_RIGHT)) {
+			gameControl.moveChar(MovementEnum.MOVE_RIGHT, delta);
+		}
+		if(input.isKeyDown(Input.KEY_DOWN)) {
+			gameControl.moveChar(MovementEnum.MOVE_DOWN, delta);
+		}
+		if(input.isKeyDown(Input.KEY_LEFT)) {
+			gameControl.moveChar(MovementEnum.MOVE_LEFT, delta);
+		}
+	}
+	
+	@Override
+	public void keyPressed(int key, char c) {
+		if(key == Input.KEY_SPACE) {
+			gameControl.tryToJump();
+		}
+	}
+	
 	/**
 	 * Private helper class for representing a towers attack.
 	 * @author Johan Gustafsson
@@ -496,21 +518,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		
 		public TowerShootingEvent getAttackEvent() {
 			return event;
-		}
-	}
-	
-	private void checkForMovement(Input input, int delta) {
-		if(input.isKeyDown(Input.KEY_UP) ) {
-			gameControl.moveChar(MovementEnum.MOVE_UP, delta);
-		}
-		if(input.isKeyDown(Input.KEY_RIGHT)) {
-			gameControl.moveChar(MovementEnum.MOVE_RIGHT, delta);
-		}
-		if(input.isKeyDown(Input.KEY_DOWN)) {
-			gameControl.moveChar(MovementEnum.MOVE_DOWN, delta);
-		}
-		if(input.isKeyDown(Input.KEY_LEFT)) {
-			gameControl.moveChar(MovementEnum.MOVE_LEFT, delta);
 		}
 	}
 }
