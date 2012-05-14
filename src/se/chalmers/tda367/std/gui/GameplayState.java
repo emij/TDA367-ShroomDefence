@@ -474,6 +474,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	 * If there's movement it will tell the {@code GameController}.
 	 */
 	private void checkForMovement(Input input, int delta) {
+		//Using multiple if statements because I want the game to check for all movement keys that are currently down.
+		//If you were to break when you find a key that is down, the game wont be able to handle diagonal movement since that
+		//relies on two keys being pressed at the same time.
 		if(input.isKeyDown(Input.KEY_UP) ) {
 			if(input.isKeyPressed(Input.KEY_SPACE)) {
 				gameControl.tryToJump(MovementEnum.MOVE_UP);
