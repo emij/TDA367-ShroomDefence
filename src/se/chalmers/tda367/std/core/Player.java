@@ -20,7 +20,7 @@ public class Player {
 	}
 	public Player(String name){
 		this.name = name;
-		this.character = new PlayerCharacter(new Position(100, 100));
+		this.character = new PlayerCharacter(new Position(100, 250));
 	}
 	/**
 	 * @return the currentScore

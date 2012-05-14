@@ -4,6 +4,8 @@ import de.lessvoid.nifty.input.NiftyInputEvent;
 import se.chalmers.tda367.std.core.events.WaveStartedEvent;
 import se.chalmers.tda367.std.core.factories.GameBoardFactory;
 import se.chalmers.tda367.std.core.factories.WaveFactory;
+import se.chalmers.tda367.std.core.tiles.IBuildableTile;
+import se.chalmers.tda367.std.core.tiles.TerrainTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.EventBus;
@@ -150,33 +152,31 @@ public class GameController {
 	}
 	
 	/**
-	 * Causes the player to move depending on the event provided.
-	 * @param event
+	 * Causes the player to move depending on the {@code MovementEnum} provided.
+	 * @param direction Enum to use for calculation.
+	 * @param delta time in milliseconds since last update.
 	 */
-	public void movePlayerCharacter(NiftyInputEvent event) {
-		Position pos = player.getCharacter().getPos();
-		float diff;
-		switch(event) {
-			case MoveCursorUp :
-				diff = ((pos.getY()-(float)1/3) > 0) ? pos.getY()-(float)1/3 : 0; 
-				pos.setY(diff);
-				break;
-			case MoveCursorDown : 
-				diff = ((pos.getY()+(float)1/3) < board.getHeight()*tileScale) ? pos.getY()+(float)1/3 : board.getHeight()*tileScale; 
-				pos.setY(diff);
-				break;
-			case MoveCursorRight :
-				diff = ((pos.getX()+(float)1/3) < board.getWidth()*tileScale) ? pos.getX()+(float)1/3 : board.getWidth()*tileScale;
-				pos.setX(diff);
-				break;
-			case MoveCursorLeft : 
-				diff = (((pos.getX()-(float)1/3) > 0) ? pos.getX()-(float)1/3 : 0); 
-				pos.setX(diff);
-				break;
-			default: break;
+	public void moveChar(MovementEnum direction, int delta) {
+		Position playerPos = player.getCharacter().getPos();
+		if(isAbleToWalkTo(direction.newPosition(playerPos, delta))) {
+			playerPos.copyFromPosition(direction.newPosition(playerPos, delta));
 		}
 	}
-	public void moveChar(MovementEnum direction, int delta) {
-		direction.moveCharacter(player.getCharacter().getPos(), delta);
+	
+	/**
+	 * Method to check if a given position is a buildable or terrain tile.
+	 * This determines if player character can move to this position or not.
+	 * @param p position to check.
+	 * @return true if it's a {@code IBuildableTile} or {@code TerrainTile}.
+	 */
+	public boolean isAbleToWalkTo(Position p) {
+		//Calculate on which tile the position given is on.
+		int x = (int)(p.getX()/tileScale);
+		int y = (int)(p.getY()/tileScale);
+		if(board.getTileAt(x, y) instanceof IBuildableTile
+				|| board.getTileAt(x, y) instanceof TerrainTile) {
+			return true;
+		}
+		return false;
 	}
 }

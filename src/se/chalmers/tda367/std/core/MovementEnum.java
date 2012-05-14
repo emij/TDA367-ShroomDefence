@@ -5,46 +5,50 @@ import se.chalmers.tda367.std.utilities.Position;
 public enum MovementEnum {
 	MOVE_UP {
 		@Override
-		void moveCharacter(Position p, int delta) {
-			if(p.getY() > 1) {
-				p.decrementY();
-			};
+		Position newPosition(Position p, int delta) {
+			Position pos = Position.valueOf(p);
+			pos.decrementY();
+			pos.decrementY();
+			return pos;
 		} 
 	},
 	
 	MOVE_DOWN {
 		@Override
-		void moveCharacter(Position p, int delta) {
-			if(p.getY() < 639) {
-				p.incrementY();
-			};
+		Position newPosition(Position p, int delta) {
+			Position pos = Position.valueOf(p);
+			pos.incrementY();
+			pos.incrementY();
+			return pos;
 		} 
 	},
 	
 	MOVE_RIGHT {
 		@Override
-		void moveCharacter(Position p, int delta) {
-			if(p.getX() < 799) {
-				p.incrementX();
-			};
+		Position newPosition(Position p, int delta) {
+			Position pos = Position.valueOf(p);
+			pos.incrementX();
+			pos.incrementX();
+			return pos;
 		} 
 	},
 	
 	MOVE_LEFT {
 		@Override
-		void moveCharacter(Position p, int delta) {
-			if(p.getX() > 1) {
-				p.decrementX();
-			};
+		Position newPosition(Position p, int delta) {
+			Position pos = Position.valueOf(p);
+			pos.decrementX();
+			pos.decrementX();
+			return pos;
 		}
 	},
 	
 	NO_MOVEMENT {
 		@Override
-		void moveCharacter(Position p, int delta) {
-			
+		Position newPosition(Position p, int delta) {
+			return p;
 		} 
 	};
 	
-	abstract void moveCharacter(Position p, int delta);
+	abstract Position newPosition(Position p, int delta);
 }

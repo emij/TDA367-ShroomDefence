@@ -38,6 +38,15 @@ public class Position implements Serializable {
 	}
 	
 	/**
+	 * A static factory method for copying positions.
+	 * @param p the position to get values from.
+	 * @return a copied position of the given position.
+	 */
+	public static Position valueOf(Position p){
+		return new Position(p.getX(), p.getY());
+	}
+	
+	/**
 	 * Get the x-value of the position.
 	 * @return the position x-value.
 	 */
@@ -75,6 +84,11 @@ public class Position implements Serializable {
 	
 	public void decrementY() {
 		this.y -= 1;
+	}
+	
+	public void copyFromPosition(Position p) {
+		this.x = p.getX();
+		this.y = p.getY();
 	}
 	
 	@Override
