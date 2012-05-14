@@ -63,6 +63,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Animation explosionAnimation;
 	private Music backgroundMusic;
 	private StateBasedGame state;
+	private Input input;
 	
 
 	public GameplayState(int stateID) {
@@ -101,7 +102,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		nifty = this.getNifty();
 		initGUIButtons();
 		initElements();
-				
+		
+		input = container.getInput();
+		
 		container.getGraphics().setLineWidth(3);
 		container.getInput().addKeyListener(this);
 		
@@ -198,7 +201,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		if(!gameOver && !optionsScreenIsOpen) {
 			gameControl.updateGameState(delta);
 			
-			Input input = container.getInput();
 			mouseX = input.getMouseX();
 			mouseY = input.getMouseY();
 			
@@ -467,25 +469,42 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		gameControl.nextWave();
 	}
 	
+	/**
+	 * This will check for player movement from the arrow keys and space key. 
+	 * If there's movement it will tell the {@code GameController}.
+	 */
 	private void checkForMovement(Input input, int delta) {
 		if(input.isKeyDown(Input.KEY_UP) ) {
-			gameControl.moveChar(MovementEnum.MOVE_UP, delta);
+			if(input.isKeyPressed(Input.KEY_SPACE)) {
+				gameControl.tryToJump(MovementEnum.MOVE_UP);
+			}
+			else {
+				gameControl.moveChar(MovementEnum.MOVE_UP, delta);
+			}
 		}
 		if(input.isKeyDown(Input.KEY_RIGHT)) {
-			gameControl.moveChar(MovementEnum.MOVE_RIGHT, delta);
+			if(input.isKeyPressed(Input.KEY_SPACE)) {
+				gameControl.tryToJump(MovementEnum.MOVE_RIGHT);
+			}
+			else {
+				gameControl.moveChar(MovementEnum.MOVE_RIGHT, delta);
+			}
 		}
 		if(input.isKeyDown(Input.KEY_DOWN)) {
-			gameControl.moveChar(MovementEnum.MOVE_DOWN, delta);
+			if(input.isKeyPressed(Input.KEY_SPACE)) {
+				gameControl.tryToJump(MovementEnum.MOVE_DOWN);
+			}
+			else {
+				gameControl.moveChar(MovementEnum.MOVE_DOWN, delta);
+			}
 		}
 		if(input.isKeyDown(Input.KEY_LEFT)) {
-			gameControl.moveChar(MovementEnum.MOVE_LEFT, delta);
-		}
-	}
-	
-	@Override
-	public void keyPressed(int key, char c) {
-		if(key == Input.KEY_SPACE) {
-			gameControl.tryToJump();
+			if(input.isKeyPressed(Input.KEY_SPACE)) {
+				gameControl.tryToJump(MovementEnum.MOVE_LEFT);
+			}
+			else {
+				gameControl.moveChar(MovementEnum.MOVE_LEFT, delta);
+			}
 		}
 	}
 	

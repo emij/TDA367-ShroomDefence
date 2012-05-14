@@ -10,6 +10,14 @@ public enum MovementEnum {
 			float speedDelta = moveSpd * delta;
 			pos.move(0, -speedDelta);
 			return pos;
+		}
+
+		@Override
+		Position newJumpPosition(Position p) {
+			Position pos = Position.valueOf(p);
+			int tileScale = Properties.INSTANCE.getTileScale() + 2;
+			pos.move(0, -tileScale);
+			return pos;
 		} 
 	},
 	
@@ -20,6 +28,14 @@ public enum MovementEnum {
 			float speedDelta = moveSpd * delta;
 			pos.move(0, speedDelta);
 			return pos;
+		}
+
+		@Override
+		Position newJumpPosition(Position p) {
+			Position pos = Position.valueOf(p);
+			int tileScale = Properties.INSTANCE.getTileScale() + 2;
+			pos.move(0, +tileScale);
+			return pos;
 		} 
 	},
 	
@@ -29,6 +45,14 @@ public enum MovementEnum {
 			Position pos = Position.valueOf(p);
 			float speedDelta = moveSpd * delta;
 			pos.move(speedDelta, 0);
+			return pos;
+		}
+
+		@Override
+		Position newJumpPosition(Position p) {
+			Position pos = Position.valueOf(p);
+			int tileScale = Properties.INSTANCE.getTileScale() + 2;
+			pos.move(tileScale, 0);
 			return pos;
 		} 
 	},
@@ -41,14 +65,28 @@ public enum MovementEnum {
 			pos.move(-speedDelta, 0);
 			return pos;
 		}
+
+		@Override
+		Position newJumpPosition(Position p) {
+			Position pos = Position.valueOf(p);
+			int tileScale = Properties.INSTANCE.getTileScale() + 2;
+			pos.move(-tileScale, 0);
+			return pos;
+		}
 	},
 	
 	NO_MOVEMENT {
 		@Override
 		Position newPosition(Position p, int delta, float moveSpd) {
 			return p;
+		}
+
+		@Override
+		Position newJumpPosition(Position p) {
+			return p;
 		} 
 	};
 	
 	abstract Position newPosition(Position p, int delta, float moveSpd);
+	abstract Position newJumpPosition(Position p);
 }

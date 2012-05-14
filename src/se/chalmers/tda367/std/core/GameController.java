@@ -167,6 +167,19 @@ public class GameController {
 	}
 	
 	/**
+	 * Causes the player to "jump" and move a tile forward if that tile is a buildable or terrain tile.
+	 * @param direction enum representing the direction, will be used to calculate where the jump will land.
+	 */
+	public void tryToJump(MovementEnum direction) {
+		Position playerPos = player.getCharacter().getPos();
+		Position newPos = direction.newJumpPosition(playerPos);
+		
+		if(isAbleToWalkTo(newPos)) {
+			playerPos.copyFromPosition(newPos);
+		}
+	}
+	
+	/**
 	 * Method to check if a given position is a buildable or terrain tile.
 	 * This determines if player character can move to this position or not.
 	 * @param p position to check.
@@ -184,9 +197,5 @@ public class GameController {
 			}
 		}
 		return false;
-	}
-	
-	public void tryToJump() {
-		System.out.println("TESTA HOPP");
 	}
 }
