@@ -18,6 +18,7 @@ import se.chalmers.tda367.std.utilities.SpriteCreator;
 public class PlayerCharacter implements IPlayerCharacter {
 	private Position pos;
 	private int attackDmg, attackSpd, timeSinceLastAttack;
+	private float movementSpd;
 	
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");
 
@@ -26,6 +27,7 @@ public class PlayerCharacter implements IPlayerCharacter {
 		attackDmg = 10;
 		timeSinceLastAttack = 0;
 		attackSpd = 150;
+		movementSpd = 0.2F;
 	}
 	
 	@Override
@@ -36,6 +38,11 @@ public class PlayerCharacter implements IPlayerCharacter {
 	@Override
 	public Position getPos() {
 		return pos;
+	}
+	
+	@Override
+	public float getSpeed() {
+		return movementSpd;
 	}
 	
 	@Override

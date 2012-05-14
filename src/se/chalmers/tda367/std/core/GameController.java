@@ -157,9 +157,11 @@ public class GameController {
 	 * @param delta time in milliseconds since last update.
 	 */
 	public void moveChar(MovementEnum direction, int delta) {
+		float moveSpd = player.getCharacter().getSpeed();
 		Position playerPos = player.getCharacter().getPos();
-		if(isAbleToWalkTo(direction.newPosition(playerPos, delta))) {
-			playerPos.copyFromPosition(direction.newPosition(playerPos, delta));
+		Position newPos = direction.newPosition(playerPos, delta, moveSpd);
+		if(isAbleToWalkTo(newPos)) {
+			playerPos.copyFromPosition(newPos);
 		}
 	}
 	

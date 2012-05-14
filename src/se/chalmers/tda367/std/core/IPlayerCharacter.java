@@ -21,6 +21,12 @@ public interface IPlayerCharacter {
 	public Position getPos();
 	
 	/**
+	 * Gives the character movement speed
+	 * @return float representing character's speed.
+	 */
+	public float getSpeed();
+	
+	/**
 	 * @return the sprite (image representation) of the character.
 	 */
 	public Sprite getSprite();
