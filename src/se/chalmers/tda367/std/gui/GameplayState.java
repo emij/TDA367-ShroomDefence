@@ -202,18 +202,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			mouseX = input.getMouseX();
 			mouseY = input.getMouseY();
 			
-			if(input.isKeyDown(Input.KEY_UP) ) {
-				gameControl.moveChar(MovementEnum.MOVE_UP, delta);
-			}
-			if(input.isKeyDown(Input.KEY_RIGHT)) {
-				gameControl.moveChar(MovementEnum.MOVE_RIGHT, delta);
-			}
-			if(input.isKeyDown(Input.KEY_DOWN)) {
-				gameControl.moveChar(MovementEnum.MOVE_DOWN, delta);
-			}
-			if(input.isKeyDown(Input.KEY_LEFT)) {
-				gameControl.moveChar(MovementEnum.MOVE_LEFT, delta);
-			}
+			checkForMovement(input, delta);
 			
 			if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 				towerIsChoosen = false;
@@ -514,20 +503,18 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		return true;
 	}
 	
-	@Override
-	public void keyPressed(int key, char c) {
-		MovementEnum direction = MovementEnum.NO_MOVEMENT;
-		switch(key) {
-			case Input.KEY_UP : direction = MovementEnum.MOVE_UP;
-			break;
-			case Input.KEY_DOWN : direction = MovementEnum.MOVE_DOWN;
-			break;
-			case Input.KEY_RIGHT : direction = MovementEnum.MOVE_RIGHT;
-			break;
-			case Input.KEY_LEFT : direction = MovementEnum.MOVE_LEFT;
-			break;
-			default : break;
+	private void checkForMovement(Input input, int delta) {
+		if(input.isKeyDown(Input.KEY_UP) ) {
+			gameControl.moveChar(MovementEnum.MOVE_UP, delta);
 		}
-		gameControl.moveChar(direction, 1);
+		if(input.isKeyDown(Input.KEY_RIGHT)) {
+			gameControl.moveChar(MovementEnum.MOVE_RIGHT, delta);
+		}
+		if(input.isKeyDown(Input.KEY_DOWN)) {
+			gameControl.moveChar(MovementEnum.MOVE_DOWN, delta);
+		}
+		if(input.isKeyDown(Input.KEY_LEFT)) {
+			gameControl.moveChar(MovementEnum.MOVE_LEFT, delta);
+		}
 	}
 }
