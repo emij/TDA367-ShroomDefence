@@ -38,6 +38,7 @@ import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.events.NiftyMousePrimaryClickedEvent;
 import de.lessvoid.nifty.input.NiftyInputEvent;
+import de.lessvoid.nifty.input.mapping.DefaultInputMapping;
 import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -106,7 +107,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		input = container.getInput();
 		
 		container.getGraphics().setLineWidth(3);
-		container.getInput().addKeyListener(this);
 		
 		EventBus.INSTANCE.register(this);
 	}
