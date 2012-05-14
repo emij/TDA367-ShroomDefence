@@ -173,9 +173,11 @@ public class GameController {
 		//Calculate on which tile the position given is on.
 		int x = (int)(p.getX()/tileScale);
 		int y = (int)(p.getY()/tileScale);
-		if(board.getTileAt(x, y) instanceof IBuildableTile
-				|| board.getTileAt(x, y) instanceof TerrainTile) {
-			return true;
+		if(board.posOnBoard(x, y)) {
+			if(board.getTileAt(x, y) instanceof IBuildableTile
+					|| board.getTileAt(x, y) instanceof TerrainTile) {
+				return true;
+			}
 		}
 		return false;
 	}
