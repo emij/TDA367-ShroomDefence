@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 
 import se.chalmers.tda367.std.core.events.EnemyDeadEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.Position;
 
 /**
  * Represents a player. Contains name, score etc.
