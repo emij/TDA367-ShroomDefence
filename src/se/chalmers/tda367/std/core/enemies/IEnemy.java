@@ -112,4 +112,16 @@ public interface IEnemy extends Comparable<IEnemy> {
 	
 	/** @return a defensive copy of the Enemy position. */
 	public Position getPosition();
+	
+	/**
+	 * Returns a string-representation of an Enemy
+	 * @return string-representation of an Enemy
+	 */
+	public String toString();
+	
+	/**
+	 * Compares two enemy to see which one is closest to base
+	 * @return the difference between two enemies's distance traveled
+	 */
+	public int compareTo(IEnemy o);
 }
