@@ -48,7 +48,7 @@ public abstract class AbstractAttackTower implements IAttackTower{
 		if(!enemies.isEmpty()){
 			IEnemy enemy = enemies.get(0);
 			
-			enemy.decreaseHealth(this.getDmg()*currentLevel);
+			enemy.decreaseHealth(this.getDmg());
 		
 			for(IEffect ie:this.getEffects()){
 				enemy.addEffect(ie.getCopy());
@@ -81,7 +81,7 @@ public abstract class AbstractAttackTower implements IAttackTower{
 
 	@Override
 	public int getDmg() {
-		return baseDamage;
+		return baseDamage*currentLevel;
 	}
 
 	@Override
