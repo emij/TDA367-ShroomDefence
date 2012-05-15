@@ -66,19 +66,6 @@ public interface IEnemy extends Comparable<IEnemy> {
 	 */
 	public int getBaseArmor();
 	
-//	/**
-//	 * Increase speed of the enemy with the specified value
-//	 * @param inc
-//	 * @return current speed
-//	 */
-//	public float increaseSpeed(float inc);
-//	/**
-//	 * Decrease speed of the enemy with the specified value
-//	 * @param inc
-//	 * @return the new speed
-//	 */
-//	public float decreaseSpeed(float inc);
-	
 	/** 
 	 *  Add an effect to an enemy.
 	 * @param effect - Effect to be added.
