@@ -32,7 +32,7 @@ import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
 
 
 public class GameplayState extends NiftyOverlayBasicGameState implements ScreenController {
-	private int stateID, tileScale, mouseX, mouseY;
+	private int stateID, tileScale;
 	private boolean towerIsChoosen, optionsScreenIsOpen, gameOver;
 	private Properties properties = Properties.INSTANCE;
 	
@@ -59,12 +59,14 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	protected void enterState(GameContainer container, StateBasedGame state)
 			throws SlickException {
 		this.state = state;
+		
+		//Reset state from last play.
 		towerIsChoosen = false;
 		optionsScreenIsOpen = false;
 		gameOver = false;
-
-		gameControl = new GameController(new Player());
 		
+		
+		gameControl = new GameController(new Player());
 		gameRenderer = new GameplayRenderer(gameControl, input);
 		guiRenderer = new GameplayGUIRenderer(gameControl, nifty);
 		
@@ -103,6 +105,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		bb.height("15%");
 		bb.name("button");
 		bb.font("verdana-smallregular.fnt");
+		bb.inputMapping("se.chalmers.tda367.std.core.GameInputMapping");
 		//Load all the towers.
 		List<Class<ITower>> exportedTowers = DynamicLoader.getTowers();
 		
@@ -147,41 +150,12 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Override
 	protected void updateGame(GameContainer container, StateBasedGame state, int delta)
 			throws SlickException {
-		GameBoard board = gameControl.getGameBoard();
-		
 		
 		if(!gameOver && !optionsScreenIsOpen) {
 			gameControl.updateGameState(delta);
 			
-			mouseX = input.getMouseX();
-			mouseY = input.getMouseY();
-			
-			checkForMovement(input, delta);
-			
-			if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
-				towerIsChoosen = false;
-				guiRenderer.setDefaultFocus();
-			}
-			
-			if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()
-					 && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				int x = mouseX / tileScale;
-				int y = mouseY / tileScale;
-				BoardPosition p = BoardPosition.valueOf(x, y);
-				if(towerIsChoosen && board.getTileAt(p) instanceof IBuildableTile) {
-					gameControl.buildTower(choosenTower, p);
-					if(!input.isKeyDown(Input.KEY_LSHIFT)) {
-						towerIsChoosen = false;
-						guiRenderer.setDefaultFocus();
-					}
-				}
-				else if(board.getTileAt(p) instanceof IAttackTower && !towerIsChoosen) {
-					selectedTower = (IAttackTower)board.getTileAt(p);
-					towerPos = p;
-					guiRenderer.updateTowerPopup(selectedTower, towerPopup);
-					guiRenderer.showPopup(towerPopup.getId());
-				}
-	    	}
+			checkForMovement(delta);
+			checkForInput();
 		}
 	}
 
@@ -302,7 +276,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	 * This will check for player movement from the arrow keys and space key. 
 	 * If there's movement it will tell the {@code GameController}.
 	 */
-	private void checkForMovement(Input input, int delta) {
+	private void checkForMovement(int delta) {
 		//Using multiple if statements because I want the game to check for all movement keys that are currently down.
 		//If you were to break when you find a key that is down, the game wont be able to handle diagonal movement since that
 		//relies on two keys being pressed at the same time.
@@ -338,5 +312,37 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 				gameControl.moveChar(MovementEnum.MOVE_LEFT, delta);
 			}
 		}
+	}
+	
+	/** Check for input that should interact with the game in some way */
+	private void checkForInput() {
+		GameBoard board = gameControl.getGameBoard();
+		int mouseX = input.getMouseX();
+		int mouseY = input.getMouseY();
+		
+		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
+			towerIsChoosen = false;
+			guiRenderer.setDefaultFocus();
+		}
+		
+		if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()
+				 && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			int x = mouseX / tileScale;
+			int y = mouseY / tileScale;
+			BoardPosition p = BoardPosition.valueOf(x, y);
+			if(towerIsChoosen && board.getTileAt(p) instanceof IBuildableTile) {
+				gameControl.buildTower(choosenTower, p);
+				if(!input.isKeyDown(Input.KEY_LSHIFT)) {
+					towerIsChoosen = false;
+					guiRenderer.setDefaultFocus();
+				}
+			}
+			else if(board.getTileAt(p) instanceof IAttackTower && !towerIsChoosen) {
+				selectedTower = (IAttackTower)board.getTileAt(p);
+				towerPos = p;
+				guiRenderer.updateTowerPopup(selectedTower, towerPopup);
+				guiRenderer.showPopup(towerPopup.getId());
+			}
+    	}
 	}
 }
