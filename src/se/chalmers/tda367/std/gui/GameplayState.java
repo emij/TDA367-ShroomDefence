@@ -60,6 +60,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Animation explosionAnimation;
 	private Music backgroundMusic;
 	private StateBasedGame state;
+	private GameplayRenderer gameRenderer;
 	
 
 	public GameplayState(int stateID) {
@@ -78,6 +79,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 
 		player = new Player();
 		gameControl = new GameController(player);
+		
+		gameRenderer = new GameplayRenderer(container.getGraphics(), gameControl);
 		
 		backgroundMusic.loop(1, 1);
 	}
@@ -98,7 +101,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		initGUIButtons();
 		initElements();
 				
-		container.getGraphics().setLineWidth(3);
+		//gameRenderer = new GameplayRenderer(container.getGraphics(), gameControl);
 		
 		EventBus.INSTANCE.register(this);
 	}
@@ -168,10 +171,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Override
 	protected void renderGame(GameContainer container, StateBasedGame state,
 			Graphics g) throws SlickException {
-		g.setColor(Color.black);
+		gameRenderer.renderGame();
         renderStats();
-        renderTiles();
-        renderEnemies(g);
+        
         
         //If a tower has been selected it will show a small rectangle where you hold the
         //mouse to indicate if one can build on that tile or not.
@@ -280,32 +282,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		startWaveButton.getNiftyControl(Button.class).disable();
 	}
 	
-	private void renderTiles() {
-		GameBoard board = gameControl.getGameBoard();
-		
-        for(int y = 0; y < board.getHeight(); y++){
-        	for(int x = 0; x < board.getWidth(); x++){
-        		IBoardTile tile = board.getTileAt(x, y);
-        		int nX = x * tileScale;
-        		int nY = y * tileScale;
-        		tile.getSprite().getNativeSprite().draw(nX, nY, tileScale, tileScale);
-        	}
-        }
-	}
-	
-	private void renderEnemies(Graphics g) {
-		GameBoard board = gameControl.getGameBoard();
-		EnemyList enemies = board.getEnemies();
-		
-        for(IEnemy enemy : enemies) {
-        	Position p = enemy.getPosition();
-        	int health = enemy.getHealth();
-        	NativeSprite image = enemy.getSprite().getNativeSprite();
-        	
-        	image.draw(p.getX(), p.getY(), tileScale, tileScale);
-        	g.drawString(""+health, p.getX(), p.getY()-tileScale);
-        }
-	}
 	
 	private void renderStats() {
 	    lifeLabel.getNiftyControl(Label.class).setText("" + gameControl.getGameBoard().getPlayerBaseHealth());
