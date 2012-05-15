@@ -21,6 +21,7 @@ import se.chalmers.tda367.std.core.*;
  * @author Emil Johansson
  * @date   27 mar 2012
  */
+//TODO more extensive test
 public class TestWaveController {
 
 
