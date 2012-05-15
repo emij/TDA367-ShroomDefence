@@ -30,8 +30,6 @@ public abstract class AbstractEnemy implements IEnemy {
 	private int currentHealth;
 
 	private final Sprite sprite;
-//	private float currentSpeed;
-//	private int currentArmor;
 	private List<IEffect> effects = new ArrayList<IEffect>();
 
 	public AbstractEnemy(int startHealth, float speed, int armor, int lootValue, Sprite sprite){
@@ -41,9 +39,7 @@ public abstract class AbstractEnemy implements IEnemy {
 		this.baseHealth    = startHealth;
 		this.currentHealth = this.baseHealth;
 		this.baseSpeed     = speed;
-//		this.currentSpeed  = baseSpeed;
 		this.baseArmor 	   = armor;
-//		this.currentArmor  = baseArmor;
 		this.lootValue     = lootValue;
 		this.sprite        = sprite;
 	}
@@ -81,17 +77,7 @@ public abstract class AbstractEnemy implements IEnemy {
 		}
 		return (float)speed;
 	}
-//	@Override
-//	public float increaseSpeed(float inc){
-//		currentSpeed = currentSpeed + inc;
-//		return currentSpeed;
-//	}
-//	@Override
-//	public float decreaseSpeed(float inc){
-//		currentSpeed = currentSpeed - inc;
-//		return currentSpeed;
-//	}
-
+	
 	@Override
 	public void decreaseHealth(int dmg) {
 		int reducedDmg = dmg - this.getArmor();

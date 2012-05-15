@@ -1,18 +1,22 @@
 package se.chalmers.tda367.std.core;
 
+import de.lessvoid.nifty.input.NiftyInputEvent;
 import se.chalmers.tda367.std.core.events.WaveStartedEvent;
 import se.chalmers.tda367.std.core.factories.GameBoardFactory;
 import se.chalmers.tda367.std.core.factories.WaveFactory;
+import se.chalmers.tda367.std.core.tiles.IBuildableTile;
+import se.chalmers.tda367.std.core.tiles.TerrainTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.Position;
 
 
 
 /**
  * The class that contains the game logic and controls the game.
  * @author Johan Andersson
- * @modified 
+ * @modified Johan Gustafsson
  * @date Mar 22, 2012
  */
 public class GameController {
@@ -21,6 +25,8 @@ public class GameController {
 	private GameBoard board;
 	private BuildController buildControl;
 	private WaveController waveControl;
+	private Properties prop = Properties.INSTANCE;
+	private int tileScale;
 	
 	private final GameBoardFactory boardFactory;
 	
@@ -35,6 +41,7 @@ public class GameController {
 	public GameController(Player player){
 		this.player = player;
 		this.level = 1;
+		tileScale = prop.getTileScale();
 		boardFactory = new GameBoardFactory();
 		
 		init();
@@ -141,5 +148,53 @@ public class GameController {
 	 */
 	public GameBoard getGameBoard() {
 		return board;
+	}
+	
+	/**
+	 * Causes the player to move depending on the {@code MovementEnum} provided.
+	 * @param direction Enum to use for calculation.
+	 * @param delta time in milliseconds since last update.
+	 */
+	public void moveChar(MovementEnum direction, int delta) {
+		float moveSpd = player.getCharacter().getSpeed();
+		Position playerPos = player.getCharacter().getPos();
+		Position newPos = direction.newPosition(playerPos, delta, moveSpd);
+		
+		if(isAbleToWalkTo(newPos)) {
+			playerPos.copyFromPosition(newPos);
+		}
+	}
+	
+	/**
+	 * Causes the player to "jump" and move a tile forward if that tile is a buildable or terrain tile.
+	 * @param direction enum representing the direction, will be used to calculate where the jump will land.
+	 */
+	public void tryToJump(MovementEnum direction) {
+		Position playerPos = player.getCharacter().getPos();
+		Position newPos = direction.newJumpPosition(playerPos);
+		
+		if(isAbleToWalkTo(newPos)) {
+			playerPos.copyFromPosition(newPos);
+		}
+	}
+	
+	/**
+	 * Method to check if a given position is a buildable or terrain tile.
+	 * This determines if player character can move to this position or not.
+	 * @param p position to check.
+	 * @return true if it's a {@code IBuildableTile} or {@code TerrainTile}.
+	 */
+	public boolean isAbleToWalkTo(Position p) {
+		//Calculate on which tile the position given is on.
+		int x = (int)(p.getX()/tileScale);
+		int y = (int)(p.getY()/tileScale);
+		
+		if(board.posOnBoard(x, y)) {
+			if(board.getTileAt(x, y) instanceof IBuildableTile
+					|| board.getTileAt(x, y) instanceof TerrainTile) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

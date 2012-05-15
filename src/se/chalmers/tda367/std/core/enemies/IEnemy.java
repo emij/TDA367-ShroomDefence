@@ -66,19 +66,6 @@ public interface IEnemy extends Comparable<IEnemy> {
 	 */
 	public int getBaseArmor();
 	
-//	/**
-//	 * Increase speed of the enemy with the specified value
-//	 * @param inc
-//	 * @return current speed
-//	 */
-//	public float increaseSpeed(float inc);
-//	/**
-//	 * Decrease speed of the enemy with the specified value
-//	 * @param inc
-//	 * @return the new speed
-//	 */
-//	public float decreaseSpeed(float inc);
-	
 	/** 
 	 *  Add an effect to an enemy.
 	 * @param effect - Effect to be added.
@@ -125,4 +112,16 @@ public interface IEnemy extends Comparable<IEnemy> {
 	
 	/** @return a defensive copy of the Enemy position. */
 	public Position getPosition();
+	
+	/**
+	 * Returns a string-representation of an Enemy
+	 * @return string-representation of an Enemy
+	 */
+	public String toString();
+	
+	/**
+	 * Compares two enemy to see which one is closest to base
+	 * @return the difference between two enemies's distance traveled
+	 */
+	public int compareTo(IEnemy o);
 }

@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 
 import se.chalmers.tda367.std.core.events.EnemyDeadEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.Position;
 
 /**
  * Represents a player. Contains name, score etc.
@@ -20,6 +21,7 @@ public class Player {
 	private String name;
 	private int currentScore;
 	private int money;
+	private IPlayerCharacter character;
 	
 	/**
 	 * Create a new player with the name {@code DEFAULT_NAME}.
@@ -29,6 +31,7 @@ public class Player {
 	}
 	public Player(String name){
 		this.name = name;
+		this.character = new PlayerCharacter(new Position(100, 250));
 		this.setScore(0);
 		this.addMoney(STARTING_MONEY);
 		
@@ -75,6 +78,13 @@ public class Player {
 	}
 	
 	/**
+	 * This will return a reference to this player's character
+	 * @return a reference to the player's {@code PlayerCharacter}
+	 */
+	public IPlayerCharacter getCharacter() {
+		return character;
+	}
+        /**
 	 * Event handler for when an enemy dies and it should be looted.
 	 * @param e - the event that contains the dead enemy.
 	 */
