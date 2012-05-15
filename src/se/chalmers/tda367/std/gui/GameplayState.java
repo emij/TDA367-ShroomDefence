@@ -9,6 +9,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
@@ -36,6 +37,9 @@ import de.lessvoid.nifty.controls.SliderChangedEvent;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.events.NiftyMousePrimaryClickedEvent;
+import de.lessvoid.nifty.input.NiftyInputEvent;
+import de.lessvoid.nifty.input.mapping.DefaultInputMapping;
+import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
@@ -61,6 +65,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Music backgroundMusic;
 	private StateBasedGame state;
 	private GameplayRenderer gameRenderer;
+	private Input input;
 	
 
 	public GameplayState(int stateID) {
@@ -100,8 +105,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		nifty = this.getNifty();
 		initGUIButtons();
 		initElements();
-				
-		//gameRenderer = new GameplayRenderer(container.getGraphics(), gameControl);
+		
+		input = container.getInput();
+		
 		
 		EventBus.INSTANCE.register(this);
 	}
@@ -174,6 +180,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		gameRenderer.renderGame();
         renderStats();
         
+        renderPlayerCharacter(g);
         
         //If a tower has been selected it will show a small rectangle where you hold the
         //mouse to indicate if one can build on that tile or not.
@@ -194,9 +201,10 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		if(!gameOver && !optionsScreenIsOpen) {
 			gameControl.updateGameState(delta);
 			
-			Input input = container.getInput();
 			mouseX = input.getMouseX();
 			mouseY = input.getMouseY();
+			
+			checkForMovement(input, delta);
 			
 			if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 				towerIsChoosen = false;
@@ -282,6 +290,14 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		startWaveButton.getNiftyControl(Button.class).disable();
 	}
 	
+	
+	private void renderPlayerCharacter(Graphics g) {
+		IPlayerCharacter character = player.getCharacter();
+		NativeSprite image = character.getSprite().getNativeSprite();
+		
+		image.draw(character.getPos().getX() - tileScale/2, 
+				character.getPos().getY() - tileScale/2, tileScale, tileScale);
+	}
 	
 	private void renderStats() {
 	    lifeLabel.getNiftyControl(Label.class).setText("" + gameControl.getGameBoard().getPlayerBaseHealth());
@@ -425,6 +441,48 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	 */
 	public void startWave() {
 		gameControl.nextWave();
+	}
+	
+	/**
+	 * This will check for player movement from the arrow keys and space key. 
+	 * If there's movement it will tell the {@code GameController}.
+	 */
+	private void checkForMovement(Input input, int delta) {
+		//Using multiple if statements because I want the game to check for all movement keys that are currently down.
+		//If you were to break when you find a key that is down, the game wont be able to handle diagonal movement since that
+		//relies on two keys being pressed at the same time.
+		if(input.isKeyDown(Input.KEY_UP) ) {
+			if(input.isKeyPressed(Input.KEY_SPACE)) {
+				gameControl.tryToJump(MovementEnum.MOVE_UP);
+			}
+			else {
+				gameControl.moveChar(MovementEnum.MOVE_UP, delta);
+			}
+		}
+		if(input.isKeyDown(Input.KEY_RIGHT)) {
+			if(input.isKeyPressed(Input.KEY_SPACE)) {
+				gameControl.tryToJump(MovementEnum.MOVE_RIGHT);
+			}
+			else {
+				gameControl.moveChar(MovementEnum.MOVE_RIGHT, delta);
+			}
+		}
+		if(input.isKeyDown(Input.KEY_DOWN)) {
+			if(input.isKeyPressed(Input.KEY_SPACE)) {
+				gameControl.tryToJump(MovementEnum.MOVE_DOWN);
+			}
+			else {
+				gameControl.moveChar(MovementEnum.MOVE_DOWN, delta);
+			}
+		}
+		if(input.isKeyDown(Input.KEY_LEFT)) {
+			if(input.isKeyPressed(Input.KEY_SPACE)) {
+				gameControl.tryToJump(MovementEnum.MOVE_LEFT);
+			}
+			else {
+				gameControl.moveChar(MovementEnum.MOVE_LEFT, delta);
+			}
+		}
 	}
 	
 	/**

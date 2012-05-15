@@ -150,6 +150,7 @@ class WaveController {
 	 */
 	private void shootAtEnemiesInRange(final int delta){
 		int tileScale = Properties.INSTANCE.getTileScale();
+		IPlayerCharacter character = player.getCharacter();
 		for(int x = 0; x < board.getWidth(); x++){
 			for(int y = 0; y <board.getHeight(); y++){
 				IBoardTile tile = board.getTileAt(x, y);
@@ -160,6 +161,9 @@ class WaveController {
 					}
 				}
 			}
+		}
+		if(character.isAttackReady(delta)) {
+			character.shoot(board.getEnemiesInRadius(character.getPos(), 50));
 		}
 	}
 	
