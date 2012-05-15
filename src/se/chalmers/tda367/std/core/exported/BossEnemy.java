@@ -7,7 +7,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * Represents a boss enemy.
- * <p>Start health: <b>1000</b>
+ * <p>Start health: <b>400</b>
  * <p>Speed: <b>2</b>
  * <p>Gold received: <b>50</b>
  * @author Johan Gustafsson
@@ -21,7 +21,7 @@ public class BossEnemy extends AbstractEnemy {
 	 *  Creates a boss enemy.
 	 */
 	public BossEnemy() {
-		super(1000, 0.2F, 50, 10, sprite); //TODO: change sprite
+		super(400, 0.2F, 50, 10, sprite); //TODO: change sprite
 	}
 	
 	/**
