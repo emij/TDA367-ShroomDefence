@@ -4,10 +4,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import se.chalmers.tda367.std.core.DynamicLoader;
 import se.chalmers.tda367.std.core.Wave;
 import se.chalmers.tda367.std.core.WaveItem;
+import se.chalmers.tda367.std.core.exported.BasicEnemy;
+import se.chalmers.tda367.std.utilities.SpriteCreator;
 
 
 /**
@@ -17,12 +21,20 @@ import se.chalmers.tda367.std.core.WaveItem;
  */
 public class TestWave {
 	
+	private final int BASIC_ENEMY_LOOT_VALUE = 50;
+	private final int BASIC_ENEMY_HEALTH = 100;
+	
 	private Wave createBasicWave(int n){
-		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();
+		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();	
 		for(int i = 0; i<n; i++){
-			//q.add(new WaveItem(new BasicEnemy(), i+1));
+			q.add(new WaveItem(DynamicLoader.createInstance(BasicEnemy.class), i+1));
 		}
 		return new Wave(q);
+	}
+	
+	@Before
+	public void before(){
+		SpriteCreator.setNativeSpriteClass(NativeDummySprite.class);
 	}
 
 
@@ -43,12 +55,11 @@ public class TestWave {
 
 	}
 
-	@Test(expected = Exception.class)
-	public void testGetNextException() throws Exception {
+	@Test
+	public void testGetNextNull() {
 		Wave w = createBasicWave(1);
 		w.getNext();
-		w.getNext(); // Exception!
-
+		assertTrue(null == w.getNext());
 	}
 	
 	
@@ -64,10 +75,10 @@ public class TestWave {
 	@Test
 	public void testGetWaveLootValue(){
 		Wave w = createBasicWave(1);
-		assertTrue(w.getWaveLootValue() == 5);
+		assertTrue(w.getWaveLootValue() == BASIC_ENEMY_LOOT_VALUE);
 		
 		w = createBasicWave(3);
-		assertTrue(w.getWaveLootValue() == (5*3));
+		assertTrue(w.getWaveLootValue() == (BASIC_ENEMY_LOOT_VALUE*3));
 		
 		w = createBasicWave(0);
 		assertTrue(w.getWaveLootValue() == 0);
@@ -77,10 +88,10 @@ public class TestWave {
 	@Test
 	public void testGetWaveHealthValue(){
 		Wave w = createBasicWave(1);
-		assertTrue(w.getHealthValue() == 100);
+		assertTrue(w.getHealthValue() == BASIC_ENEMY_HEALTH);
 		
 		w = createBasicWave(3);
-		assertTrue(w.getHealthValue() == (100*3));
+		assertTrue(w.getHealthValue() == (BASIC_ENEMY_HEALTH*3));
 		
 		w = createBasicWave(0);
 		assertTrue(w.getHealthValue() == 0);
