@@ -1,14 +1,30 @@
 package se.chalmers.tda367.std.gui;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
+
+import com.google.common.eventbus.Subscribe;
 
 import se.chalmers.tda367.std.core.EnemyList;
 import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.core.GameController;
+import se.chalmers.tda367.std.core.IPlayerCharacter;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
+import se.chalmers.tda367.std.core.events.EnemyEnteredBaseEvent;
+import se.chalmers.tda367.std.core.events.TowerShootingEvent;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
+import se.chalmers.tda367.std.core.tiles.towers.ITower;
+import se.chalmers.tda367.std.utilities.BoardPosition;
+import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;
 
@@ -18,28 +34,56 @@ import se.chalmers.tda367.std.utilities.Position;
  * @date 2012-05-15
  */
 public class GameplayRenderer {
-	private Graphics g;
 	private GameController gameControl;
+	private Input input;
+	private Animation explosionAnimation;
+	private List<AttackAnimation> attacksList;
 	
 	private Properties prop = Properties.INSTANCE;
 	private int tileScale;
 	
-	public GameplayRenderer(Graphics g, GameController gameControl) {
-		this.g = g;
+	public GameplayRenderer(GameController gameControl, Input input) throws SlickException {
 		this.gameControl = gameControl;
+		this.input = input;
 		init();
 	}
 	
-	private void init() {
+	
+	private void init() throws SlickException {
 		tileScale = prop.getTileScale();
-		g.setLineWidth(3);
+		attacksList = new LinkedList<AttackAnimation>();
+		initAnimations();
+		
+		EventBus.INSTANCE.register(this);
 	}
 	
-	public void renderGame() {
+	
+	/**Creates {@code Animation} which will be used by game renderer*/
+	private void initAnimations() throws SlickException {
+		Image exp_1 = new Image(getResourcePath("/animations/explosion_1.png"));
+		Image exp_2 = new Image(getResourcePath("/animations/explosion_2.png"));
+		Image[] explosion = new Image[2];
+		explosion[0] = exp_1;
+		explosion[1] = exp_2;
+		explosionAnimation = new Animation(explosion, 500);
+	}
+	
+	/**Helper method to get correct path to files.*/
+	private String getResourcePath(String path){
+		return getClass().getResource(path).getPath();
+	}
+	
+	public void renderGame(Graphics g) {
 		g.setColor(Color.black);
 		renderTiles();
-        renderEnemies();
+        renderEnemies(g);
+        renderPlayerCharacter(g);
+        
+        if(attacksList != null && !attacksList.isEmpty()) {
+        	renderAttacks(g);
+        }
 	}
+	
 	
 	private void renderTiles() {
 		GameBoard board = gameControl.getGameBoard();
@@ -54,7 +98,8 @@ public class GameplayRenderer {
         }
 	}
 	
-	private void renderEnemies() {
+	
+	private void renderEnemies(Graphics g) {
 		GameBoard board = gameControl.getGameBoard();
 		EnemyList enemies = board.getEnemies();
 		
@@ -66,5 +111,76 @@ public class GameplayRenderer {
         	image.draw(p.getX(), p.getY(), tileScale, tileScale);
         	g.drawString(""+health, p.getX(), p.getY()-tileScale);
         }
+	}
+
+	
+	private void renderPlayerCharacter(Graphics g) {
+		IPlayerCharacter character = gameControl.getPlayer().getCharacter();
+		NativeSprite image = character.getSprite().getNativeSprite();
+		
+		image.draw(character.getPos().getX() - tileScale/2, 
+				character.getPos().getY() - tileScale/2, tileScale, tileScale);
+	}
+	
+	
+	/**Renders the small square and the big circle around the mouse location that gives the player visual feedback
+	   showing if he can build on that tile or not and how far the tower can fire.*/
+	void renderBuildingFeedback(Graphics g, ITower tower) {
+		GameBoard board = gameControl.getGameBoard();
+		int x = input.getMouseX()/tileScale;
+		int y = input.getMouseY()/tileScale;
+		
+		if(board.canBuildAt(BoardPosition.valueOf(x, y))) {
+			g.setColor(Color.green);
+			g.setLineWidth(3);
+			g.drawRect(x * tileScale, y * tileScale, tileScale, tileScale);
+			g.setColor(Color.black);
+			g.setLineWidth(1);
+			g.draw(new Circle(x * tileScale+tileScale/2, y * tileScale+tileScale/2, tower.getRadius()*tileScale));
+			
+		} else {
+			g.setColor(Color.red);
+			g.drawRect(x * tileScale, y * tileScale, tileScale, tileScale);
+			g.setColor(Color.black);
+		}
+	}
+	
+	
+	/**Render attacks from the tower attacking to the enemy being attacked. Uses inner class {@code AttackAnimationDuration}.*/
+	public void renderAttacks(Graphics g) {
+		List<AttackAnimation> tmpList = new LinkedList<AttackAnimation>(attacksList);
+		
+		for(AttackAnimation attack : tmpList) {
+			Position from = attack.getFromPos();
+			Position to = attack.getToPos();
+			
+			g.drawLine(from.getX()+tileScale/2, from.getY()+tileScale/2,
+					   to.getX()+tileScale/2, to.getY()+tileScale/2);
+			g.drawAnimation(explosionAnimation, to.getX(), to.getY());
+			
+			attack.decreaseDuration(1);
+			
+			if(attack.getRemainigDuration() == 0) {
+				attacksList.remove(attack);
+			}
+		}
+	}
+	
+	
+	/**
+	 * Will add create a new {@code AttackAnimationDuration} with provided {@code TowerShootingEvent} and add
+	 * it to the list of attacks that will be render by the game.
+	 * @param event instance of {@code TowerShootingEvent} that will be used in the wrapper.
+	 */
+	@Subscribe
+	public void renderTowerShooting(TowerShootingEvent event){
+		AttackAnimation attack = new AttackAnimation(event.getFromPosition(), event.getToPosition(), 1000);
+		attacksList.add(attack);
+	}
+	
+	
+	@Subscribe
+	public void enemyHasEnteredBase(EnemyEnteredBaseEvent e) {
+		// TODO: Implement
 	}
 }

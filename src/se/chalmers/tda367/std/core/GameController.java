@@ -142,6 +142,13 @@ public class GameController {
 	public int getLevel() {
 		return this.level;
 	}
+	
+	/**
+	 * @return the player.
+	 */
+	public Player getPlayer() {
+		return player;
+	}
 
 	/**
 	 * @return the game board
