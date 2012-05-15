@@ -78,6 +78,14 @@ public class Player {
 	}
 	
 	/**
+	 * Set the name of the player. 
+	 * @param name to give player.
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
 	 * This will return a reference to this player's character
 	 * @return a reference to the player's {@code PlayerCharacter}
 	 */
