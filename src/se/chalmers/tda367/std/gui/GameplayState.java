@@ -119,6 +119,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 				bb.interactOnClick("buildTower("+ anno.name() + ")");
 			}
 			bb.build(nifty, nifty.getCurrentScreen(), panel);
+			//Alternating between true and false will make the buttons appear on both panels and in right order.
 			equal = !equal;
 		}
 	}
@@ -182,6 +183,10 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	}
 	
 	@Subscribe
+	/** 
+	 * Listener for PlayerDeadEvents, will halt the game and show the endgame popup if PlayerDeadEvent is found.
+	 * @param e
+	 */
 	public void playerIsDead(PlayerDeadEvent e) {
 		guiRenderer.showEndGamePopup(gameOverPopup);
 		gameOver = true;
