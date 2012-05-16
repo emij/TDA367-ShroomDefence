@@ -23,6 +23,7 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.SliderChangedEvent;
+import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.events.NiftyMousePrimaryClickedEvent;
@@ -275,6 +276,14 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	 */
 	public void startWave() {
 		gameControl.nextWave();
+	}
+	
+	public void saveHighscore() {
+		String playerName = gameOverPopup.findNiftyControl("playerNameField", TextField.class).getText();
+		int score = gameControl.getPlayer().getCurrentScore();
+		gameControl.getHighscore().addScore(new Score(playerName, score));
+		guiRenderer.closePopup(gameOverPopup.getId());
+		state.enterState(STDGame.MAINMENUSTATE);
 	}
 	
 	/**

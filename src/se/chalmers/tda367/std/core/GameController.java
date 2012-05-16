@@ -23,6 +23,7 @@ public class GameController {
 	
 	private Player player;
 	private GameBoard board;
+	private Highscore highscore;
 	private BuildController buildControl;
 	private WaveController waveControl;
 	private Properties prop = Properties.INSTANCE;
@@ -41,6 +42,7 @@ public class GameController {
 	public GameController(Player player){
 		this.player = player;
 		this.level = 1;
+		highscore = new Highscore();
 		tileScale = prop.getTileScale();
 		boardFactory = new GameBoardFactory();
 		
@@ -155,6 +157,10 @@ public class GameController {
 	 */
 	public GameBoard getGameBoard() {
 		return board;
+	}
+	
+	public Highscore getHighscore() {
+		return highscore;
 	}
 	
 	/**
