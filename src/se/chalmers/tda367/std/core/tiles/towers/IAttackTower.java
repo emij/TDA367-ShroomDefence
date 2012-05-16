@@ -1,9 +1,6 @@
 package se.chalmers.tda367.std.core.tiles.towers;
 
-import java.util.List;
-
 import se.chalmers.tda367.std.core.AttackEntity;
-import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -19,12 +16,6 @@ public interface IAttackTower extends ITower, AttackEntity{
 	 * @return the base amount of damage the tower does to an enemy.
 	 */
 	public int getDmg();
-	
-	/**
-	 * Returns a list of effects
-	 * @return a list of effects
-	 */
-	public List<IEffect> getEffects();
 	
 	/**
 	 * Returns the attack speed of the tower.

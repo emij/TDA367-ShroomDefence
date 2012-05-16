@@ -12,6 +12,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * The {@code IEnemy} is sortable/comparable by the amount of distance traveled.
  * @author Emil Edholm
  * @modified Emil Johansson, Johan Andersson
+ * @modified Emil Edholm (May 16, 2012)
  * @date Mar 25, 2012
  */
 public interface IEnemy extends Comparable<IEnemy> {
@@ -27,16 +28,7 @@ public interface IEnemy extends Comparable<IEnemy> {
 	 * @return the current health of the enemy.
 	 */
 	public int getHealth();
-	
-	/**
-	 * Damage the enemy with the specified base damage.
-	 * The enemy may mitigate the damage based on it's properties, such as shield or armor.
-	 * <p>
-	 * If supplied damage results in a negative number, health should be set to 0.
-	 * </p>
-	 * @param dmg the base damage a tower does.
-	 */
-	public void decreaseHealth(int dmg);
+
 	/**
 	 * Returns the amount of gold you get for killing an enemy.
 	 * @return the lootValue of the enemy.
@@ -67,27 +59,6 @@ public interface IEnemy extends Comparable<IEnemy> {
 	 */
 	public int getBaseArmor();
 	
-	/** 
-	 *  Add an effect to an enemy.
-	 * @param effect - Effect to be added.
-	 */
-	public void addEffect(IEffect effect);
-	
-	/** 
-	 *  Remove an effect from the enemy.
-	 *  Remvoves the first instance found of the effect,
-	 *  if the enemy is affected by multiple effects of the
-	 *  same type only the first one will be removed.
-	 * @param effect - Effect to be removed.
-	 */
-	public void removeEffect(IEffect effect);
-	
-	/**
-	 * Returns the effect of the enemy.
-	 * @return - List of effects on the enemy.
-	 */
-	public List<IEffect> getEffects();
-	
 	/**
 	 * @return the sprite (image representation) of the Enemy.
 	 */
@@ -115,19 +86,23 @@ public interface IEnemy extends Comparable<IEnemy> {
 	public Position getPosition();
 	
 	/**
-	 * Receive a shot (think bullet) from a tower or player.
+	 * Receive a shot (think bullet) from a tower or player, also applies the containing Effect on the enemy.
 	 * @param s - the shot that contains info about damage, etc.
 	 */
 	public void receiveShot(Shot s);
 	
 	/**
-	 * Returns a string-representation of an Enemy
-	 * @return string-representation of an Enemy
+	 * Whether or not {@code this} has any effect of type {@code type} applied.
+	 * @param type - the type to look for.
+	 * @return true if any effect of type {@code type} is applied.
 	 */
+	public boolean hasEffect(Class<? extends IEffect> type);
+	
+	@Override
 	public String toString();
 	
 	/**
-	 * Compares two enemy to see which one is closest to base
+	 * Compares two enemy to see which one is closest to the base
 	 * @return the difference between two enemies's distance traveled
 	 */
 	public int compareTo(IEnemy o);

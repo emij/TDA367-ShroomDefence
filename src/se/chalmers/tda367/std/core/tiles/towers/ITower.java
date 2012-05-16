@@ -1,7 +1,5 @@
 package se.chalmers.tda367.std.core.tiles.towers;
 
-import java.util.List;
-
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 
@@ -45,7 +43,7 @@ public interface ITower extends IBoardTile {
 	 * Returns the effects the tower can apply to enemies.
 	 * @return - effects the tower can apply.
 	 */
-	public List<IEffect> getEffects();
+	public IEffect getEffect();
 	
 	/**
 	 * Returns the towers current level.

@@ -1,6 +1,7 @@
 package se.chalmers.tda367.std.core.enemies;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import se.chalmers.tda367.std.core.Shot;
@@ -44,22 +45,34 @@ public abstract class AbstractEnemy implements IEnemy {
 		this.lootValue     = lootValue;
 		this.sprite        = sprite;
 	}
-
-	@Override
-	public void addEffect(IEffect effect) {
-		if(!renewEffect(effect)) {
-			effects.add(effect);
+	
+	/** Apply the health effects, based on {@code delta}, which is the time since the last game update */
+	private void applyHealthEffects(int delta) {
+		for(IEffect effect : effects) {
+			// Uses the difference to calculate dmg
+			int dmg = currentHealth - effect.modifyHealth(currentHealth); 
+			decreaseHealth(dmg); 
+		}
+	}
+	
+	/** Update the duration and remove any expired effects. */ 
+	private void updateEffectDuration(int delta) {
+		Iterator<IEffect> it = effects.iterator();
+		while(it.hasNext()) {
+			IEffect effect = it.next();
+			
+			effect.decrementDuration(delta);
+			if(effect.getDuration() == 0) {
+				it.remove();
+			}
 		}
 	}
 
-	@Override
-	public void removeEffect(IEffect effect) {
-		effects.remove(effect);
-	}
-
-	@Override
-	public List<IEffect> getEffects() {
-		return effects;
+	/** Add the effect to the list if it isn't already applied. */
+	protected void addEffect(IEffect effect) {
+		if(!renewEffect(effect)) {
+			effects.add(effect.clone());
+		}
 	}
 
 	@Override
@@ -72,11 +85,11 @@ public abstract class AbstractEnemy implements IEnemy {
 	}
 	@Override
 	public float getSpeed(){
-		double speed = baseSpeed;
+		float speed = getBaseSpeed();
 		for (IEffect effect : effects) {
-			speed = speed * effect.getSpeedModifier();
+			speed = effect.modifySpeed(speed);
 		}
-		return (float)speed;
+		return speed;
 	}
 	
 	@Override 
@@ -85,18 +98,22 @@ public abstract class AbstractEnemy implements IEnemy {
 		decreaseHealth(s.getDamage());
 	}
 	
-	@Override
-	public void decreaseHealth(int dmg) {
-		int reducedDmg = dmg - this.getArmor();
-		dmg = (reducedDmg > 0) ? reducedDmg : 0;
+	/**
+	 * Damage the enemy with the specified base damage.
+	 * The enemy may mitigate the damage based on it's properties, such as shield or armor.
+	 * @param dmg - the base damage a {@code AttackEntity} does.
+	 */
+	private void decreaseHealth(final int dmg) {
+		int newDmg = dmg - this.getArmor();
+		newDmg = (newDmg > 0) ? newDmg : 0; // Remove possibility of negative dmg.
 		
-		if(dmg > currentHealth) {
+		if(newDmg > getHealth()) {
 			currentHealth = 0;
 			EventBus.INSTANCE.post(new EnemyDeadEvent(this));
 			return;
 		}
 
-		currentHealth -= dmg;
+		currentHealth -= newDmg;
 	}
 
 	@Override
@@ -116,11 +133,11 @@ public abstract class AbstractEnemy implements IEnemy {
 
 	@Override
 	public int getArmor() {
-		double armor = baseArmor;
+		int armor = getBaseArmor();
 		for(IEffect effect: effects){
-			armor = armor * effect.getArmorModifier();
+			armor = effect.modifyArmor(armor);
 		}
-		return (int)armor;
+		return armor;
 	}
 
 	@Override
@@ -138,6 +155,9 @@ public abstract class AbstractEnemy implements IEnemy {
 	
 	@Override
 	public void moveTowardsWaypoint(int delta) {
+		updateEffectDuration(delta);
+		applyHealthEffects(delta);
+		
 		if(waypointsLeft == null || waypointsLeft.isEmpty()) {
 			EventBus.INSTANCE.post(new EnemyEnteredBaseEvent(this));
 			return;
@@ -211,17 +231,27 @@ public abstract class AbstractEnemy implements IEnemy {
 	public int compareTo(IEnemy o) {
 		return Float.compare(distanceTraveled, o.getDistanceTraveled());
 	}
+	
+	@Override
+	public boolean hasEffect(Class<? extends IEffect> type) {
+		for(IEffect e : effects) {
+			if(e.getClass() == type){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	/** 
-	 * This checks if the effect is already on the enemy and if so it will reset the duration.
-	 * @param effect to check for on the enemy.
-	 * @return true if effect has been found and duration reset. False if no similar effect is found.
+	 * This checks if the effect is already applied to the enemy and if so it will reset the duration of that effect.
+	 * @param effect - the effect to check for on the enemy.
+	 * @return true if {@code effect} has been found and the duration reset. False if no effect of the same type is found.
 	 */
 	private boolean renewEffect(IEffect effect) {
-		for(IEffect e : getEffects()) {
-			if(e.getHealthModifier() == effect.getHealthModifier() && e.getArmorModifier() == effect.getArmorModifier()
-					&& e.getSpeedModifier() == effect.getSpeedModifier()) {
-				e.setDuration(effect.getDuration());
+		for(IEffect e : effects) {
+			if(e.getClass() == effect.getClass()) {
+				e.resetDuration();
 				return true;
 			}
 		}

@@ -1,6 +1,7 @@
 package se.chalmers.tda367.std.core.exported;
 
 import se.chalmers.tda367.std.core.anno.Tower;
+import se.chalmers.tda367.std.core.effects.NoEffect;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.utilities.Sprite;
@@ -31,7 +32,7 @@ public final class BasicAttackTower extends AbstractAttackTower {
 	
 	public BasicAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
-				null, sprite);
+				1, NoEffect.getInstance(), sprite);
 	}
 
 	/**

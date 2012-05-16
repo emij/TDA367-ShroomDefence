@@ -1,15 +1,8 @@
 package se.chalmers.tda367.std.core.exported;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.anno.Tower;
-import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.core.effects.NoEffect;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
-import se.chalmers.tda367.std.core.events.TowerShootingEvent;
-import se.chalmers.tda367.std.utilities.EventBus;
-import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 import se.chalmers.tda367.std.utilities.SpriteCreator;
 
@@ -32,16 +25,15 @@ public final class MultishotAttackTower extends AbstractAttackTower {
 							 baseDamage      = 40, 
 							 effectiveRadius = 3, 
 							 aoeRadius       = 2, 
-							 attackSpeed     = 100,
-							nbrOfTargets	= 3;
-	private static List<IEffect> effects = new ArrayList<IEffect>();
+							 attackSpeed     = 500,
+							 nbrOfTargets	 = 3;
 	
 	//TODO: change sprite for the Multishot tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/armor_tower_tile.png");
 	
 	public MultishotAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
-				effects, sprite);
+				nbrOfTargets, NoEffect.getInstance(), sprite);
 	}
 	
 	/**
@@ -50,17 +42,5 @@ public final class MultishotAttackTower extends AbstractAttackTower {
 	@Override
 	public String toString(){
 		return "S";
-	}
-	
-	@Override
-	public void shoot(List<IEnemy> enemies, Position pos){
-		if(!enemies.isEmpty()){
-			// TODO: Refactor into AbstractTower instead.
-//			enemies.get(0).getEnemy().decreaseHealth(this.getDmg() * this.getCurrentLevel());
-			for(int i = 0; i<nbrOfTargets && i<enemies.size(); i++){
-				enemies.get(i).decreaseHealth(this.getDmg() * this.getCurrentLevel());
-				EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemies.get(i).getPosition()));
-			}
-		}
 	}
 }
