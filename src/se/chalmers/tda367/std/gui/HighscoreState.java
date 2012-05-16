@@ -1,20 +1,14 @@
 package se.chalmers.tda367.std.gui;
 
-import java.util.List;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import se.chalmers.tda367.std.core.DynamicLoader;
 import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Highscore;
 import se.chalmers.tda367.std.core.Score;
-import se.chalmers.tda367.std.core.anno.Tower;
-import se.chalmers.tda367.std.core.tiles.towers.ITower;
 
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;

@@ -1,5 +1,9 @@
 package se.chalmers.tda367.std.core;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -7,10 +11,11 @@ import java.util.*;
  * Implements {@code Iterable<Score> } which means that 
  * can be used in a for-loop.
  * @author Emil Edholm
+ * @modified Johan Gustafsson
  * @date Mar 25, 2012
  */
-public final class Highscore implements Iterable<Score> {
-	
+public final class Highscore implements Iterable<Score>, Serializable {
+	private static final long serialVersionUID = 4903477121308462010L;
 	private SortedSet<Score> highscore;
 
 	public Highscore(){
@@ -98,5 +103,27 @@ public final class Highscore implements Iterable<Score> {
 	@Override
 	public Iterator<Score> iterator() {
 		return highscore.iterator();
+	}
+	
+	/**
+	 * Serialize this {@code Highscore}.
+	 * @serialData a SortedSet containing instances of {@code Score} or null if no {@code Score} has been saved.
+	 */
+	private void writeObject(ObjectOutputStream s) throws IOException {
+		s.defaultWriteObject();
+		s.writeInt(highscore.size());
+		
+		for(Score score : highscore) {
+			s.writeObject(score);
+		}
+	}
+	
+	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+		s.defaultReadObject();
+		int numElements = s.readInt();
+		
+		while(numElements-- > 0) {
+			highscore.add((Score) s.readObject());
+		}
 	}
 }
