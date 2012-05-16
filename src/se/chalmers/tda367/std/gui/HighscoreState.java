@@ -1,12 +1,15 @@
 package se.chalmers.tda367.std.gui;
 
+import java.io.IOException;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Highscore;
+import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.Score;
+import se.chalmers.tda367.std.utilities.IO;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
@@ -19,13 +22,11 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 	private int stateID;
 	private StateBasedGame state;
 	private Nifty nifty;
-	private Highscore highscore;
 	private Element playerPanel, scorePanel;
-	private GameController gameControl;
+	private Properties properties = Properties.INSTANCE;
 	
-	public HighscoreState(int stateID, GameController gameControl) {
+	public HighscoreState(int stateID) {
 		this.stateID = stateID;
-		this.gameControl = gameControl;
 	}
 
 	@Override
@@ -40,9 +41,12 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 		super.enterState(container, state);
 		this.state = state;
 		nifty = this.getNifty();
-		highscore = gameControl.getHighscore();
-		
-		initHighscore();
+		try {
+			Highscore hs = IO.loadObject(Highscore.class, properties.getHighscore());
+			initHighscore(hs);
+		} catch (ClassNotFoundException | IOException e1) {
+			System.out.println(e1.getMessage());
+		}
 	}
 	
 	private String getResourcePath(String path) {
@@ -69,7 +73,7 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 		
 	}
 	
-	private void initHighscore() {
+	private void initHighscore(Highscore highscore) {
 		LabelBuilder lb = new LabelBuilder("highscores");
 		lb.width("100%");
 		lb.height("5%");

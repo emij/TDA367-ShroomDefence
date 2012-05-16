@@ -1,5 +1,6 @@
 package se.chalmers.tda367.std.gui;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
@@ -18,6 +19,7 @@ import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.towers.*;
 import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.IO;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
@@ -291,7 +293,13 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			playerName = "Unnamed";
 		}
 		int score = gameControl.getPlayer().getCurrentScore();
-		gameControl.getHighscore().addScore(new Score(playerName, score));
+		try {
+			Highscore hs = IO.loadObject(Highscore.class, properties.getHighscore());
+			hs.addScore(new Score(playerName, score));
+			IO.saveObject(hs, properties.getHighscore());
+		} catch (ClassNotFoundException | IOException e1) {
+			System.out.println(e1.getMessage());
+		}
 		guiRenderer.closePopup(gameOverPopup.getId());
 		state.enterState(STDGame.MAINMENUSTATE);
 	}

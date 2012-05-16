@@ -1,6 +1,5 @@
 package se.chalmers.tda367.std.core;
 
-import de.lessvoid.nifty.input.NiftyInputEvent;
 import se.chalmers.tda367.std.core.events.WaveStartedEvent;
 import se.chalmers.tda367.std.core.factories.GameBoardFactory;
 import se.chalmers.tda367.std.core.factories.WaveFactory;
@@ -23,7 +22,6 @@ public class GameController {
 	
 	private Player player;
 	private GameBoard board;
-	private Highscore highscore;
 	private BuildController buildControl;
 	private WaveController waveControl;
 	private Properties prop = Properties.INSTANCE;
@@ -42,7 +40,6 @@ public class GameController {
 	public GameController(Player player){
 		this.player = player;
 		this.level = 1;
-		highscore = new Highscore();
 		tileScale = prop.getTileScale();
 		boardFactory = new GameBoardFactory();
 		
@@ -167,10 +164,7 @@ public class GameController {
 		return board;
 	}
 	
-	public Highscore getHighscore() {
-		return highscore;
-	}
-	
+
 	/**
 	 * Causes the player to move depending on the {@code MovementEnum} provided.
 	 * @param direction Enum to use for calculation.

@@ -1,5 +1,6 @@
 package se.chalmers.tda367.std.core;
 
+import java.io.File;
 import java.nio.file.Path;
 
 /**
@@ -14,6 +15,10 @@ public enum Properties {
 		return null;
 	}
 	// Some needed constants goes here
+	
+	public File getHighscore() {
+		return new File("data/highscore.bin");
+	}
 	
 	public int getTileScale() {
 		return 32;
