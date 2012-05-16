@@ -72,6 +72,14 @@ public class GameController {
 		EventBus.INSTANCE.post(new WaveStartedEvent(releasedWaves));
 	}
 	
+	public void resetGame() {
+		player = new Player();
+		releasedWaves = 0;
+		level = 1;
+		
+		init();
+	}
+	
 	/** Builds a tower on the board.
 	 * 
 	 * @param tower - Tower to be built.

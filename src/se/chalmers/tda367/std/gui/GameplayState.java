@@ -51,8 +51,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Input input;
 	
 
-	public GameplayState(int stateID) {
+	public GameplayState(int stateID, GameController gameControl) {
 		this.stateID = stateID;
+		this.gameControl = gameControl;
 		tileScale = properties.getTileScale();
 	}
 	
@@ -67,7 +68,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		gameOver = false;
 		
 		
-		gameControl = new GameController(new Player());
 		gameRenderer = new GameplayRenderer(gameControl, input);
 		guiRenderer = new GameplayGUIRenderer(gameControl, nifty);
 		
@@ -78,6 +78,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	protected void leaveState(GameContainer container, StateBasedGame state)
 			throws SlickException {
 		backgroundMusic.stop();
+		gameControl.resetGame();
 	}
 
 	@Override
@@ -245,6 +246,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 	}
 	
+	
 	/**
 	 * If given string matches any annotation of dynamic loaded towers,
 	 * this will create a new instance of that tower and save the reference for further use in {@code GameplayState}.
@@ -255,6 +257,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		choosenTower = DynamicLoader.createTowerInstance(anno);
 	}
 	
+	
 	/** 
 	 * When called the last selected tower will be sold.
 	 */
@@ -262,6 +265,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		nifty.closePopup(towerPopup.getId());
 		gameControl.sellTower(selectedTower, towerPos);
 	}
+	
 	
 	/** 
 	 * When called the last selected tower will be upgraded if player has enough money.
@@ -271,6 +275,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		guiRenderer.updateTowerPopup(selectedTower, towerPopup);
 	}
 	
+	
 	/** 
 	 * When called will start the next enemy wave.
 	 */
@@ -278,13 +283,19 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		gameControl.nextWave();
 	}
 	
+	
 	public void saveHighscore() {
 		String playerName = gameOverPopup.findNiftyControl("playerNameField", TextField.class).getText();
+		//If no name is entered the game will set the name to Unnamed.
+		if(playerName.equals("")) {
+			playerName = "Unnamed";
+		}
 		int score = gameControl.getPlayer().getCurrentScore();
 		gameControl.getHighscore().addScore(new Score(playerName, score));
 		guiRenderer.closePopup(gameOverPopup.getId());
 		state.enterState(STDGame.MAINMENUSTATE);
 	}
+
 	
 	/**
 	 * This will check for player movement from the arrow keys and space key. 

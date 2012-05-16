@@ -81,6 +81,10 @@ public final class Highscore implements Iterable<Score> {
 		return highscore.size();
 	}
 	
+	public SortedSet<Score> getScores() {
+		return highscore;
+	}
+	
 	@Override
 	public String toString(){
 		return Arrays.toString(highscore.toArray());

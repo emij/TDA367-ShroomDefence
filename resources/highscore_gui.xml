@@ -17,16 +17,16 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                  
                  <panel childLayout="center" height="100%" width="25%">
                      <panel childLayout="vertical" height="95%" width="95%" backgroundColor="#575757">
-                         <control name="label" text="Score:" height="15%" width="100%" textHAlign="center" backgroundColor="#444444"/>
-                         <panel>
+                         <control name="label" text="Player:" height="15%" width="100%" textHAlign="center" backgroundColor="#444444"/>
+                         <panel id="playerPanel" childLayout="vertical" width="90%" height="95%">
                          </panel>
                      </panel>
                  </panel>
                  
                  <panel childLayout="center" height="100%" width="25%">
                      <panel childLayout="vertical" height="95%" width="95%" backgroundColor="#575757">
-                         <control name="label" text="Player:" height="15%" width="100%" textHAlign="center" backgroundColor="#444444"/>
-                         <panel>
+                         <control name="label" text="Score:" height="15%" width="100%" textHAlign="center" backgroundColor="#444444"/>
+                         <panel id="scorePanel" childLayout="vertical" width="90%" height="95%">
                          </panel>
                      </panel>
                  </panel>
@@ -34,18 +34,11 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                  <panel childLayout="center" height="100%" width="25%">
                      <panel childLayout="vertical" height="95%" width="95%" backgroundColor="#575757">
                          <control name="label" text="Level:" height="15%" width="100%" textHAlign="center" backgroundColor="#444444"/>
-                         <panel>
+                         <panel childLayout="vertical" width="90%" height="95%">
                          </panel>
                      </panel>
                  </panel>
                  
-                 <panel childLayout="center" height="100%" width="25%">
-                     <panel childLayout="vertical" height="95%" width="95%" backgroundColor="#575757">
-                         <control name="label" text="Difficulty:" height="15%" width="100%" textHAlign="center" backgroundColor="#444444"/>
-                         <panel>
-                         </panel>
-                     </panel>
-                 </panel>
              </panel>
         </layer>
         
