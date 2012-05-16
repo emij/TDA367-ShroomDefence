@@ -3,6 +3,7 @@ package se.chalmers.tda367.std.core.tiles.towers;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.chalmers.tda367.std.core.Shot;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.events.TowerShootingEvent;
@@ -48,11 +49,18 @@ public abstract class AbstractAttackTower implements IAttackTower{
 		if(!enemies.isEmpty()){
 			IEnemy enemy = enemies.get(0);
 			
-			enemy.decreaseHealth(this.getDmg());
-		
-			for(IEffect ie:this.getEffects()){
-				enemy.addEffect(ie.getCopy());
-			}
+			enemy.receiveShot(new Shot() {
+				@Override
+				public int getDamage() {
+					return getDmg();
+				}
+
+				@Override
+				public IEffect getEffect() {
+					return effects.get(0); //TODO: temporary, towers should only contain one effect.
+				}
+				
+			});
 
 
 			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemy.getPosition()));

@@ -2,9 +2,8 @@ package se.chalmers.tda367.std.core.tiles.towers;
 
 import java.util.List;
 
+import se.chalmers.tda367.std.core.AttackEntity;
 import se.chalmers.tda367.std.core.effects.IEffect;
-import se.chalmers.tda367.std.core.enemies.IEnemy;
-import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -14,7 +13,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Emil Edholm
  * @date Mar 25, 2012
  */
-public interface IAttackTower extends ITower{
+public interface IAttackTower extends ITower, AttackEntity{
 	/**
 	 * Returns the damage of the tower.
 	 * @return the base amount of damage the tower does to an enemy.
@@ -34,24 +33,10 @@ public interface IAttackTower extends ITower{
 	public int getAttackSpeed();
 	
 	/**
-	 * Decides whether or not the tower is attack-ready.
-	 * @param delta - the time since the last game state update in milliseconds.
-	 * @return true if ready to attack, else false.
-	 */
-	public boolean isAttackReady(int delta);
-	
-	/**
 	 * Damage done inside the radius from the point of impact
 	 * @return the damage radius on the impact zone, from which enemies are hurt.
 	 */
 	public int getDmgRadius();
-
-	/**  
-	 * Tower shoot at enemies. //TODO, better doc
-	 * @param enemies - List of enemies to be able too shoot at.
-	 * @param pos - Position of tower
-	 */
-	public void shoot(List<IEnemy> enemies, Position pos);
 	
 	/**
 	 * Method for upgrading the currentLevel on a tower.

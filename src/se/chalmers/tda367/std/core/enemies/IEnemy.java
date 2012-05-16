@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core.enemies;
 
 import java.util.List;
 
+import se.chalmers.tda367.std.core.Shot;
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
@@ -112,6 +113,12 @@ public interface IEnemy extends Comparable<IEnemy> {
 	
 	/** @return a defensive copy of the Enemy position. */
 	public Position getPosition();
+	
+	/**
+	 * Receive a shot (think bullet) from a tower or player.
+	 * @param s - the shot that contains info about damage, etc.
+	 */
+	public void receiveShot(Shot s);
 	
 	/**
 	 * Returns a string-representation of an Enemy

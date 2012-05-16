@@ -55,7 +55,7 @@ public final class MultishotAttackTower extends AbstractAttackTower {
 	@Override
 	public void shoot(List<IEnemy> enemies, Position pos){
 		if(!enemies.isEmpty()){
-			
+			// TODO: Refactor into AbstractTower instead.
 //			enemies.get(0).getEnemy().decreaseHealth(this.getDmg() * this.getCurrentLevel());
 			for(int i = 0; i<nbrOfTargets && i<enemies.size(); i++){
 				enemies.get(i).decreaseHealth(this.getDmg() * this.getCurrentLevel());

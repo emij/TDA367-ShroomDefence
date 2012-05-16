@@ -163,7 +163,7 @@ class WaveController {
 			}
 		}
 		if(character.isAttackReady(delta)) {
-			character.shoot(board.getEnemiesInRadius(character.getPos(), 50));
+			character.shoot(board.getEnemiesInRadius(character.getPos(), 50), character.getPos());
 		}
 	}
 	

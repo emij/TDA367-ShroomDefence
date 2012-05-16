@@ -3,6 +3,7 @@ package se.chalmers.tda367.std.core.enemies;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.chalmers.tda367.std.core.Shot;
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.events.EnemyDeadEvent;
 import se.chalmers.tda367.std.core.events.EnemyEnteredBaseEvent;
@@ -76,6 +77,12 @@ public abstract class AbstractEnemy implements IEnemy {
 			speed = speed * effect.getSpeedModifier();
 		}
 		return (float)speed;
+	}
+	
+	@Override 
+	public void receiveShot(Shot s) {
+		addEffect(s.getEffect());
+		decreaseHealth(s.getDamage());
 	}
 	
 	@Override
