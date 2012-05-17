@@ -32,8 +32,8 @@ public class Player {
 	public Player(String name){
 		this.name = name;
 		this.character = new PlayerCharacter(new Position(100, 250));
-		this.setScore(0);
 		this.addMoney(STARTING_MONEY);
+		this.currentScore = 0;
 		
 		EventBus.INSTANCE.register(this);
 	}
@@ -43,12 +43,14 @@ public class Player {
 	public int getCurrentScore() {
 		return currentScore;
 	}
+	
 	/**
 	 * @param score - the player score to set.
 	 */
-	public void setScore(int score) {
-		this.currentScore = score;
+	public void addScore(int score) {
+		this.currentScore += score;
 	}
+	
 	/**
 	 * @return the amount of money in the treasury.
 	 */
@@ -93,12 +95,13 @@ public class Player {
 		return character;
 	}
         /**
-	 * Event handler for when an enemy dies and it should be looted.
+	 * Event handler for when an enemy dies and it should be looted and added to score.
 	 * @param e - the event that contains the dead enemy.
 	 */
 	@Subscribe
 	public void lootDeadEnemy(EnemyDeadEvent e) {
 		int lootedMoney = e.getDeadEnemy().getLootValue();
 		addMoney(lootedMoney);
+		addScore(lootedMoney);
 	}
 }
