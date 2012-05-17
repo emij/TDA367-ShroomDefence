@@ -4,9 +4,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import se.chalmers.tda367.std.core.GameController;
-import se.chalmers.tda367.std.core.Player;
-
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -33,6 +30,7 @@ public class MainMenuState extends NiftyBasicGameState implements ScreenControll
 		this.state = state;
 	}
 	
+	/** Helper method to get resource path */
 	private String getResourcePath(String path) {
 		return getClass().getResource(path).getPath();
 	}

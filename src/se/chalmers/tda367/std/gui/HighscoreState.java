@@ -49,6 +49,7 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 		}
 	}
 	
+	/** Helper method to get resource path*/
 	private String getResourcePath(String path) {
 		return getClass().getResource(path).getPath();
 	}
@@ -112,6 +113,9 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 		}
 	}
 	
+	/**
+	 * This will enter the gamestate {@code MainMenuState}.
+	 */
 	public void closeHighscore() {
 		state.enterState(STDGame.MAINMENUSTATE);
 	}
