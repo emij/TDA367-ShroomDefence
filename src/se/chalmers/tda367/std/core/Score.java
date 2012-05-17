@@ -41,7 +41,7 @@ public final class Score implements Comparable<Score>, Serializable {
 	 */
 	@Override
 	public int compareTo(Score o) {
-		int scoreDiff = score - o.score;
+		int scoreDiff = o.score - score;
 		if(scoreDiff != 0)
 			return scoreDiff;
 		
