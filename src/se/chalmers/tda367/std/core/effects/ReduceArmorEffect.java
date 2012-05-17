@@ -4,6 +4,7 @@ package se.chalmers.tda367.std.core.effects;
  * Represents an effect that reduces armor.
  * <p>Duration: <b>5 sec</b>
  * <p>ArmorModifier: <b>-10% * level</b>
+ * <p>Interval: <b>Always on</b></p>
  * @author Johan Gustafsson
  * @modified Emil Edholm (May 16, 2012)
  * @date   23 Apr 2012
@@ -26,7 +27,7 @@ public class ReduceArmorEffect extends NoEffect {
 		if(!ready()) 
 			return baseArmor; // Do nothing...
 		
-		return (int)(baseArmor * (1 - (0.1 * level)));
+		return (int)(baseArmor - baseArmor * (1 - (0.1 * level)));
 	}
 	
 	@Override
