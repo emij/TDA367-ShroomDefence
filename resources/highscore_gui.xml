@@ -31,14 +31,6 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                      </panel>
                  </panel>
                  
-                 <panel childLayout="center" height="100%" width="25%">
-                     <panel childLayout="vertical" height="95%" width="95%" backgroundColor="#575757">
-                         <control name="label" text="Level:" height="15%" width="100%" textHAlign="center" backgroundColor="#444444"/>
-                         <panel childLayout="vertical" width="90%" height="95%">
-                         </panel>
-                     </panel>
-                 </panel>
-                 
              </panel>
         </layer>
         
@@ -46,8 +38,11 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
             <panel height="100%" width="21%" align="right" valign="center" 
                    backgroundColor="#444444" childLayout="vertical">
                    
-                <panel id="buttonPanel" childLayout="horizontal" width="95%" height="80%" 
+                <panel id="buttonPanel" childLayout="vertical" width="95%" height="80%" 
                     align="center" valing="top" padding="10%,0,0,8%">
+                    <control id="clearHighscoreButton" name="button" label="Clear highscore" width="80%" height="10%">
+                        <interact onClick="clearHighscore()"/>
+                    </control>
                 </panel>
                 
                 <panel childLayout="center" height="*" align="center" valing="bottom">

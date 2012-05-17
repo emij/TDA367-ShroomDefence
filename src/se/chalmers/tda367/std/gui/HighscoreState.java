@@ -43,7 +43,7 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 		nifty = this.getNifty();
 		try {
 			Highscore hs = IO.loadObject(Highscore.class, properties.getHighscore());
-			initHighscore(hs);
+			updateHighscoreList(hs);
 		} catch (ClassNotFoundException | IOException e1) {
 			System.out.println(e1.getMessage());
 		}
@@ -73,7 +73,11 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 		
 	}
 	
-	private void initHighscore(Highscore highscore) {
+	/**Create the labels representing the player's name and score on the highscore list*/
+	private void updateHighscoreList(Highscore highscore) {
+		//Removing any old elements in the panels before building new ones.
+		scorePanel.getElements().clear();
+		playerPanel.getElements().clear();
 		LabelBuilder lb = new LabelBuilder("highscores");
 		lb.width("100%");
 		lb.height("5%");
@@ -86,11 +90,26 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 			lb.id(score.getName());
 			lb.label(score.getName());
 			lb.build(nifty, nifty.getCurrentScreen(), playerPanel);
+			//Changing ID after building the first label to avoid same ID on different elements.
 			lb.id(score.getName() + ".score");
 			lb.label("" + score.getScore());
 			lb.build(nifty, nifty.getCurrentScreen(), scorePanel);
 		}
 
+	}
+	
+	/**
+	 * This will clear the highscore list of all entries.
+	 */
+	public void clearHighscore() {
+		try {
+			Highscore hs = IO.loadObject(Highscore.class, properties.getHighscore());
+			hs.resetHighscore();
+			IO.saveObject(hs, properties.getHighscore());
+			updateHighscoreList(hs);
+		} catch (ClassNotFoundException | IOException e1) {
+			System.out.println(e1.getMessage());
+		}
 	}
 	
 	public void closeHighscore() {
