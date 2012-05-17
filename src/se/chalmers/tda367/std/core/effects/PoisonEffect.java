@@ -2,8 +2,9 @@ package se.chalmers.tda367.std.core.effects;
 
 /**
  * Represents a poison effect.
- * <p>Duration: <b>5 sec</b>
- * <p>HealthModifier: <b>-10 * level</b>
+ * <p>Duration: <b>4 sec</b>
+ * <p>HealthModifier: <b>4 * level</b>
+ * <p>Interval: <b>167 ms</b></p>
  * @author Johan Gustafsson
  * @modified Emil Edholm (May 16, 2012)
  * @date   23 Apr 2012
@@ -17,7 +18,7 @@ public class PoisonEffect extends NoEffect {
 	 * @param level must be a positive integer > 0.
 	 */
 	public PoisonEffect(int level) {
-		super(5000, 500);
+		super(4000, 167);
 		this.level = level;
 	}
 	
@@ -26,7 +27,7 @@ public class PoisonEffect extends NoEffect {
 		if(!ready())
 			return baseHealth; // Do nothing...
 		
-		return baseHealth - (10 * level);
+		return baseHealth - (4 * level);
 	}
 	
 	@Override

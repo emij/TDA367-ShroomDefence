@@ -82,6 +82,7 @@ public abstract class AbstractAttackTower implements IAttackTower{
 				return;
 		}
 	}
+	
 	@Override
 	public void upgrade() {
 		currentLevel++;

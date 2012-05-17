@@ -6,6 +6,7 @@ import java.util.List;
 
 import se.chalmers.tda367.std.core.Shot;
 import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.core.effects.PoisonEffect;
 import se.chalmers.tda367.std.core.events.EnemyDeadEvent;
 import se.chalmers.tda367.std.core.events.EnemyEnteredBaseEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
@@ -51,7 +52,9 @@ public abstract class AbstractEnemy implements IEnemy {
 		for(IEffect effect : effects) {
 			// Uses the difference to calculate dmg
 			int dmg = currentHealth - effect.modifyHealth(currentHealth); 
-			decreaseHealth(dmg); 
+			
+			boolean ignoreArmor = effect instanceof PoisonEffect;
+			decreaseHealth(dmg, ignoreArmor); 
 		}
 	}
 	
@@ -95,16 +98,17 @@ public abstract class AbstractEnemy implements IEnemy {
 	@Override 
 	public void receiveShot(Shot s) {
 		addEffect(s.getEffect());
-		decreaseHealth(s.getDamage());
+		decreaseHealth(s.getDamage(), false);
 	}
 	
 	/**
 	 * Damage the enemy with the specified base damage.
 	 * The enemy may mitigate the damage based on it's properties, such as shield or armor.
 	 * @param dmg - the base damage a {@code AttackEntity} does.
+	 * @param ignoreArmor - if the damage should ignore the armor.
 	 */
-	private void decreaseHealth(final int dmg) {
-		int newDmg = dmg - this.getArmor();
+	private void decreaseHealth(final int dmg, boolean ignoreArmor) {
+		int newDmg = (!ignoreArmor) ? dmg - this.getArmor() : dmg;
 		newDmg = (newDmg > 0) ? newDmg : 0; // Remove possibility of negative dmg.
 		
 		if(newDmg > getHealth()) {
