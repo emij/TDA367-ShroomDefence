@@ -1,9 +1,5 @@
 package se.chalmers.tda367.std.core.exported;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.effects.ReduceArmorEffect;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.utilities.Sprite;
@@ -30,17 +26,13 @@ public final class ArmorDecAttackTower extends AbstractAttackTower {
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
 							 attackSpeed     = 80;
-	private static List<IEffect> effects = new ArrayList<IEffect>();
-	static {
-		effects.add(new ReduceArmorEffect(1));
-	}
 	
 	//TODO: change sprite for the armordec tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/armor_tower_tile.png");
 	
 	public ArmorDecAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
-				effects, sprite);
+				1, new ReduceArmorEffect(1), sprite);
 	}
 	
 	/**

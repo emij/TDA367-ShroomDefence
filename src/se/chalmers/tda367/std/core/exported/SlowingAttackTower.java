@@ -1,11 +1,11 @@
 package se.chalmers.tda367.std.core.exported;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.effects.SlowEffect;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
+import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.utilities.SpriteCreator;
@@ -29,17 +29,13 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 							 baseDamage      = 5, 
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
-							 attackSpeed     = 80;
-	private static List<IEffect> effects = new ArrayList<IEffect>();
-	static {
-		effects.add(new SlowEffect(1));
-	}
+							 attackSpeed     = 300;
 	
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/slow_tower_tile.png");
 	
 	public SlowingAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
-				effects, sprite);
+				1, new SlowEffect(1), sprite);
 	}
 	/**
 	 * The textual representation of the tower on a text based game board.
@@ -47,5 +43,10 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 	@Override
 	public String toString(){
 		return "S";
+	}
+
+	@Override
+	public void shoot(List<IEnemy> enemies, Position pos) {
+		super.shoot(excludeEffect(enemies, SlowEffect.class), pos);
 	}
 }

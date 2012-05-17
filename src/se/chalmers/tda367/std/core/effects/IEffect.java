@@ -1,13 +1,16 @@
 package se.chalmers.tda367.std.core.effects;
 
+import com.google.inject.ImplementedBy;
+
 /**
  * Represents an effect which can be placed upon enemies.
  * @author Johan Gustafsson
  * @modifed Johan Andersson
+ * @modified Emil Edholm (May 16, 2012)
  * @date Apr 23, 2012
  */
-
-public interface IEffect {
+@ImplementedBy(NoEffect.class)
+public interface IEffect extends Cloneable {
 	
 	/**
 	 * Method to get remaining duration on the effect
@@ -16,38 +19,36 @@ public interface IEffect {
 	public double getDuration();
 	
 	/**
-	 * Decreases the duration of the effect by specified time in milisec.
-	 * @param milisec - time in miliseconds.
+	 * Decreases the duration of the effect by specified time in milliseconds.
+	 * @param millisec - time in milliseconds.
 	 */
-	public void decrementDuration(double milisec);
+	public void decrementDuration(int millisec);
 	
 	/**
-	 * Method to get the effect's speed modifier
-	 * @return a double representing the effect's speed modifier.
+	 * Resets the duration to the initial value if and only if the duration
+	 * has not already reached zero.
 	 */
-	public double getSpeedModifier();
+	public void resetDuration();
 	
 	/**
-	 * Method to get the effect's health modifier
-	 * @return a double representing the effect's health modifier.
+	 * Method that modifies the speed.
+	 * @return a double representing the new modified speed
 	 */
-	public double getHealthModifier();
+	public float modifySpeed(float baseSpeed);
 	
 	/**
-	 * Method to get the effect's armor modifier
-	 * @return a double representing the effect's armor modifier.
+	 * Modifies the base health.
+	 * @param baseHealth - the base health to use
+	 * @return a modified health value.
 	 */
-	public double getArmorModifier();
+	public int modifyHealth(int baseHealth);
 	
 	/**
-	 * This will set the effects duration to given double.
-	 * @param duration double to set the duration to.
+	 * Modifies the armor based on the supplied armor
+	 * @param baseArmor - the base armor to use
+	 * @return a modified armor value
 	 */
-	public void setDuration(double duration);
+	public int modifyArmor(int baseArmor);
 	
-	/**
-	 * This will give a new copy of the effect which called the method.
-	 * @return copy of the calling effect.
-	 */
-	public IEffect getCopy();
+	public IEffect clone();
 }

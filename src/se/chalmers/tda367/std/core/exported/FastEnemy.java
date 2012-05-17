@@ -7,13 +7,15 @@ import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * Represents an enemy that moves very fast but has little health.
- * <p>Start health: <b>50</b>
- * <p>Speed: <b>3</b>
- * <p>Gold received: <b>5</b>
+ * <p>Start health:  <b>55</b>
+ * <p>Speed:         <b>0.12</b>
+ * <p>Gold received: <b>75</b>
+ * <p>Armor:         <b>3</b>
+ * 
  * @author Johan Gustafsson
  * @date   19 apr 2012
  */
-@Enemy(name = "Speedy gonzales", description = "Represents an enemy slightly faster than usual.", enemyStrength = 1)
+@Enemy(name = "Speedy gonzales", description = "Represents an enemy slightly faster than usual.", enemyStrength = 2)
 public class FastEnemy extends AbstractEnemy {
 	//TODO: change sprite for the fast enemy.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");
@@ -22,7 +24,7 @@ public class FastEnemy extends AbstractEnemy {
 	 *  Creates a fast enemy.
 	 */
 	public FastEnemy() {
-		super(50, 0.3F, 5, 50, sprite);
+		super(55, 0.12F, 3, 75, sprite);
 	}
 	
 	/**

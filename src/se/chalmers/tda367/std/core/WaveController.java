@@ -2,13 +2,11 @@ package se.chalmers.tda367.std.core;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.Timer;
 
-import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.events.PlayerDeadEvent;
 import se.chalmers.tda367.std.core.events.WaveEndedEvent;
@@ -72,26 +70,6 @@ class WaveController {
 		if(!isPlayerDead()) {
 			moveEnemies(delta);
 			shootAtEnemiesInRange(delta);
-			applyHealthEffects();
-			decreaseEffectsDuration(delta);
-		}
-	}
-
-	private void decreaseEffectsDuration(int delta) {
-		EnemyList enemies = board.getEnemies();
-
-		for(IEnemy enemy : enemies){
-			List<IEffect> effects = enemy.getEffects();
-
-			Iterator<IEffect> it = effects.iterator();
-			while(it.hasNext()){
-				IEffect effect = it.next();
-				effect.decrementDuration(delta);
-				if(effect.getDuration() < 0.001){
-					it.remove();
-					enemy.removeEffect(effect);
-				}
-			}
 		}
 	}
 
@@ -148,7 +126,7 @@ class WaveController {
 	 * Towers fires at enemies in range.
 	 * @param delta - the amount of time (in milliseconds) since the last update.
 	 */
-	private void shootAtEnemiesInRange(final int delta){
+	private void shootAtEnemiesInRange(final int delta){ // TODO: Use AttackEntity instead
 		int tileScale = Properties.INSTANCE.getTileScale();
 		IPlayerCharacter character = player.getCharacter();
 		for(int x = 0; x < board.getWidth(); x++){
@@ -163,7 +141,7 @@ class WaveController {
 			}
 		}
 		if(character.isAttackReady(delta)) {
-			character.shoot(board.getEnemiesInRadius(character.getPos(), 50));
+			character.shoot(board.getEnemiesInRadius(character.getPos(), 50), character.getPos());
 		}
 	}
 	
@@ -175,27 +153,6 @@ class WaveController {
 		int radius = tile.getRadius() * Properties.INSTANCE.getTileScale();
 		List<IEnemy> enemies = board.getEnemiesInRadius(pos, radius);
 		tile.shoot(enemies, pos);
-	}
-
-	/**
-	 * Apply the effects on the enemies
-	 */
-	private void applyHealthEffects() {
-		EnemyList enemies = board.getEnemies();
-		
-		for (IEnemy enemy : enemies) {
-			applyHealthEffect(enemy);
-		}
-	}
-
-	
-	private void applyHealthEffect(IEnemy enemy) {
-		double healthModifier = 1.0;
-		for (IEffect ie : enemy.getEffects()) {
-			healthModifier = healthModifier * ie.getHealthModifier();
-		}
-		double health = enemy.getHealth() * healthModifier;
-		enemy.decreaseHealth(enemy.getHealth()-(int)health);
 	}
 
 	/** Whether or not the player has died */

@@ -1,5 +1,12 @@
 package se.chalmers.tda367.std.core;
 
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.List;
+
+import com.google.common.eventbus.Subscribe;
+
+import se.chalmers.tda367.std.core.events.WaveEndedEvent;
 import se.chalmers.tda367.std.core.events.WaveStartedEvent;
 import se.chalmers.tda367.std.core.factories.GameBoardFactory;
 import se.chalmers.tda367.std.core.factories.WaveFactory;
@@ -8,7 +15,9 @@ import se.chalmers.tda367.std.core.tiles.TerrainTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.EventBus;
+import se.chalmers.tda367.std.utilities.FileScanner;
 import se.chalmers.tda367.std.utilities.Position;
+import se.chalmers.tda367.std.utilities.Prime;
 
 
 
@@ -29,8 +38,9 @@ public class GameController {
 	
 	private final GameBoardFactory boardFactory;
 	
-	private int releasedWaves = 0;
+	private int releasedWaves = 0; // Number of released waves at the current level.
 	private int level;
+	private int maxWaveCount = 2;  // The number of waves that should be released before level up.
 	
 	
 	/** Constructor for the GameController, requires a player to work.
@@ -38,6 +48,8 @@ public class GameController {
 	 * @param player - player playing the game.
 	 */
 	public GameController(Player player){
+		EventBus.INSTANCE.register(this);
+		
 		this.player = player;
 		this.level = 1;
 		tileScale = prop.getTileScale();
@@ -64,11 +76,34 @@ public class GameController {
 	 * Starts the next wave of enemies.
 	 */
 	public void nextWave(){
-		Wave wave = new WaveFactory().create(++releasedWaves);
+		Wave wave = new WaveFactory().create(level);
 		waveControl.startWave(wave);
 		EventBus.INSTANCE.post(new WaveStartedEvent(releasedWaves));
+		releasedWaves++;
 	}
 	
+	@Subscribe
+	public void waveEnded(WaveEndedEvent e) {
+		if(releasedWaves > maxWaveCount) {
+			releasedWaves = 0;
+			level++;
+			
+			// Use the next prime number as the next wave count.
+			maxWaveCount = Prime.nextPrime(maxWaveCount); 
+			
+			tryChangeMap();
+		}
+	}
+	
+	/** Tries to load the map corresponding to the next level */
+	private void tryChangeMap() {
+		List<File> maps = FileScanner.getFiles(Paths.get("maps"));
+		if(maps.size() < level) // TODO: Assumes only maps resides in the folder.
+			return;
+		
+		init();
+	}
+
 	public void resetGame() {
 		player = new Player();
 		releasedWaves = 0;
