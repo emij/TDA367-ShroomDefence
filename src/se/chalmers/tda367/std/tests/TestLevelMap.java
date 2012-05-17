@@ -17,8 +17,8 @@ import se.chalmers.tda367.std.utilities.SpriteCreator;
 public class TestLevelMap {
 
 
-	LevelMap map;
-	private final int SCALE = Properties.INSTANCE.getTileScale();
+	private LevelMap map;
+	private final int scale = Properties.INSTANCE.getTileScale();
 
 	@Before
 	public void before(){
@@ -54,10 +54,10 @@ public class TestLevelMap {
 	public void testGetPlayerBasePos(){
 
 		map.setMapItem(0, 0, PlaceableTile.PLAYER_BASE_TILE);
-		assertTrue(map.getPlayerBasePos().getX() == 0 * SCALE && map.getPlayerBasePos().getY() == 0 * SCALE);
+		assertTrue(map.getPlayerBasePos().getX() == 0 * scale && map.getPlayerBasePos().getY() == 0 * scale);
 		
 		map.setMapItem(1, 1, PlaceableTile.PLAYER_BASE_TILE);
-		assertTrue(map.getPlayerBasePos().getX() == 1 * SCALE && map.getPlayerBasePos().getY() == 1 * SCALE);
+		assertTrue(map.getPlayerBasePos().getX() == 1 * scale && map.getPlayerBasePos().getY() == 1 * scale);
 	}
 	
 	@Test
@@ -67,12 +67,12 @@ public class TestLevelMap {
 		map.setMapItem(0, 0, PlaceableTile.WAYPOINT);
 		List<Position> waypoints = map.getWaypointList();
 		assertTrue(waypoints.size() == 1);
-		assertTrue(waypoints.get(0).getX() == 0 * SCALE && waypoints.get(0).getY() == 0 * SCALE);
+		assertTrue(waypoints.get(0).getX() == 0 * scale && waypoints.get(0).getY() == 0 * scale);
 		
 		map.setMapItem(1, 1, PlaceableTile.WAYPOINT);
 		waypoints = map.getWaypointList();
 		assertTrue(waypoints.size() == 2);
-		assertTrue(waypoints.get(1).getX() == 1 * SCALE && waypoints.get(1).getY() == 1 * SCALE);
+		assertTrue(waypoints.get(1).getX() == 1 * scale && waypoints.get(1).getY() == 1 * scale);
 		
 		map.clearWaypoints();
 		assertTrue(map.getWaypointList().size() == 0);
@@ -88,7 +88,4 @@ public class TestLevelMap {
 		assertTrue(map.getPlayerBasePos().getX() == 1 && map.getEnemyStartPos().getY() == 1);
 	}
 	
-
-
-
 }

@@ -36,7 +36,7 @@ public class TestScore {
 		Score s3 = new Score("Bepa", 20);
 		
 		assertTrue(s2.compareTo(s1) > 0);
-		assertTrue(s1.compareTo(s3) < 0);
+		assertTrue(s1.compareTo(s3) > 0);
 		assertTrue(s1.compareTo(s1) == 0);
 	}
 

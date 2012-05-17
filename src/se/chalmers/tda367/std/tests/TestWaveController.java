@@ -23,9 +23,9 @@ import se.chalmers.tda367.std.core.*;
  */
 //TODO more extensive test
 public class TestWaveController {
+	// To test the wave-controller, change access level from package-private to public.
 
-
-	private Wave createBasicWave(int n){
+	/*private Wave createBasicWave(int n){
 		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();	
 		for(int i = 0; i<n; i++){
 			q.add(new WaveItem(DynamicLoader.createInstance(BasicEnemy.class), i+1));
@@ -55,6 +55,6 @@ public class TestWaveController {
 	@Test
 	public void test() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 }

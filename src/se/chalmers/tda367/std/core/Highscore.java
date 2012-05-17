@@ -58,7 +58,7 @@ public final class Highscore implements Iterable<Score>, Serializable {
 	 * @throws NoSuchElementException if the high score is empty.
 	 */
 	public Score getHighestScore(){
-		return highscore.last();
+		return highscore.first();
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public final class Highscore implements Iterable<Score>, Serializable {
 	 * @throws NoSuchElementException if the high score is empty.
 	 */
 	public Score getLowestScore(){
-		return highscore.first();
+		return highscore.last();
 	}
 	
 	/**
