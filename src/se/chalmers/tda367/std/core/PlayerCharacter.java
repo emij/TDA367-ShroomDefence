@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core;
 
 import java.util.List;
 
+import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.effects.NoEffect;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.events.TowerShootingEvent;
