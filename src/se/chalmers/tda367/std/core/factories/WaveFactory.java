@@ -18,6 +18,7 @@ public class WaveFactory implements IFactory<Wave, Integer> {
 	/**
 	 * Creates a wave from the specified parameter(s).
 	 * @param level the level difficulty of the wave about to be created.
+	 * @throws java.io.FileNotFoundException - if the map corresponding to the level does not exist.
 	 */
 	@Override
 	public Wave create(Integer level) {

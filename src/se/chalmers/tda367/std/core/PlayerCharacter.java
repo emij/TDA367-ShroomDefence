@@ -3,6 +3,7 @@ package se.chalmers.tda367.std.core;
 import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.core.effects.NoEffect;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
@@ -71,7 +72,7 @@ public class PlayerCharacter implements IPlayerCharacter {
 				public int getDamage() { return attackDmg; }
 
 				@Override
-				public IEffect getEffect() { return null; } // TODO: Use a NoEffect instead of null
+				public IEffect getEffect() { return NoEffect.getInstance(); }
 				
 			});
 		
