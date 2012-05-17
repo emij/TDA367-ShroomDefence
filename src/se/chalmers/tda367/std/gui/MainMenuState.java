@@ -30,6 +30,7 @@ public class MainMenuState extends NiftyBasicGameState implements ScreenControll
 		this.state = state;
 	}
 	
+	/** Helper method to get resource path */
 	private String getResourcePath(String path) {
 		return getClass().getResource(path).getPath();
 	}

@@ -7,9 +7,11 @@ import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
  * Represents a very basic enemy for use in a text based game.
- * <p>Start health: <b>100</b>
- * <p>Speed: <b>2</b>
- * <p>Gold received: <b>5</b>
+ * <p>Start health: <b>70</b>
+ * <p>Speed:        <b>0.09</b>
+ * <p>Loot value:   <b>70</b>
+ * <p>Armor:        <b>1</b>
+ * 
  * @author Emil Edholm
  * @modified Emil Johansson
  * @date   25 mar 2012
@@ -24,7 +26,7 @@ public final class BasicEnemy extends AbstractEnemy {
 	 * Creates a basic enemy.
 	 */
 	public BasicEnemy() {
-		super(100, 0.2F, 5, 50, sprite);
+		super(70, 0.09F, 1, 70, sprite);
 	}
 	
 	/**

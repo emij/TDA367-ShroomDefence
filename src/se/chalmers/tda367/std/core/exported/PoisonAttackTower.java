@@ -1,11 +1,11 @@
 package se.chalmers.tda367.std.core.exported;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.effects.PoisonEffect;
+import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
+import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
 import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.utilities.SpriteCreator;
@@ -29,18 +29,22 @@ public final class PoisonAttackTower extends AbstractAttackTower {
 							 baseDamage      = 5, 
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
-							 attackSpeed     = 60;
-	private static List<IEffect> effects = new ArrayList<IEffect>();
-	static {
-		effects.add(new PoisonEffect(1));
-	}
+							 attackSpeed     = 250;
 	
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/poison_tower_tile.png");
 	
 	public PoisonAttackTower() {
 		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
-				effects, sprite);
+				1, new PoisonEffect(1), sprite);
 	}
+	
+
+
+	@Override
+	public void shoot(List<IEnemy> enemies, Position pos) {
+		super.shoot(excludeEffect(enemies, PoisonEffect.class), pos);
+	}
+
 
 	/**
 	 * The textual representation of the tower on a text based game board.

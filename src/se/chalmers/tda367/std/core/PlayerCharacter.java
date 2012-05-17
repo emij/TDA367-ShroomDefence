@@ -3,6 +3,7 @@ package se.chalmers.tda367.std.core;
 import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.core.effects.NoEffect;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
@@ -32,12 +33,13 @@ public class PlayerCharacter implements IPlayerCharacter {
 	
 	@Override
 	public void moveTo(Position pos) {
-		pos = new Position(pos);
+		pos.setX(pos.getX());
+		pos.setY(pos.getY());
 	}
 	
 	@Override
 	public Position getPos() {
-		return pos;
+		return new Position(pos);
 	}
 	
 	@Override
@@ -61,11 +63,18 @@ public class PlayerCharacter implements IPlayerCharacter {
 	}
 	
 	@Override
-	public void shoot(List<IEnemy> enemies) {
+	public void shoot(List<IEnemy> enemies, Position pos) {
 		if(!enemies.isEmpty()){
 			IEnemy enemy = enemies.get(0);
 			
-			enemy.decreaseHealth(attackDmg);
+			enemy.receiveShot(new Shot() {
+				@Override
+				public int getDamage() { return attackDmg; }
+
+				@Override
+				public IEffect getEffect() { return NoEffect.getInstance(); }
+				
+			});
 		
 			EventBus.INSTANCE.post(new TowerShootingEvent(pos, enemy.getPosition()));
 		}

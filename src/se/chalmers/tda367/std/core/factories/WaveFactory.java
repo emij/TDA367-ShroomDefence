@@ -1,7 +1,10 @@
 package se.chalmers.tda367.std.core.factories;
 
 import java.util.*;
+import java.util.logging.Logger;
+
 import se.chalmers.tda367.std.core.*;
+import se.chalmers.tda367.std.core.anno.Enemy;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 
 /**
@@ -15,18 +18,38 @@ public class WaveFactory implements IFactory<Wave, Integer> {
 	/**
 	 * Creates a wave from the specified parameter(s).
 	 * @param level the level difficulty of the wave about to be created.
+	 * @throws java.io.FileNotFoundException - if the map corresponding to the level does not exist.
 	 */
 	@Override
 	public Wave create(Integer level) {
 		List<Class<IEnemy>> exportedEnemies = DynamicLoader.getEnemies(level);
-		Queue<WaveItem> waveQueue = new LinkedList<WaveItem>();
+		List<WaveItem> waveList = new ArrayList<WaveItem>();
 		
-		// TODO: Tweak and balance the algorithm since it now just releases one enemy of each type.
-		int count = 0;
+		// TODO: Tweak and balance the algorithm a little.
+		// TODO: Remove System.out.println...
+		
+		Random rnd = new Random();
+		Enemy enemyAnno = null;
+		int count = 0, delay = 0;
 		for(Class<IEnemy> enemyClass : exportedEnemies) {
-			waveQueue.add(new WaveItem(DynamicLoader.createInstance(enemyClass), count++ * 1000));
+			enemyAnno = enemyClass.getAnnotation(Enemy.class);
+			count = (int) ((Math.abs(enemyAnno.enemyStrength() - (rnd.nextInt(9) + 5)))) * level; // Number of enemies to add.
+
+			System.out.println("Releasing " + count + " " + enemyClass.toString());
+			while(count-- > 0) {
+				waveList.add(new WaveItem(DynamicLoader.createInstance(enemyClass), delay));
+				delay = rnd.nextInt(500);
+				delay = delay + 50;
+				System.out.println("Using " + delay + " ms delay for enemy " + count);
+			}
 		}
 
-		return new Wave(waveQueue);
+		Collections.shuffle(waveList);
+		
+		// Convert the list to a queue.
+		Queue<WaveItem> queue = new LinkedList<WaveItem>();
+		for(WaveItem item : waveList)
+			queue.add(item);
+		return new Wave(queue);
 	}
 }

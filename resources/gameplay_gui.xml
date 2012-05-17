@@ -109,11 +109,15 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                 <text text="Your final score was:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
                 <control id="gameOverScoreLabel" name="label" width="100%" height="20%" align="center" textHAlign="center"/>
                 <text text="Enter name:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
-                <control id="playerNameField" name="textfield" width="50%" height="10%" align="center" />
+                <control id="playerNameField" name="textfield" width="50%" height="10%" align="center" visibleToMouse="false">
+                </control>
             </panel>
             
-            <panel childLayout="vertical" width="*" height="*">
-                <control id="closeGameButton" name="button" label="Close" width="50%" height="90%" align="right" valign="bottom" visibleToMouse="true">
+            <panel childLayout="horizontal" width="100%" height="*" padding="1%, 5%">
+                <control id="saveHighscore" name="button" label="Save and quit" width="50%" height="70%" align="left" valign="bottom">
+                    <interact onClick="saveHighscore()" />
+                </control>
+                <control id="closeGameButton" name="button" label="Quit" width="50%" height="70%" align="right" valign="bottom" visibleToMouse="true">
                 </control>
             </panel>
             
