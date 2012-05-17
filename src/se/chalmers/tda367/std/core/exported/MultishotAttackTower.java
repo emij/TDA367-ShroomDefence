@@ -9,11 +9,11 @@ import se.chalmers.tda367.std.utilities.SpriteCreator;
 /**
  * Represents a Armor decreasing attack tower for use in a textual game board.
  * <p>
- * Base cost        = <b>300</b><br />
- * Base damage      = <b>20</b><br />
+ * Base cost        = <b>250</b><br />
+ * Base damage      = <b>15</b><br />
  * Effective radius = <b>3</b><br />
- * Damage radius    = <b>0</b><br />
- * Attack speed     = <b>100</b><br />
+ * Damage radius    = <b>2</b><br />
+ * Attack speed     = <b>400</b><br />
  * </p>
  * @author Johan Andersson
  * @date   13 may 2012
@@ -21,11 +21,11 @@ import se.chalmers.tda367.std.utilities.SpriteCreator;
 @Tower(name = "Multishot", description = "Tower that shoot multiple targets at once", towerStrength = 3)
 public final class MultishotAttackTower extends AbstractAttackTower {
 
-	private static final int baseCost        = 300, 
-							 baseDamage      = 40, 
+	private static final int baseCost        = 250, 
+							 baseDamage      = 15, 
 							 effectiveRadius = 3, 
 							 aoeRadius       = 2, 
-							 attackSpeed     = 500,
+							 attackSpeed     = 400,
 							 nbrOfTargets	 = 3;
 	
 	//TODO: change sprite for the Multishot tower.
