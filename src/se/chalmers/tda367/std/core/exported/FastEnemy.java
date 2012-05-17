@@ -15,7 +15,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Johan Gustafsson
  * @date   19 apr 2012
  */
-@Enemy(name = "Speedy gonzales", description = "Represents an enemy slightly faster than usual.", enemyStrength = 1)
+@Enemy(name = "Speedy gonzales", description = "Represents an enemy slightly faster than usual.", enemyStrength = 2)
 public class FastEnemy extends AbstractEnemy {
 	//TODO: change sprite for the fast enemy.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");

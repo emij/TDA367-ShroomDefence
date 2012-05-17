@@ -15,7 +15,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Johan Gustafsson
  * @date   19 apr 2012
  */
-@Enemy(name = "El Jefe", description = "Represents a boss enemy.", enemyStrength = 2)
+@Enemy(name = "El Jefe", description = "Represents a boss enemy.", enemyStrength = 10)
 public class BossEnemy extends AbstractEnemy {
 	//TODO: change sprite for the boss enemy.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");
