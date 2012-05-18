@@ -33,8 +33,8 @@ public class PlayerCharacter implements IPlayerCharacter {
 	
 	@Override
 	public void moveTo(Position pos) {
-		pos.setX(pos.getX());
-		pos.setY(pos.getY());
+		this.pos.setX(pos.getX());
+		this.pos.setY(pos.getY());
 	}
 	
 	@Override
