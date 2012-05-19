@@ -1,6 +1,6 @@
 package se.chalmers.tda367.std.core.tiles.towers;
 
-import se.chalmers.tda367.std.core.AttackEntity;
+import se.chalmers.tda367.std.core.Attacker;
 import se.chalmers.tda367.std.utilities.Sprite;
 
 /**
@@ -10,7 +10,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Emil Edholm
  * @date Mar 25, 2012
  */
-public interface IAttackTower extends ITower, AttackEntity{
+public interface IAttackTower extends ITower, Attacker{
 	/**
 	 * Returns the damage of the tower.
 	 * @return the base amount of damage the tower does to an enemy.

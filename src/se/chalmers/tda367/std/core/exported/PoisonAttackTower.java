@@ -2,8 +2,8 @@ package se.chalmers.tda367.std.core.exported;
 
 import java.util.List;
 
+import se.chalmers.tda367.std.core.Attackable;
 import se.chalmers.tda367.std.core.effects.PoisonEffect;
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
@@ -41,7 +41,7 @@ public final class PoisonAttackTower extends AbstractAttackTower {
 
 
 	@Override
-	public void shoot(List<IEnemy> enemies, Position pos) {
+	public void shoot(List<Attackable> enemies, Position pos) {
 		super.shoot(excludeEffect(enemies, PoisonEffect.class), pos);
 	}
 

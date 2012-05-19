@@ -2,22 +2,22 @@ package se.chalmers.tda367.std.core;
 
 import java.util.List;
 
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.utilities.Position;
 
 /**
- * Represents a entity (such as a Tower of PlayerCharacter) that can attack enemies.
+ * Represents a attacker (such as a Tower of PlayerCharacter) that can shoot at a {@code Attackable}.
+ * @see {@link se.chalmers.tda367.std.core.Attackable}
  * @author Emil Edholm
  * @date   May 16, 2012
  */
-public interface AttackEntity {
+public interface Attacker {
 	
 	/**
 	 * Causes the {@code Entity} to attack the enemies supplied.
 	 * @param enemies - list of enemies to attack
-	 * @param pos - The position of the {@code AttackEntity}
+	 * @param pos - The position of the {@code Attacker}
 	 */
-	void shoot(List<IEnemy> enemies, Position pos);
+	void shoot(List<Attackable> enemies, Position pos);
 	
 	/**
 	 * Checks if the character is ready to attack again.

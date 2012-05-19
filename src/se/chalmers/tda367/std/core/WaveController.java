@@ -141,7 +141,7 @@ class WaveController {
 			}
 		}
 		if(character.isAttackReady(delta)) {
-			character.shoot(board.getEnemiesInRadius(character.getPos(), 50), character.getPos());
+			character.shoot(board.getAttackables(character.getPos(), 50), character.getPos());
 		}
 	}
 	
@@ -151,7 +151,7 @@ class WaveController {
 	 */
 	private void shoot(IAttackTower tile, Position pos) {
 		int radius = tile.getRadius() * Properties.INSTANCE.getTileScale();
-		List<IEnemy> enemies = board.getEnemiesInRadius(pos, radius);
+		List<Attackable> enemies = board.getAttackables(pos, radius);
 		tile.shoot(enemies, pos);
 	}
 
