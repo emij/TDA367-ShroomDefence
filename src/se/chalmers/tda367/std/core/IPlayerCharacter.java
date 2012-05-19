@@ -8,7 +8,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Johan Gustafsson
  * @date   May 14, 2012
  */
-public interface IPlayerCharacter extends AttackEntity {
+public interface IPlayerCharacter extends Attacker {
 	public void moveTo(Position pos);
 	
 	/**

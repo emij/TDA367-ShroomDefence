@@ -52,12 +52,12 @@ public class GameBoard {
 	}
 	
 	/**
-	 * Returns a list of enemies that is inside the radius of the supplied position
-	 * @param center the center position of the "circle" to check
-	 * @param radius the radius to check
-	 * @return A list of the enemies inside the "circle". Note that the order of the list is unsorted.
+	 * Returns a list of {@code Attackable} that is inside the radius of the supplied position
+	 * @param center - the center position of the "circle" to check
+	 * @param radius - the radius to check
+	 * @return A list of the {@code Attackable} inside the "circle".
 	 */
-	public List<IEnemy> getEnemiesInRadius(Position center, int radius){
+	public List<Attackable> getAttackables(Position center, int radius){
 		List<IEnemy> inRadius = new ArrayList<IEnemy>();
 		InRadiusFilter filter = new InRadiusFilter(center, radius);
 		
@@ -67,7 +67,13 @@ public class GameBoard {
 			}
 		}
 		Collections.sort(inRadius);
-		return inRadius;
+		
+		// Convert to Attackable.
+		List<Attackable> attackables = new ArrayList<Attackable>(inRadius.size());
+		for(IEnemy enemy : inRadius) {
+			attackables.add(enemy);
+		}
+		return attackables;
 	}
 	
 	/**
