@@ -211,7 +211,7 @@ public class GameController {
 		Position newPos = direction.newPosition(playerPos, delta, moveSpd);
 		
 		if(isAbleToWalkTo(newPos)) {
-			playerPos.copyFromPosition(newPos);
+			player.getCharacter().moveTo(newPos);
 		}
 	}
 	
@@ -224,7 +224,7 @@ public class GameController {
 		Position newPos = direction.newJumpPosition(playerPos);
 		
 		if(isAbleToWalkTo(newPos)) {
-			playerPos.copyFromPosition(newPos);
+			player.getCharacter().moveTo(newPos);
 		}
 	}
 	
