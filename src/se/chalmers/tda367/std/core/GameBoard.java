@@ -238,18 +238,6 @@ public class GameBoard {
 	}
 	
 	/**
-	 * Method for checking if there is an enemy on a given position.
-	 * @param p position to check for an enemy.
-	 * @return true if an enemy is on the given position. Returns false if given position is outside the board or no enemy is at the position.
-	 */
-	public boolean isEnemyAt(BoardPosition p) {
-		if(!posOnBoard(p)) {
-			return false;
-		}
-		return getTileAt(p) instanceof IEnemy;
-	}
-	
-	/**
 	 * Class used for filtering enemies that are not in a specified radius from a given center position
 	 * @author Emil Edholm
 	 * @date   Apr 24, 2012
