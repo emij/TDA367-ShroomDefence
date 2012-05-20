@@ -70,7 +70,7 @@ class GameplayGUIRenderer {
 		popup.findNiftyControl("towerDMGLabel", Label.class).setText("" + 
 				tower.getDmg());
 		popup.findNiftyControl("towerSPDLabel", Label.class).setText("" + 
-				tower.getAttackSpeed());
+				(double)tower.getAttackDelay()/1000);
 		popup.findNiftyControl("towerUpgradeCostLabel", Label.class).setText("" + 
 				tower.getUpgradeCost());
 		popup.findNiftyControl("towerLVLLabel", Label.class).setText("" + 

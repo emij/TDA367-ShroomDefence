@@ -25,13 +25,13 @@ public final class BasicAttackTower extends AbstractAttackTower {
 							 baseDamage      = 7, 
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
-							 attackSpeed     = 225;
+							 attackDelay     = 225;
 	
 	//TODO: change sprite for the basic tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/basic_tower_tile.png");
 	
 	public BasicAttackTower() {
-		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackDelay,
 				1, NoEffect.getInstance(), sprite);
 	}
 

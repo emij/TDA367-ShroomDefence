@@ -25,13 +25,13 @@ public final class ArmorDecAttackTower extends AbstractAttackTower {
 							 baseDamage      = 5, 
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
-							 attackSpeed     = 80;
+							 attackDelay     = 80;
 	
 	//TODO: change sprite for the armordec tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/armor_tower_tile.png");
 	
 	public ArmorDecAttackTower() {
-		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackDelay,
 				1, new ReduceArmorEffect(1), sprite);
 	}
 	

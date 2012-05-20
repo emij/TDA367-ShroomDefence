@@ -18,10 +18,10 @@ public interface IAttackTower extends ITower, Attacker{
 	public int getDmg();
 	
 	/**
-	 * Returns the attack speed of the tower.
+	 * Returns the delay between each of the towers attacks.
 	 * @return the delay in ms (milliseconds) between attacks.
 	 */
-	public int getAttackSpeed();
+	public int getAttackDelay();
 	
 	/**
 	 * Damage done inside the radius from the point of impact

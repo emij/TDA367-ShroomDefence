@@ -29,14 +29,14 @@ public final class StunAttackTower extends AbstractAttackTower {
 							 baseDamage      = 0, 
 							 effectiveRadius = 3, 
 							 aoeRadius       = 2, 
-							 attackSpeed     = 1000,
+							 attackDelay     = 1000,
 							 targetCount     = 1;
 	
 	//TODO: change sprite for the stuntower tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/armor_tower_tile.png");
 	
 	public StunAttackTower() {
-		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackDelay,
 				targetCount, new StunEffect(1), sprite);
 	}
 	

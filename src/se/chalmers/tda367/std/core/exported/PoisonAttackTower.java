@@ -29,12 +29,12 @@ public final class PoisonAttackTower extends AbstractAttackTower {
 							 baseDamage      = 5, 
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
-							 attackSpeed     = 250;
+							 attackDelay     = 250;
 	
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/poison_tower_tile.png");
 	
 	public PoisonAttackTower() {
-		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackDelay,
 				1, new PoisonEffect(1), sprite);
 	}
 	
