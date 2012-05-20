@@ -29,12 +29,12 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 							 baseDamage      = 5, 
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
-							 attackSpeed     = 300;
+							 attackDelay     = 300;
 	
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/slow_tower_tile.png");
 	
 	public SlowingAttackTower() {
-		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackDelay,
 				1, new SlowEffect(1), sprite);
 	}
 	/**

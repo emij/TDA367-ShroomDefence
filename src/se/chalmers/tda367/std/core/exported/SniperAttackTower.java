@@ -25,13 +25,13 @@ public final class SniperAttackTower extends AbstractAttackTower {
 							 baseDamage      = 100, 
 							 effectiveRadius = 6, 
 							 aoeRadius       = 0, 
-							 attackSpeed     = 1500;
+							 attackDelay     = 1500;
 	
 	//TODO: change sprite for the sniper tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/armor_tower_tile.png");
 	
 	public SniperAttackTower() {
-		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackDelay,
 				1, NoEffect.getInstance(), sprite);
 	}
 	

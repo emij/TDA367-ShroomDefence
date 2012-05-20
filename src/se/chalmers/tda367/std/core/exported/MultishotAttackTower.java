@@ -25,14 +25,14 @@ public final class MultishotAttackTower extends AbstractAttackTower {
 							 baseDamage      = 15, 
 							 effectiveRadius = 3, 
 							 aoeRadius       = 2, 
-							 attackSpeed     = 400,
+							 attackDelay     = 400,
 							 nbrOfTargets	 = 3;
 	
 	//TODO: change sprite for the Multishot tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/armor_tower_tile.png");
 	
 	public MultishotAttackTower() {
-		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackDelay,
 				nbrOfTargets, NoEffect.getInstance(), sprite);
 	}
 	

@@ -29,12 +29,12 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	private int timeSinceLastAttack = 0;
 
 	public AbstractAttackTower(int baseCost, int baseDamage, 
-			int effectiveRadius, int aoeRadius, int attackSpeed, int targetCount, IEffect effect, Sprite sprite){
+			int effectiveRadius, int aoeRadius, int attackDelay, int targetCount, IEffect effect, Sprite sprite){
 		this.baseCost        = baseCost;
 		this.baseDamage      = baseDamage;
 		this.effectiveRadius = effectiveRadius;
 		this.aoeRadius       = aoeRadius;
-		this.attackSpeed     = attackSpeed;
+		this.attackSpeed     = attackDelay;
 		this.targetCount     = targetCount;
 		this.sprite          = sprite;
 		this.effect          = effect.clone();
@@ -109,14 +109,14 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	}
 
 	@Override
-	public int getAttackSpeed() {
+	public int getAttackDelay() {
 		return attackSpeed;
 	}
 	
 	@Override
 	public boolean isAttackReady(final int delta) {
 		timeSinceLastAttack += delta;
-		if(timeSinceLastAttack >= getAttackSpeed()){
+		if(timeSinceLastAttack >= getAttackDelay()){
 			timeSinceLastAttack = 0;
 			return true;
 		}
