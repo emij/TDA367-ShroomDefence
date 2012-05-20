@@ -244,7 +244,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 		else if(gameOverPopup.findElementByName(id) != null) {
 			guiRenderer.closePopup(gameOverPopup.getId());
-			state.enterState(STDGame.MAINMENUSTATE);
+			endGame();
 		}
 	}
 	
@@ -285,6 +285,12 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		gameControl.nextWave();
 	}
 	
+	/**
+	 * 
+	 */
+	public void endGame() {
+		state.enterState(STDGame.MAINMENUSTATE);
+	}
 	
 	public void saveHighscore() {
 		String playerName = gameOverPopup.findNiftyControl("playerNameField", TextField.class).getText();
@@ -365,10 +371,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			BoardPosition p = BoardPosition.valueOf(x, y);
 			if(towerIsChoosen && board.getTileAt(p) instanceof IBuildableTile) {
 				gameControl.buildTower(choosenTower, p);
-				if(!input.isKeyDown(Input.KEY_LSHIFT)) {
-					towerIsChoosen = false;
-					guiRenderer.setDefaultFocus();
-				}
+				towerIsChoosen = false;
+				guiRenderer.setDefaultFocus();
 			}
 			else if(board.getTileAt(p) instanceof IAttackTower && !towerIsChoosen) {
 				selectedTower = (IAttackTower)board.getTileAt(p);
