@@ -46,7 +46,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private boolean towerIsChoosen, optionsScreenIsOpen, gameOver;
 	private Properties properties = Properties.INSTANCE;
 	
-	private GameController gameControl;
+	private IGame gameControl;
 	private ITower choosenTower;
 	private IAttackTower selectedTower;
 	private BoardPosition towerPos;
@@ -60,7 +60,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Input input;
 	
 
-	public GameplayState(int stateID, GameController gameControl) {
+	public GameplayState(int stateID, IGame gameControl) {
 		this.stateID = stateID;
 		this.gameControl = gameControl;
 		tileScale = properties.getTileScale();

@@ -14,7 +14,7 @@ import org.newdawn.slick.geom.Circle;
 import com.google.common.eventbus.Subscribe;
 
 import se.chalmers.tda367.std.core.EnemyList;
-import se.chalmers.tda367.std.core.GameController;
+import se.chalmers.tda367.std.core.IGame;
 import se.chalmers.tda367.std.core.IGameBoard;
 import se.chalmers.tda367.std.core.IPlayerCharacter;
 import se.chalmers.tda367.std.core.Properties;
@@ -35,7 +35,7 @@ import se.chalmers.tda367.std.utilities.Position;
  * @date 2012-05-15
  */
 public class GameplayRenderer {
-	private GameController gameControl;
+	private IGame gameControl;
 	private Input input;
 	private Animation explosionAnimation;
 	private List<AttackAnimation> attacksList;
@@ -43,7 +43,7 @@ public class GameplayRenderer {
 	private Properties prop = Properties.INSTANCE;
 	private int tileScale;
 	
-	public GameplayRenderer(GameController gameControl, Input input) throws SlickException {
+	public GameplayRenderer(IGame gameControl, Input input) throws SlickException {
 		this.gameControl = gameControl;
 		this.input = input;
 		init();
