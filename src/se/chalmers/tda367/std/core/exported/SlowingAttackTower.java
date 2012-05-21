@@ -2,8 +2,8 @@ package se.chalmers.tda367.std.core.exported;
 
 import java.util.List;
 
+import se.chalmers.tda367.std.core.Attackable;
 import se.chalmers.tda367.std.core.effects.SlowEffect;
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
@@ -29,12 +29,12 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 							 baseDamage      = 5, 
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
-							 attackSpeed     = 300;
+							 attackDelay     = 300;
 	
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/slow_tower_tile.png");
 	
 	public SlowingAttackTower() {
-		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackDelay,
 				1, new SlowEffect(1), sprite);
 	}
 	/**
@@ -46,7 +46,7 @@ public final class SlowingAttackTower extends AbstractAttackTower {
 	}
 
 	@Override
-	public void shoot(List<IEnemy> enemies, Position pos) {
+	public void shoot(List<Attackable> enemies, Position pos) {
 		super.shoot(excludeEffect(enemies, SlowEffect.class), pos);
 	}
 }

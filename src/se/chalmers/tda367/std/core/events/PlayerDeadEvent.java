@@ -1,6 +1,6 @@
 package se.chalmers.tda367.std.core.events;
 
-import se.chalmers.tda367.std.core.Player;
+import se.chalmers.tda367.std.core.IPlayer;
 
 /**
  * This event is fired when the player is dead and the game is over.
@@ -8,16 +8,16 @@ import se.chalmers.tda367.std.core.Player;
  * @date   May 13, 2012
  */
 public final class PlayerDeadEvent {
-	private final Player player;
+	private final IPlayer player;
 	
-	public PlayerDeadEvent(Player player) {
+	public PlayerDeadEvent(IPlayer player) {
 		this.player = player;
 	}
 
 	/**
 	 * @return the dead player.
 	 */
-	public Player getPlayer() {
+	public IPlayer getPlayer() {
 		return player;
 	}
 }

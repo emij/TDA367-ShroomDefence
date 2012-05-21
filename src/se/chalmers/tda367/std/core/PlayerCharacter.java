@@ -4,7 +4,6 @@ import java.util.List;
 
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.effects.NoEffect;
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
 import se.chalmers.tda367.std.utilities.Position;
@@ -33,8 +32,8 @@ public class PlayerCharacter implements IPlayerCharacter {
 	
 	@Override
 	public void moveTo(Position pos) {
-		pos.setX(pos.getX());
-		pos.setY(pos.getY());
+		this.pos.setX(pos.getX());
+		this.pos.setY(pos.getY());
 	}
 	
 	@Override
@@ -63,9 +62,9 @@ public class PlayerCharacter implements IPlayerCharacter {
 	}
 	
 	@Override
-	public void shoot(List<IEnemy> enemies, Position pos) {
+	public void shoot(List<Attackable> enemies, Position pos) {
 		if(!enemies.isEmpty()){
-			IEnemy enemy = enemies.get(0);
+			Attackable enemy = enemies.get(0);
 			
 			enemy.receiveShot(new Shot() {
 				@Override

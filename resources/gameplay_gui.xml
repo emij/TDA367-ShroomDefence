@@ -8,8 +8,8 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
     
     <screen id="start" defaultFocusElement="startWaveButton" 
         controller="se.chalmers.tda367.std.gui.GameplayState" 
-        inputMappingPre="se.chalmers.tda367.std.core.GameInputMapping"
-        inputMapping="se.chalmers.tda367.std.core.GameInputMapping">
+        inputMappingPre="se.chalmers.tda367.std.gui.GameInputMapping"
+        inputMapping="se.chalmers.tda367.std.gui.GameInputMapping">
          
          <layer id="bottomUI" childLayout="horizontal" valign="bottom">
              <panel childLayout="vertical" width="79%" height="10%" align="left" valign="bottom">
@@ -63,7 +63,7 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                 </panel>
                 
                 <panel childLayout="center" label="Start wave!" height="*" align="center" valing="bottom">
-                    <control id="startWaveButton" type="button" name="startWave" width="200px" valign="center" inputMapping="se.chalmers.tda367.std.core.GameInputMapping">
+                    <control id="startWaveButton" type="button" name="startWave" width="200px" valign="center" inputMapping="se.chalmers.tda367.std.gui.GameInputMapping">
                         <interact onClick="startWave()" />
                     </control>
                 </panel>
@@ -92,8 +92,11 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                 </panel>     
             </panel>
             
-            <panel childLayout="vertical" width="*" height="*">
-                <control id="closeOptionsButton" name="button" label="Close" width="50%" height="90%" align="right" valign="bottom" visibleToMouse="true">
+            <panel childLayout="horizontal" align="center" width="95%" height="*">
+                <control id="closeGameButton" name="button" label="Exit to main menu" width="50%" height="60%" align="right" valign="bottom" visibleToMouse="true">
+                    <interact onClick="endGame()"/>
+                </control>
+                <control id="closeOptionsButton" name="button" label="Return to game" width="50%" height="60%" align="right" valign="bottom" visibleToMouse="true">
                 </control>
             </panel>
             
@@ -133,7 +136,7 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                 <control id="towerLVLLabel" name="label" width="100%" height="10%" align="center" textHAlign="center"/>
                 <text text="Attack dmg:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="8%" textHAlign="center"/>
                 <control id="towerDMGLabel" name="label" width="100%" height="10%" align="center" textHAlign="center"/>
-                <text text="Attack speed:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
+                <text text="Seconds between each attack:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
                 <control id="towerSPDLabel" name="label" width="100%" height="10%" align="center" textHAlign="center"/>
                 <text text="Upgrade cost:" font="verdana-smallregular.fnt" fontSize="20" align="center" width="100%" height="20%" wrap="true"/>
                 <control id="towerUpgradeCostLabel" name="label" width="100%" height="10%" align="center" textHAlign="center"/>

@@ -2,9 +2,9 @@ package se.chalmers.tda367.std.core.exported;
 
 import java.util.List;
 
+import se.chalmers.tda367.std.core.Attackable;
 import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.core.effects.StunEffect;
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
@@ -29,14 +29,14 @@ public final class StunAttackTower extends AbstractAttackTower {
 							 baseDamage      = 0, 
 							 effectiveRadius = 3, 
 							 aoeRadius       = 2, 
-							 attackSpeed     = 1000,
+							 attackDelay     = 1000,
 							 targetCount     = 1;
 	
 	//TODO: change sprite for the stuntower tower.
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/armor_tower_tile.png");
 	
 	public StunAttackTower() {
-		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackDelay,
 				targetCount, new StunEffect(1), sprite);
 	}
 	
@@ -49,7 +49,7 @@ public final class StunAttackTower extends AbstractAttackTower {
 	}
 
 	@Override
-	public void shoot(List<IEnemy> enemies, Position pos) {
+	public void shoot(List<Attackable> enemies, Position pos) {
 		super.shoot(excludeEffect(enemies, StunEffect.class), pos);
 	}
 	

@@ -33,13 +33,20 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
 
+/**
+ * This class represents the gameplay state. This state let's the player interact with and
+ * play the game via a graphical user interface.
+ * Will be initiated by {@code STDGame} and called from {@code MainMenuState}.
+ * @author Johan Gustafsson
+ * @date 2012-04-25
+ */
 
 public class GameplayState extends NiftyOverlayBasicGameState implements ScreenController {
 	private int stateID, tileScale;
 	private boolean towerIsChoosen, optionsScreenIsOpen, gameOver;
 	private Properties properties = Properties.INSTANCE;
 	
-	private GameController gameControl;
+	private IGame gameControl;
 	private ITower choosenTower;
 	private IAttackTower selectedTower;
 	private BoardPosition towerPos;
@@ -53,7 +60,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private Input input;
 	
 
-	public GameplayState(int stateID, GameController gameControl) {
+	public GameplayState(int stateID, IGame gameControl) {
 		this.stateID = stateID;
 		this.gameControl = gameControl;
 		tileScale = properties.getTileScale();
@@ -109,7 +116,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		bb.height("15%");
 		bb.name("button");
 		bb.font("verdana-smallregular.fnt");
-		bb.inputMapping("se.chalmers.tda367.std.core.GameInputMapping");
+		bb.inputMapping("se.chalmers.tda367.std.gui.GameInputMapping");
 		//Load all the towers.
 		List<Class<ITower>> exportedTowers = DynamicLoader.getTowers();
 		
@@ -244,7 +251,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 		else if(gameOverPopup.findElementByName(id) != null) {
 			guiRenderer.closePopup(gameOverPopup.getId());
-			state.enterState(STDGame.MAINMENUSTATE);
+			endGame();
 		}
 	}
 	
@@ -285,6 +292,12 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		gameControl.nextWave();
 	}
 	
+	/**
+	 * 
+	 */
+	public void endGame() {
+		state.enterState(STDGame.MAINMENUSTATE);
+	}
 	
 	public void saveHighscore() {
 		String playerName = gameOverPopup.findNiftyControl("playerNameField", TextField.class).getText();
@@ -349,7 +362,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	
 	/** Check for input that should interact with the game in some way */
 	private void checkForInput() {
-		GameBoard board = gameControl.getGameBoard();
+		IGameBoard board = gameControl.getGameBoard();
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 		
@@ -365,10 +378,8 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 			BoardPosition p = BoardPosition.valueOf(x, y);
 			if(towerIsChoosen && board.getTileAt(p) instanceof IBuildableTile) {
 				gameControl.buildTower(choosenTower, p);
-				if(!input.isKeyDown(Input.KEY_LSHIFT)) {
-					towerIsChoosen = false;
-					guiRenderer.setDefaultFocus();
-				}
+				towerIsChoosen = false;
+				guiRenderer.setDefaultFocus();
 			}
 			else if(board.getTileAt(p) instanceof IAttackTower && !towerIsChoosen) {
 				selectedTower = (IAttackTower)board.getTileAt(p);

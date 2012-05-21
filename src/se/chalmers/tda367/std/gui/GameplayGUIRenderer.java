@@ -2,7 +2,7 @@ package se.chalmers.tda367.std.gui;
 
 import com.google.common.eventbus.Subscribe;
 
-import se.chalmers.tda367.std.core.GameController;
+import se.chalmers.tda367.std.core.IGame;
 import se.chalmers.tda367.std.core.events.WaveEndedEvent;
 import se.chalmers.tda367.std.core.events.WaveStartedEvent;
 import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
@@ -15,15 +15,16 @@ import de.lessvoid.nifty.screen.Screen;
 
 /**
  * Class for rendering and showing the gameplay gui.
+ * Will be used by {@code GameplayState} as renderer.
  * @author Johan Gustafsson
  * @date 2012-05-15
  */
 class GameplayGUIRenderer {
 	private Nifty nifty;
 	private Element lifeLabel, scoreLabel, levelLabel, playerMoneyLabel, startWaveButton;
-	private GameController gameControl;
+	private IGame gameControl;
 	
-	public GameplayGUIRenderer(GameController gameControl, Nifty nifty) {
+	public GameplayGUIRenderer(IGame gameControl, Nifty nifty) {
 		this.nifty = nifty;
 		this.gameControl = gameControl;
 		init();
@@ -70,7 +71,7 @@ class GameplayGUIRenderer {
 		popup.findNiftyControl("towerDMGLabel", Label.class).setText("" + 
 				tower.getDmg());
 		popup.findNiftyControl("towerSPDLabel", Label.class).setText("" + 
-				tower.getAttackSpeed());
+				(double)tower.getAttackDelay()/1000);
 		popup.findNiftyControl("towerUpgradeCostLabel", Label.class).setText("" + 
 				tower.getUpgradeCost());
 		popup.findNiftyControl("towerLVLLabel", Label.class).setText("" + 

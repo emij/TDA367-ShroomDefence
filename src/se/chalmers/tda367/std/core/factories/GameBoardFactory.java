@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import se.chalmers.tda367.std.core.GameBoard;
+import se.chalmers.tda367.std.core.IGameBoard;
 import se.chalmers.tda367.std.core.LevelMap;
 import se.chalmers.tda367.std.utilities.IO;
 
@@ -12,15 +13,16 @@ import se.chalmers.tda367.std.utilities.IO;
  * @author Emil Edholm
  * @date May 13, 2012
  */
-public class GameBoardFactory implements IFactory<GameBoard, Integer> {
+public class GameBoardFactory implements IFactory<IGameBoard, Integer> {
 
 	/**
 	 * Create a new game board. 
 	 * Effectively a level of the game.
 	 * @param level - the level to create. Controls what map are loaded etc.
+	 * @return a {@code IGameBoard} if able to create one, else null;
 	 */
 	@Override
-	public GameBoard create(Integer level) {
+	public IGameBoard create(Integer level) {
 		LevelMap map = null;
 		File f = new File("maps/level" + level + ".map");
 		
@@ -30,7 +32,10 @@ public class GameBoardFactory implements IFactory<GameBoard, Integer> {
 			e.printStackTrace();
 		} //TODO Throw error if map == null
 		
-		return new GameBoard(map);
+		if(map == null)
+			return null;
+		else
+			return new GameBoard(map);
 	}
 
 }

@@ -2,8 +2,8 @@ package se.chalmers.tda367.std.core.exported;
 
 import java.util.List;
 
+import se.chalmers.tda367.std.core.Attackable;
 import se.chalmers.tda367.std.core.effects.PoisonEffect;
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.tiles.towers.AbstractAttackTower;
 import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.Sprite;
@@ -29,19 +29,19 @@ public final class PoisonAttackTower extends AbstractAttackTower {
 							 baseDamage      = 5, 
 							 effectiveRadius = 2, 
 							 aoeRadius       = 0, 
-							 attackSpeed     = 250;
+							 attackDelay     = 250;
 	
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/poison_tower_tile.png");
 	
 	public PoisonAttackTower() {
-		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackSpeed,
+		super(baseCost, baseDamage, effectiveRadius, aoeRadius, attackDelay,
 				1, new PoisonEffect(1), sprite);
 	}
 	
 
 
 	@Override
-	public void shoot(List<IEnemy> enemies, Position pos) {
+	public void shoot(List<Attackable> enemies, Position pos) {
 		super.shoot(excludeEffect(enemies, PoisonEffect.class), pos);
 	}
 

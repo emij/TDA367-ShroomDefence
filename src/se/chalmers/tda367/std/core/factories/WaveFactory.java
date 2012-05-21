@@ -35,12 +35,11 @@ public class WaveFactory implements IFactory<Wave, Integer> {
 			enemyAnno = enemyClass.getAnnotation(Enemy.class);
 			count = (int) ((Math.abs(enemyAnno.enemyStrength() - (rnd.nextInt(9) + 5)))) * level; // Number of enemies to add.
 
-			System.out.println("Releasing " + count + " " + enemyClass.toString());
+			Logger.getLogger("se.chalmers.tda367.std.core.factories").info("Releasing " + count + " " + enemyClass.toString());
 			while(count-- > 0) {
 				waveList.add(new WaveItem(DynamicLoader.createInstance(enemyClass), delay));
 				delay = rnd.nextInt(500);
 				delay = delay + 50;
-				System.out.println("Using " + delay + " ms delay for enemy " + count);
 			}
 		}
 

@@ -3,8 +3,8 @@ package se.chalmers.tda367.std.core.tiles.towers;
 import java.util.Iterator;
 import java.util.List;
 
+import se.chalmers.tda367.std.core.Attackable;
 import se.chalmers.tda367.std.core.Shot;
-import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.events.TowerShootingEvent;
 import se.chalmers.tda367.std.utilities.EventBus;
@@ -29,12 +29,12 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	private int timeSinceLastAttack = 0;
 
 	public AbstractAttackTower(int baseCost, int baseDamage, 
-			int effectiveRadius, int aoeRadius, int attackSpeed, int targetCount, IEffect effect, Sprite sprite){
+			int effectiveRadius, int aoeRadius, int attackDelay, int targetCount, IEffect effect, Sprite sprite){
 		this.baseCost        = baseCost;
 		this.baseDamage      = baseDamage;
 		this.effectiveRadius = effectiveRadius;
 		this.aoeRadius       = aoeRadius;
-		this.attackSpeed     = attackSpeed;
+		this.attackSpeed     = attackDelay;
 		this.targetCount     = targetCount;
 		this.sprite          = sprite;
 		this.effect          = effect.clone();
@@ -50,11 +50,11 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	 * Removes any enemies that has {@code excludeEffect} applied before shooting.
 	 * @param excludeEffect - the effect type to exclude.
 	 */
-	protected List<IEnemy> excludeEffect(List<IEnemy> enemies, Class<? extends IEffect> excludeEffect) {
+	protected List<Attackable> excludeEffect(List<Attackable> enemies, Class<? extends IEffect> excludeEffect) {
 		// Remove the enemies that already has the effect applied.
-		Iterator<IEnemy> it = enemies.iterator();
+		Iterator<Attackable> it = enemies.iterator();
 		while(it.hasNext()){
-			IEnemy enemy = it.next();
+			Attackable enemy = it.next();
 			if(enemy.hasEffect(excludeEffect)) {
 				it.remove();
 			}
@@ -64,9 +64,9 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	}
 	
 	@Override
-	public void shoot(List<IEnemy> enemies, Position pos) {
+	public void shoot(List<Attackable> enemies, Position pos) {
 		int shots = 0;
-		for(IEnemy enemy : enemies) {
+		for(Attackable enemy : enemies) {
 			enemy.receiveShot(new Shot() {
 				@Override
 				public int getDamage() { return getDmg(); }
@@ -109,14 +109,14 @@ public abstract class AbstractAttackTower implements IAttackTower{
 	}
 
 	@Override
-	public int getAttackSpeed() {
+	public int getAttackDelay() {
 		return attackSpeed;
 	}
 	
 	@Override
 	public boolean isAttackReady(final int delta) {
 		timeSinceLastAttack += delta;
-		if(timeSinceLastAttack >= getAttackSpeed()){
+		if(timeSinceLastAttack >= getAttackDelay()){
 			timeSinceLastAttack = 0;
 			return true;
 		}

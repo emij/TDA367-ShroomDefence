@@ -4,8 +4,16 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import se.chalmers.tda367.std.core.GameController;
-import se.chalmers.tda367.std.core.Player;
+import com.google.inject.Guice;
+
+import se.chalmers.tda367.std.core.IGame;
+
+/**
+ * This will initiate all current gui states and start {@code MainMenuState}.
+ * Will be called by {@code Main}.
+ * @author Johan Gustafsson
+ * @date 2012-03-28
+ */
 
 public class STDGame extends StateBasedGame {
 	
@@ -13,7 +21,7 @@ public class STDGame extends StateBasedGame {
     static final int GAMEPLAYSTATE = 1;
     static final int HIGHSCORESTATE = 2;
     
-    private GameController gameControl;
+    private IGame gameControl;
 	
 	public STDGame() {
 		super("STD - Shroom Tower Defense");
@@ -22,7 +30,7 @@ public class STDGame extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer gameCon) throws SlickException {
-		gameControl = new GameController(new Player());
+		gameControl = Guice.createInjector().getInstance(IGame.class);
 		
 		
 		this.addState(new MainMenuState(MAINMENUSTATE));

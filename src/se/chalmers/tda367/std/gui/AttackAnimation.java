@@ -5,7 +5,8 @@ import se.chalmers.tda367.std.utilities.Position;
 
 
 /**
- * Helper class for representing a towers attack.
+ * Helper class for representing a towers attack and duration.
+ * This will be used by {@code GameplayRenderer} to render attacks during a given duration.
  * @author Johan Gustafsson
  * @date   May 08, 2012
  */
