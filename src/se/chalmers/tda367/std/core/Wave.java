@@ -1,7 +1,7 @@
 package se.chalmers.tda367.std.core;
 
+import java.util.LinkedList;
 import java.util.Queue;
-
 
 /**
  * Represents a wave of enemies.
@@ -13,10 +13,13 @@ public class Wave {
 	
 	private Queue<WaveItem> items;
 	
+	/** 
+	 * Create a new wave with the specified items in the queue.
+	 * @param items - use these items in the queue.
+	 */
 	public Wave(Queue<WaveItem> items){
-		this.items = items;
+		this.items = new LinkedList<WaveItem>(items);
 	}
-	
 	
 	/** 
 	 * Gets the next enemy in line.
@@ -27,36 +30,11 @@ public class Wave {
 		return items.poll();
 	}
 	
-	/** Gets the number of enemies.
-	 * 
+	/** 
+	 * Gets the number of enemies in the wave.
 	 * @return - the number of enemies in the wave.
 	 */
-	public int getNumberOfEnemies(){
+	public int size(){
 		return items.size();
 	}
-	
-	/** Gets the total loot value of the wave.
-	 * 
-	 * @return - the total loot value;
-	 */
-	public int getWaveLootValue(){
-		int total = 0;
-		for (WaveItem wi: items) {
-			total += wi.getEnemy().getLootValue();
-		}
-		return total;
-	}
-	
-	/** Gets the total health value of the wave.
-	 * 
-	 * @return - the total health value;
-	 */
-	public int getHealthValue(){
-		int total = 0;
-		for (WaveItem wi: items) {
-			total += wi.getEnemy().getHealth();
-		}
-		return total;
-	}
-
 }
