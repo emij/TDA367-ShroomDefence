@@ -139,6 +139,11 @@ public class GameController implements IGame {
 	}
 	
 	@Override
+	public boolean isTowerPosition(BoardPosition pos) {
+		return buildControl.isTowerPosition(pos);
+	}
+	
+	@Override
 	public boolean playerCanAffordTower(ITower tower) {
 		return buildControl.playerCanAffordTower(tower);
 	}

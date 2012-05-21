@@ -66,6 +66,13 @@ public interface IGame {
 	 * @return - True if position is buildable on board.
 	 */
 	public abstract boolean isBuildableSpot(BoardPosition pos);
+	
+	/** Tells if there's a tower on given position or not.
+	 * 
+	 * @param pos - Position to test.
+	 * @return - True if a tower is on the position. False otherwise.
+	 */
+	public abstract boolean isTowerPosition(BoardPosition pos);
 
 	/** Tells if a player can afford a tower.
 	 * 

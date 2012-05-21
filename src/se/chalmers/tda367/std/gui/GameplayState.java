@@ -373,19 +373,22 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		
 		if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()
 				 && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			
 			int x = mouseX / tileScale;
 			int y = mouseY / tileScale;
 			BoardPosition p = BoardPosition.valueOf(x, y);
-			if(towerIsChoosen && board.getTileAt(p) instanceof IBuildableTile) {
+			if(towerIsChoosen && gameControl.isBuildableSpot(p)) {
 				gameControl.buildTower(choosenTower, p);
 				towerIsChoosen = false;
 				guiRenderer.setDefaultFocus();
 			}
-			else if(board.getTileAt(p) instanceof IAttackTower && !towerIsChoosen) {
-				selectedTower = (IAttackTower)board.getTileAt(p);
-				towerPos = p;
-				guiRenderer.updateTowerPopup(selectedTower, towerPopup);
-				guiRenderer.showPopup(towerPopup.getId());
+			else if(!towerIsChoosen && gameControl.isTowerPosition(p)) {
+				if(nifty.getTopMostPopup() == null) {
+					selectedTower = (IAttackTower)board.getTileAt(p);
+					towerPos = p;
+					guiRenderer.updateTowerPopup(selectedTower, towerPopup);
+					guiRenderer.showPopup(towerPopup.getId());
+				}
 			}
     	}
 	}

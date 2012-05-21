@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core;
 
 import se.chalmers.tda367.std.core.tiles.BuildableTile;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
+import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.BoardPosition;
 
@@ -48,6 +49,18 @@ class BuildController {
 	public boolean isBuildableSpot(BoardPosition pos) {
 		if(!board.posOnBoard(pos)) return false;
 		return board.getTileAt(pos) instanceof IBuildableTile;
+	}
+	
+	/** Tells if there's a tower on given position or not.
+	 * 
+	 * @param pos - Position to test.
+	 * @return - True if a tower is on the position. False otherwise.
+	 */
+	public boolean isTowerPosition(BoardPosition pos) {
+		if(!board.posOnBoard(pos)) {
+			return false;
+		}
+		return board.getTileAt(pos) instanceof IAttackTower;
 	}
 
 	/** Tells if a player can afford a tower.
