@@ -92,8 +92,10 @@ class GameplayGUIRenderer {
 	 * Will show a warning in console if id is not found.
 	 * @param id - element id of the popup.
 	 */
-	public void closePopup(String id) {
-		nifty.closePopup(id);
+	public void closePopup() {
+		if(nifty.getTopMostPopup() != null) {
+			nifty.closePopup(nifty.getTopMostPopup().getId());
+		}
 	}
 	
 	/**
