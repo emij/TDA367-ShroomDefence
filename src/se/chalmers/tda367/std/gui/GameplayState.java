@@ -109,7 +109,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		bb.height("15%");
 		bb.name("button");
 		bb.font("verdana-smallregular.fnt");
-		bb.inputMapping("se.chalmers.tda367.std.core.GameInputMapping");
+		bb.inputMapping("se.chalmers.tda367.std.gui.GameInputMapping");
 		//Load all the towers.
 		List<Class<ITower>> exportedTowers = DynamicLoader.getTowers();
 		
