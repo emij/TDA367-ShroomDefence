@@ -23,16 +23,14 @@ import se.chalmers.tda367.std.utilities.Position;
  * @modified Johan Gustafsson (May 12, 2012)
  * @date Apr 22, 2012
  */
-
 class WaveController {
 
 	/** The delay (in milliseconds) before the first enemy is placed on the game board */
 	private static final int INITIAL_WAVE_DELAY = 100;
 	
-	private IGameBoard board;
-	private IPlayer player;
-	private Timer releaseTimer;
-	private WaveItem nextEnemy;
+	private final IGameBoard board;
+	private final IPlayer player;
+	private final Timer releaseTimer;
 	private Wave wave;
 	private boolean waveHasBeenCompleted;
 	
@@ -57,6 +55,7 @@ class WaveController {
 	 */
 	public void endWaveRelease(){
 		releaseTimer.stop();
+		waveHasBeenCompleted = true;
 	}
 	
 	/**
@@ -71,34 +70,25 @@ class WaveController {
 		}
 	}
 
-	
 	/**
 	 * Releases the next enemy in queue from the wave
 	 */
 	private void releaseEnemy(){
-		if(nextEnemy == null){
-			nextEnemy = wave.getNext();
-		}
-
-		if(nextEnemy != null){
-			addEnemy(nextEnemy);
-			nextEnemy = wave.getNext();
-			
-			if(nextEnemy != null){
-				releaseTimer.setInitialDelay(nextEnemy.getDelay());
-				releaseTimer.restart();
-			}
-		}else {
-			// Stop the timer when all enemies has been "released"
-			releaseTimer.stop();
-			waveHasBeenCompleted = true;
+		WaveItem next = wave.getNext();
+		if(next != null) {
+			releaseTimer.setDelay(next.getDelay());
+			addEnemy(next);
+		} else {
+			endWaveRelease();
 		}
 	}
-
-	/**
-	 * Add a enemy to the game board from a {@code WaveItem}
-	 */
+ 
+	/** Add a enemy to the game board from a {@code WaveItem} */
 	private void addEnemy(WaveItem wi){
+		if(wi == null) {
+			return;
+		}
+		
 		EnemyList enemies = board.getEnemies();
 		enemies.add(wi.getEnemy());
 	}

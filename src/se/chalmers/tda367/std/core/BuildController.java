@@ -46,6 +46,7 @@ class BuildController {
 	 * @return - True if position is buildable on board.
 	 */
 	public boolean isBuildableSpot(BoardPosition pos) {
+		if(!board.posOnBoard(pos)) return false;
 		return board.getTileAt(pos) instanceof IBuildableTile;
 	}
 
