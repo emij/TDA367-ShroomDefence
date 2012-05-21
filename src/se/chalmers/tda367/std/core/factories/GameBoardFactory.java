@@ -19,6 +19,7 @@ public class GameBoardFactory implements IFactory<IGameBoard, Integer> {
 	 * Create a new game board. 
 	 * Effectively a level of the game.
 	 * @param level - the level to create. Controls what map are loaded etc.
+	 * @return a {@code IGameBoard} if able to create one, else null;
 	 */
 	@Override
 	public IGameBoard create(Integer level) {
@@ -31,7 +32,10 @@ public class GameBoardFactory implements IFactory<IGameBoard, Integer> {
 			e.printStackTrace();
 		}
 		
-		return new GameBoard(map);
+		if(map == null)
+			return null;
+		else
+			return new GameBoard(map);
 	}
 
 }
