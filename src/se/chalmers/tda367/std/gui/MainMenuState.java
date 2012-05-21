@@ -9,6 +9,14 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyBasicGameState;
 
+/**
+ * State which will be first shown when the game starts. Acts as a
+ * central gui component from where other states may be reached.
+ * Will be initiated and called from {@code STDGame}.
+ * @author Johan Gustafsson
+ * @date 2012-04-23
+ */
+
 public class MainMenuState extends NiftyBasicGameState implements ScreenController {
 	private int stateID;
 	private StateBasedGame state;

@@ -29,7 +29,8 @@ import se.chalmers.tda367.std.utilities.NativeSprite;
 import se.chalmers.tda367.std.utilities.Position;
 
 /**
- * Class for rendering the gameplay graphics.
+ * In-game graphics will be drawn by this class.
+ * Will be used by {@code GameplayState} as main graphic-renderer.
  * @author Johan Gustafsson
  * @date 2012-05-15
  */

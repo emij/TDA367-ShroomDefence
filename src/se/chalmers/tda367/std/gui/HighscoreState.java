@@ -18,6 +18,13 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyBasicGameState;
 
+/**
+ * State for presenting the highscores through a graphical interface.
+ * Will be initiated by {@code STDGame} and called by {@code MainMenuState}.
+ * @author Johan Gustafsson
+ * @date 2012-05-13
+ */
+
 public class HighscoreState extends NiftyBasicGameState implements ScreenController {
 	private int stateID;
 	private StateBasedGame state;
