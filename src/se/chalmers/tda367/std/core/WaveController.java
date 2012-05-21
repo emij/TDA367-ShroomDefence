@@ -29,7 +29,7 @@ class WaveController {
 	/** The delay (in milliseconds) before the first enemy is placed on the game board */
 	private static final int INITIAL_WAVE_DELAY = 100;
 	
-	private GameBoard board;
+	private IGameBoard board;
 	private IPlayer player;
 	private Timer releaseTimer;
 	private WaveItem nextEnemy;
@@ -37,14 +37,12 @@ class WaveController {
 	private boolean waveHasBeenCompleted;
 	
 
-	public WaveController(GameBoard board, IPlayer player) {
+	public WaveController(IGameBoard board, IPlayer player) {
 		this.board = board;
 		this.player = player;
 		waveHasBeenCompleted = false;
 		releaseTimer = new Timer(INITIAL_WAVE_DELAY, new WaveReleaseTimerListener());
 	}
-	
-	// TODO: Add start/stop methods and send appropriate events when called.
 
 	/**
 	 * Starts a new wave

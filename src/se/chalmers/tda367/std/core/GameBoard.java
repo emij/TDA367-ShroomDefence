@@ -8,7 +8,6 @@ import com.google.common.eventbus.Subscribe;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.events.EnemyEnteredBaseEvent;
 import se.chalmers.tda367.std.core.tiles.*;
-import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.*;
 
 /**
@@ -17,7 +16,7 @@ import se.chalmers.tda367.std.utilities.*;
  * @modified Emil Johansson, Emil Edholm (Apr 28, 2012)
  * @date Mar 22, 2012
  */
-public class GameBoard {
+public class GameBoard implements IGameBoard {
 	private IBoardTile[][] board;
 	private final EnemyList enemies;
 	
@@ -51,12 +50,7 @@ public class GameBoard {
 
 	}
 	
-	/**
-	 * Returns a list of {@code Attackable} that is inside the radius of the supplied position
-	 * @param center - the center position of the "circle" to check
-	 * @param radius - the radius to check
-	 * @return A list of the {@code Attackable} inside the "circle".
-	 */
+	@Override
 	public List<Attackable> getAttackables(Position center, int radius){
 		List<IEnemy> inRadius = new ArrayList<IEnemy>();
 		InRadiusFilter filter = new InRadiusFilter(center, radius);
@@ -76,19 +70,17 @@ public class GameBoard {
 		return attackables;
 	}
 	
-	/**
-	 * Retrieves the enemies that are currently on the game board.
-	 * The actual logic behind removing and adding enemies are 
-	 * @return a list of EnemyItems that are currently ON the game board.
-	 */
+	@Override
 	public EnemyList getEnemies() {
 		return enemies;
 	}
 	
+	@Override
 	public int getPlayerBaseHealth() {
 		return getPlayerBase().getHealth();
 	}
 	
+	/** Returns the IPlayerBase located on the board  */
 	private IPlayerBase getPlayerBase() {
 		return (IPlayerBase) getTileAt(playerBasePos);
 	}
@@ -97,24 +89,8 @@ public class GameBoard {
 	public void enemyEnteredBase(EnemyEnteredBaseEvent e) {
 		getPlayerBase().decreaseHealth();
 	}
-
-	/**
-	 * Move the IBoardTile from the old position to the new position
-	 * @param oldP
-	 * @param newP
-	 */
-	public void moveTile(BoardPosition oldP, BoardPosition newP){
-		IBoardTile newPosTile = getTileAt(newP);
-		
-		placeTile(getTileAt(oldP), newP);
-		placeTile(newPosTile, oldP);
-	}
 	
-	/**
-	 * Place given tile on given position.
-	 * @param tile
-	 * @param p
-	 */
+	@Override
 	public void placeTile(IBoardTile tile, BoardPosition p){
 		if(posOnBoard(p)) {
 			board[p.getX()][p.getY()] = tile;
@@ -123,30 +99,19 @@ public class GameBoard {
 		}
 	}
 	
-	/**
-	 * Returns the tile from given x and y values.
-	 * @param x
-	 * @param y
-	 * @return IBoardTile from given x and y values.
-	 */
+	@Override
 	public IBoardTile getTileAt(int x, int y) {
+		if(!posOnBoard(x, y))
+			throw new IllegalArgumentException("Invalid x/y. x = " + x + ", y = " + y);
 		return board[x][y];
 	}
 	
-	/**
-	 * Returns the tile from given position.
-	 * @param p
-	 * @return IBoardTile from given position.
-	 */
+	@Override
 	public IBoardTile getTileAt(BoardPosition p){
 		return getTileAt(p.getX(), p.getY());
 	}
 	
-	/**
-	 * Check if a given x and y values is inside the boundaries of the board.
-	 * @param p
-	 * @return true if given x and y values are on the game board.
-	 */
+	@Override
 	public boolean posOnBoard(int x, int y){
 		if(x < 0 || y < 0) {
 			return false;
@@ -157,20 +122,13 @@ public class GameBoard {
 		return true;
 	}
 	
-	/**
-	 * Check if a given position is inside the boundaries of the board.
-	 * @param p
-	 * @return true if position is on the game board.
-	 */
+	@Override
 	public boolean posOnBoard(BoardPosition p){
 		return posOnBoard(p.getX(), p.getY());
 	}
 	
 	
-	/**
-	 * Overrides toString
-	 * @return a string representation of the game board.
-	 */
+	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		for (int x = 0; x < board.length; x++) {
@@ -184,57 +142,20 @@ public class GameBoard {
 		return str.toString();
 		
 	}
-	
-	/**
-	 * @return the width of the game board.
-	 */
+
+	@Override
 	public int getWidth() {
 		return width;
 	}
 	
-	/**
-	 * @return the height of the game board.
-	 */
+	@Override
 	public int getHeight() {
 		return height;
 	}
 	
-	/**
-	 * Method to get the end/goal position on the game board.
-	 * @return a position containing the coordinates of the end/goal position.
-	 */
+	@Override
 	public BoardPosition getEndPos() {
 		return playerBasePos;
-	}
-	
-	/**
-	 * Method for checking if a given position on the game board is buildable.
-	 * @param p position to check if buildable.
-	 * @return true if given position is buildable. Returns false if the position isn't buildable or on the game board.
-	 */
-	public boolean canBuildAt(BoardPosition p) {
-		if(!posOnBoard(p)) {
-			return false;
-		}
-		return getTileAt(p) instanceof IBuildableTile;
-	}
-	
-	/**
-	 * Retrieves all the towers currently on the game board.
-	 * @return a list of towers currently placed on the game board.
-	 */
-	public List<ITower> getTowersOnBoard(){
-		List<ITower> towers = new ArrayList<ITower>();
-		
-		for(int y = 0; y < height; y++){
-			for(int x = 0; x < width; x++){
-				if(getTileAt(x, y) instanceof ITower){
-					towers.add((ITower) getTileAt(x, y));
-				}
-			}
-		}
-		
-		return towers;
 	}
 	
 	/**

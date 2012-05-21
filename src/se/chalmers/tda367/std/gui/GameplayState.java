@@ -362,7 +362,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	
 	/** Check for input that should interact with the game in some way */
 	private void checkForInput() {
-		GameBoard board = gameControl.getGameBoard();
+		IGameBoard board = gameControl.getGameBoard();
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 		
