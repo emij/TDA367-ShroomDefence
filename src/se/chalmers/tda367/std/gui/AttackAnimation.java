@@ -24,6 +24,11 @@ class AttackAnimation {
 		isAttackOver = false;
 	}
 	
+	/**
+	 * Updates the attacks duration with the time since last update.
+	 * If the accumulated duration is longer than the duration of the attack it will signal the attack as over.
+	 * @param delta the time since last update in milliseconds.
+	 */
 	public void updateDuration(int delta) {
 		timeSinceLastUpdate += delta;
 		if(timeSinceLastUpdate > duration) {
@@ -31,14 +36,26 @@ class AttackAnimation {
 		}
 	}
 	
+	/**
+	 * Checks to see if the attack is over or still going.
+	 * @return true if the attack is over, false otherwise.
+	 */
 	public boolean isAttackOver() {
 		return isAttackOver;
 	}
 	
+	/**
+	 * Get the position from where the attack was fired.
+	 * @return position from where the attack was fired.
+	 */
 	public Position getFromPos() { 
 		return from;
 	}
 	
+	/**
+	 * Get the position from where the attack landed.
+	 * @return position from where the attack landed.
+	 */
 	public Position getToPos() {
 		return to;
 	}
