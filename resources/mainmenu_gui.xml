@@ -8,8 +8,8 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
     
     <screen id="start" defaultFocusElement="buttonStartGame" 
         controller="se.chalmers.tda367.std.gui.MainMenuState" 
-        inputMappingPre="se.chalmers.tda367.std.core.GameInputMapping" 
-        inputMapping="se.chalmers.tda367.std.core.GameInputMapping">
+        inputMappingPre="se.chalmers.tda367.std.gui.GameInputMapping" 
+        inputMapping="se.chalmers.tda367.std.gui.GameInputMapping">
         
         <layer childLayout="center">
             <panel id="backgroundPanel" height="100%" width="100%" childLayout="vertical" 
