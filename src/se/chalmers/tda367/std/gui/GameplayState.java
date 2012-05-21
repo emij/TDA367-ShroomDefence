@@ -33,6 +33,13 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.slick2d.NiftyOverlayBasicGameState;
 
+/**
+ * This class represents the gameplay state. This state let's the player interact with and
+ * play the game via a graphical user interface.
+ * Will be initiated by {@code STDGame} and called from {@code MainMenuState}.
+ * @author Johan Gustafsson
+ * @date 2012-04-25
+ */
 
 public class GameplayState extends NiftyOverlayBasicGameState implements ScreenController {
 	private int stateID, tileScale;

@@ -15,6 +15,7 @@ import de.lessvoid.nifty.screen.Screen;
 
 /**
  * Class for rendering and showing the gameplay gui.
+ * Will be used by {@code GameplayState} as renderer.
  * @author Johan Gustafsson
  * @date 2012-05-15
  */

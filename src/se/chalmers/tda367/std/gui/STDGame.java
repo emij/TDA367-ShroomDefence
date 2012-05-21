@@ -7,6 +7,13 @@ import org.newdawn.slick.state.StateBasedGame;
 import se.chalmers.tda367.std.core.GameController;
 import se.chalmers.tda367.std.core.Player;
 
+/**
+ * This will initiate all current gui states and start {@code MainMenuState}.
+ * Will be called by {@code Main}.
+ * @author Johan Gustafsson
+ * @date 2012-03-28
+ */
+
 public class STDGame extends StateBasedGame {
 	
     static final int MAINMENUSTATE = 0;
