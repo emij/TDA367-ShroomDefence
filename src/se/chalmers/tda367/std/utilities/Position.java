@@ -114,7 +114,8 @@ public class Position implements Serializable {
 		
 		// Safe to cast.
 		Position p = (Position)rhs;
-		return x == p.x && y == p.y;
+		return Float.floatToIntBits(x) == Float.floatToIntBits(p.x) && 
+				Float.floatToIntBits(y) == Float.floatToIntBits(p.y);
 	}
 	
 	public void move(float dx, float dy){
