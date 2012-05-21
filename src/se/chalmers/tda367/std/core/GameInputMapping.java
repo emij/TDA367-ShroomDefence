@@ -14,9 +14,6 @@ public class GameInputMapping implements NiftyInputMapping {
 
 	@Override
 	public NiftyInputEvent convert(final KeyboardInputEvent inputEvent) {
-		if (inputEvent.getKey() == KeyboardInputEvent.KEY_SPACE) {
-	        return null;
-		}
 		return null;
 	}
 }
