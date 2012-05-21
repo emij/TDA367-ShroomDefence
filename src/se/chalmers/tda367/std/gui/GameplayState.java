@@ -15,7 +15,6 @@ import com.google.common.eventbus.Subscribe;
 import se.chalmers.tda367.std.core.*;
 import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.core.events.*;
-import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.towers.*;
 import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.EventBus;
@@ -165,6 +164,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		
 		if(!gameOver && !optionsScreenIsOpen) {
 			gameControl.updateGameState(delta);
+			gameRenderer.updateAttackTimers(delta);
 			
 			checkForMovement(delta);
 			checkForInput();

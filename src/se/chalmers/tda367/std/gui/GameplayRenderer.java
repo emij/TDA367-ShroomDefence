@@ -1,7 +1,7 @@
 package se.chalmers.tda367.std.gui;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -52,7 +52,7 @@ public class GameplayRenderer {
 	
 	private void init() throws SlickException {
 		tileScale = prop.getTileScale();
-		attacksList = new LinkedList<AttackAnimation>();
+		attacksList = new CopyOnWriteArrayList<AttackAnimation>();
 		initAnimations();
 		
 		EventBus.INSTANCE.register(this);
@@ -149,21 +149,15 @@ public class GameplayRenderer {
 	
 	/**Render attacks from the tower attacking to the enemy being attacked. Uses inner class {@code AttackAnimationDuration}.*/
 	public void renderAttacks(Graphics g) {
-		List<AttackAnimation> tmpList = new LinkedList<AttackAnimation>(attacksList);
+		//List<AttackAnimation> tmpList = new LinkedList<AttackAnimation>(attacksList);
 		
-		for(AttackAnimation attack : tmpList) {
+		for(AttackAnimation attack : attacksList) {
 			Position from = attack.getFromPos();
 			Position to = attack.getToPos();
 			
 			g.drawLine(from.getX()+tileScale/2, from.getY()+tileScale/2,
 					   to.getX()+tileScale/2, to.getY()+tileScale/2);
 			g.drawAnimation(explosionAnimation, to.getX(), to.getY());
-			
-			attack.decreaseDuration(1);
-			
-			if(attack.getRemainigDuration() == 0) {
-				attacksList.remove(attack);
-			}
 		}
 	}
 	
@@ -175,8 +169,20 @@ public class GameplayRenderer {
 	 */
 	@Subscribe
 	public void renderTowerShooting(TowerShootingEvent event){
-		AttackAnimation attack = new AttackAnimation(event.getFromPosition(), event.getToPosition(), 1000);
+		AttackAnimation attack = new AttackAnimation(event.getFromPosition(), event.getToPosition(), 100);
 		attacksList.add(attack);
+	}
+	
+	public void updateAttackTimers(int delta) {
+		if(attacksList != null && !attacksList.isEmpty()) {
+			for(AttackAnimation attack : attacksList) {
+				attack.updateDuration(delta);
+				
+				if(attack.isAttackOver()) {
+					attacksList.remove(attack);
+				}
+			}
+		}
 	}
 	
 	
