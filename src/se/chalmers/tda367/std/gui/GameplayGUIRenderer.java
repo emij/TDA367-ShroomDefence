@@ -2,7 +2,7 @@ package se.chalmers.tda367.std.gui;
 
 import com.google.common.eventbus.Subscribe;
 
-import se.chalmers.tda367.std.core.GameController;
+import se.chalmers.tda367.std.core.IGame;
 import se.chalmers.tda367.std.core.events.WaveEndedEvent;
 import se.chalmers.tda367.std.core.events.WaveStartedEvent;
 import se.chalmers.tda367.std.core.tiles.towers.IAttackTower;
@@ -22,9 +22,9 @@ import de.lessvoid.nifty.screen.Screen;
 class GameplayGUIRenderer {
 	private Nifty nifty;
 	private Element lifeLabel, scoreLabel, levelLabel, playerMoneyLabel, startWaveButton;
-	private GameController gameControl;
+	private IGame gameControl;
 	
-	public GameplayGUIRenderer(GameController gameControl, Nifty nifty) {
+	public GameplayGUIRenderer(IGame gameControl, Nifty nifty) {
 		this.nifty = nifty;
 		this.gameControl = gameControl;
 		init();

@@ -10,6 +10,7 @@ import com.google.inject.Guice;
 import se.chalmers.tda367.std.core.events.WaveEndedEvent;
 import se.chalmers.tda367.std.core.events.WaveStartedEvent;
 import se.chalmers.tda367.std.core.factories.GameBoardFactory;
+import se.chalmers.tda367.std.core.factories.IFactory;
 import se.chalmers.tda367.std.core.factories.WaveFactory;
 import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.TerrainTile;
@@ -28,7 +29,7 @@ import se.chalmers.tda367.std.utilities.Prime;
  * @modified Johan Gustafsson
  * @date Mar 22, 2012
  */
-public class GameController {
+public class GameController implements IGame {
 	
 	private IPlayer player;
 	private IGameBoard board;
@@ -37,15 +38,18 @@ public class GameController {
 	private Properties prop = Properties.INSTANCE;
 	private int tileScale;
 	
-	private final GameBoardFactory boardFactory;
+	private final IFactory<IGameBoard, Integer> boardFactory;
 	
 	private int releasedWaves = 0; // Number of released waves at the current level.
 	private int level;
 	private int maxWaveCount = 2;  // The number of waves that should be released before level up.
 	
+	public GameController() {
+		this(Guice.createInjector().getInstance(IPlayer.class));
+	}
 	
-	/** Constructor for the GameController, requires a player to work.
-	 * 
+	/** 
+	 * Constructor for the GameController, requires a player to work.
 	 * @param player - player playing the game.
 	 */
 	public GameController(IPlayer player){
@@ -65,17 +69,12 @@ public class GameController {
 		waveControl = new WaveController(board, player);
 	}
 	
-	/**
-	 * Update the game to the next state.
-	 * @param delta - the amount of time in milliseconds from the previous update.
-	 */
+	@Override
 	public void updateGameState(final int delta) {
 		waveControl.updateWaveRelated(delta);
 	}
 	
-	/** 
-	 * Starts the next wave of enemies.
-	 */
+	@Override
 	public void nextWave(){
 		Wave wave = new WaveFactory().create(level);
 		waveControl.startWave(wave);
@@ -105,6 +104,7 @@ public class GameController {
 		init();
 	}
 
+	@Override
 	public void resetGame() {
 		player = Guice.createInjector().getInstance(IPlayer.class);
 		releasedWaves = 0;
@@ -113,99 +113,57 @@ public class GameController {
 		init();
 	}
 	
-	/** Builds a tower on the board.
-	 * 
-	 * @param tower - Tower to be built.
-	 * @param pos - Position to build upon.
-	 * @return - True if tower was build otherwise false
-	 */
+	@Override
 	public boolean buildTower(ITower tower, BoardPosition pos){
 		return buildControl.buildTower(tower, pos);
 	}
 	
-	/** Sells a tower if possible.
-	 * 
-	 * @param tower - Tower to be sold.
-	 * @param pos - Position on which the tower is built.
-	 * @return - True if tower is sold.
-	 */
+	@Override
 	public boolean sellTower(ITower tower, BoardPosition pos){
 		return buildControl.sellTower(tower, pos);
 	}
 	
-	/** Upgrades a tower if possible.
-	 * 
-	 * @param tower - Tower to be upgraded.
-	 * @return - True if tower was upgraded.
-	 */
+	@Override
 	public boolean upgradeTower(ITower tower){
 		return buildControl.upgradeTower(tower);
 	}
 
-	/** Tells if a player can afford to upgrade a tower.
-	 * 
-	 * @param tower - Tower considered to upgrade.
-	 * @return - True if player can afford upgrade.
-	 */
+	@Override
 	public boolean playerCanAffordUpgrade(ITower tower) {
 		return buildControl.playerCanAffordUpgrade(tower);
 	}
 	
-	/** Tells if a spot is buildable or not.
-	 * 
-	 * @param pos - Position to test buildability on.
-	 * @return - True if position is buildable on board.
-	 */
+	@Override
 	public boolean isBuildableSpot(BoardPosition pos) {
 		return buildControl.isBuildableSpot(pos);
 	}
 	
-	/** Tells if a player can afford a tower.
-	 * 
-	 * @param tower - Tower to test affordability on.
-	 * @return - True if player can afford upgrade.
-	 */
+	@Override
 	public boolean playerCanAffordTower(ITower tower) {
 		return buildControl.playerCanAffordTower(tower);
 	}
 	
-	/**
-	 *  Returns how many waves that have been released
-	 * 
-	 * @return number of waves released
-	 */
+	@Override
 	public int getWavesReleased() {
 		return releasedWaves;
 	}
 	
-	/**
-	 * Returns the current level.
-	 * @return the current level.
-	 */
+	@Override
 	public int getLevel() {
 		return this.level;
 	}
 	
-	/**
-	 * @return the player.
-	 */
+	@Override
 	public IPlayer getPlayer() {
 		return player;
 	}
 
-	/**
-	 * @return the game board
-	 */
+	@Override
 	public IGameBoard getGameBoard() {
 		return board;
 	}
 	
-
-	/**
-	 * Causes the player to move depending on the {@code MovementEnum} provided.
-	 * @param direction Enum to use for calculation.
-	 * @param delta time in milliseconds since last update.
-	 */
+	@Override
 	public void moveChar(MovementEnum direction, int delta) {
 		float moveSpd = player.getCharacter().getSpeed();
 		Position playerPos = player.getCharacter().getPos();
@@ -216,10 +174,7 @@ public class GameController {
 		}
 	}
 	
-	/**
-	 * Causes the player to "jump" and move a tile forward if that tile is a buildable or terrain tile.
-	 * @param direction enum representing the direction, will be used to calculate where the jump will land.
-	 */
+	@Override
 	public void tryToJump(MovementEnum direction) {
 		Position playerPos = player.getCharacter().getPos();
 		Position newPos = direction.newJumpPosition(playerPos);
@@ -229,12 +184,7 @@ public class GameController {
 		}
 	}
 	
-	/**
-	 * Method to check if a given position is a buildable or terrain tile.
-	 * This determines if player character can move to this position or not.
-	 * @param p position to check.
-	 * @return true if it's a {@code IBuildableTile} or {@code TerrainTile}.
-	 */
+	@Override
 	public boolean isAbleToWalkTo(Position p) {
 		//Calculate on which tile the position given is on.
 		int x = (int)(p.getX()/tileScale);
