@@ -30,14 +30,14 @@ class WaveController {
 	private static final int INITIAL_WAVE_DELAY = 100;
 	
 	private GameBoard board;
-	private Player player;
+	private IPlayer player;
 	private Timer releaseTimer;
 	private WaveItem nextEnemy;
 	private Wave wave;
 	private boolean waveHasBeenCompleted;
 	
 
-	public WaveController(GameBoard board, Player player) {
+	public WaveController(GameBoard board, IPlayer player) {
 		this.board = board;
 		this.player = player;
 		waveHasBeenCompleted = false;

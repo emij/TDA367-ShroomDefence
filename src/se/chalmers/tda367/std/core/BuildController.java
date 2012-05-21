@@ -14,10 +14,10 @@ import se.chalmers.tda367.std.utilities.BoardPosition;
 
 class BuildController {
 	private GameBoard board;
-	private Player player;
+	private IPlayer player;
 	
 	
-	public BuildController(GameBoard board, Player player){
+	public BuildController(GameBoard board, IPlayer player){
 		this.board = board;
 		this.player = player;
 	}
