@@ -111,7 +111,7 @@ public abstract class AbstractEnemy implements IEnemy {
 		int newDmg = (!ignoreArmor) ? dmg - this.getArmor() : dmg;
 		newDmg = (newDmg > 0) ? newDmg : 0; // Remove possibility of negative dmg.
 		
-		if(newDmg > getHealth()) {
+		if(newDmg >= getHealth()) {
 			currentHealth = 0;
 			EventBus.INSTANCE.post(new EnemyDeadEvent(this));
 			return;
