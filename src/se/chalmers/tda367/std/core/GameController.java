@@ -29,7 +29,7 @@ import se.chalmers.tda367.std.utilities.Prime;
  */
 public class GameController {
 	
-	private Player player;
+	private IPlayer player;
 	private GameBoard board;
 	private BuildController buildControl;
 	private WaveController waveControl;
@@ -47,7 +47,7 @@ public class GameController {
 	 * 
 	 * @param player - player playing the game.
 	 */
-	public GameController(Player player){
+	public GameController(IPlayer player){
 		EventBus.INSTANCE.register(this);
 		
 		this.player = player;
@@ -188,7 +188,7 @@ public class GameController {
 	/**
 	 * @return the player.
 	 */
-	public Player getPlayer() {
+	public IPlayer getPlayer() {
 		return player;
 	}
 
