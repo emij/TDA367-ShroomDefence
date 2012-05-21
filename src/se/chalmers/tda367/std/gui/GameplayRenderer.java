@@ -14,8 +14,8 @@ import org.newdawn.slick.geom.Circle;
 import com.google.common.eventbus.Subscribe;
 
 import se.chalmers.tda367.std.core.EnemyList;
-import se.chalmers.tda367.std.core.GameBoard;
 import se.chalmers.tda367.std.core.GameController;
+import se.chalmers.tda367.std.core.IGameBoard;
 import se.chalmers.tda367.std.core.IPlayerCharacter;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
@@ -87,7 +87,7 @@ public class GameplayRenderer {
 	
 	
 	private void renderTiles() {
-		GameBoard board = gameControl.getGameBoard();
+		IGameBoard board = gameControl.getGameBoard();
 		
         for(int y = 0; y < board.getHeight(); y++){
         	for(int x = 0; x < board.getWidth(); x++){
@@ -101,7 +101,7 @@ public class GameplayRenderer {
 	
 	
 	private void renderEnemies(Graphics g) {
-		GameBoard board = gameControl.getGameBoard();
+		IGameBoard board = gameControl.getGameBoard();
 		EnemyList enemies = board.getEnemies();
 		
         for(IEnemy enemy : enemies) {
@@ -127,11 +127,11 @@ public class GameplayRenderer {
 	/**Renders the small square and the big circle around the mouse location that gives the player visual feedback
 	   showing if he can build on that tile or not and how far the tower can fire.*/
 	void renderBuildingFeedback(Graphics g, ITower tower) {
-		GameBoard board = gameControl.getGameBoard();
 		int x = input.getMouseX()/tileScale;
 		int y = input.getMouseY()/tileScale;
 		
-		if(board.canBuildAt(BoardPosition.valueOf(x, y))) {
+		
+		if(gameControl.isBuildableSpot(BoardPosition.valueOf(x, y))) {
 			g.setColor(Color.green);
 			g.setLineWidth(3);
 			g.drawRect(x * tileScale, y * tileScale, tileScale, tileScale);

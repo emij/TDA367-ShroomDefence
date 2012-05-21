@@ -1,10 +1,14 @@
 package se.chalmers.tda367.std.core;
 
+import com.google.inject.ImplementedBy;
+
 /**
  * Used to represent a human game player. 
+ * Contains the game score, amount of money in the treasury etc. 
  * @author Emil Edholm
  * @date   May 21, 2012
  */
+@ImplementedBy(Player.class)
 public interface IPlayer {
 
 	/**

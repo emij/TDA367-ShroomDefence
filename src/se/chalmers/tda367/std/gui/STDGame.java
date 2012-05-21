@@ -4,8 +4,10 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.google.inject.Guice;
+
 import se.chalmers.tda367.std.core.GameController;
-import se.chalmers.tda367.std.core.Player;
+import se.chalmers.tda367.std.core.IPlayer;
 
 /**
  * This will initiate all current gui states and start {@code MainMenuState}.
@@ -29,7 +31,7 @@ public class STDGame extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer gameCon) throws SlickException {
-		gameControl = new GameController(new Player());
+		gameControl = new GameController(Guice.createInjector().getInstance(IPlayer.class));
 		
 		
 		this.addState(new MainMenuState(MAINMENUSTATE));

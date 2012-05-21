@@ -1,6 +1,7 @@
 package se.chalmers.tda367.std.core;
 
 import se.chalmers.tda367.std.core.tiles.BuildableTile;
+import se.chalmers.tda367.std.core.tiles.IBuildableTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.BoardPosition;
 
@@ -13,11 +14,11 @@ import se.chalmers.tda367.std.utilities.BoardPosition;
  */
 
 class BuildController {
-	private GameBoard board;
+	private IGameBoard board;
 	private IPlayer player;
 	
 	
-	public BuildController(GameBoard board, IPlayer player){
+	public BuildController(IGameBoard board, IPlayer player){
 		this.board = board;
 		this.player = player;
 	}
@@ -45,7 +46,7 @@ class BuildController {
 	 * @return - True if position is buildable on board.
 	 */
 	public boolean isBuildableSpot(BoardPosition pos) {
-		return board.canBuildAt(pos);
+		return board.getTileAt(pos) instanceof IBuildableTile;
 	}
 
 	/** Tells if a player can afford a tower.

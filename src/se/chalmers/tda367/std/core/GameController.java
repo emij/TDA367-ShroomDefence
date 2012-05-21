@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Guice;
 
 import se.chalmers.tda367.std.core.events.WaveEndedEvent;
 import se.chalmers.tda367.std.core.events.WaveStartedEvent;
@@ -30,7 +31,7 @@ import se.chalmers.tda367.std.utilities.Prime;
 public class GameController {
 	
 	private IPlayer player;
-	private GameBoard board;
+	private IGameBoard board;
 	private BuildController buildControl;
 	private WaveController waveControl;
 	private Properties prop = Properties.INSTANCE;
@@ -105,7 +106,7 @@ public class GameController {
 	}
 
 	public void resetGame() {
-		player = new Player();
+		player = Guice.createInjector().getInstance(IPlayer.class);
 		releasedWaves = 0;
 		level = 1;
 		
@@ -195,7 +196,7 @@ public class GameController {
 	/**
 	 * @return the game board
 	 */
-	public GameBoard getGameBoard() {
+	public IGameBoard getGameBoard() {
 		return board;
 	}
 	
