@@ -12,26 +12,27 @@ import se.chalmers.tda367.std.utilities.Position;
  */
 class AttackAnimation {
 	private int duration;
+	private int timeSinceLastUpdate;
+	private boolean isAttackOver;
 	private Position from, to;
 	
 	public AttackAnimation(Position from, Position to, int duration) {
 		this.duration = duration;
 		this.from = from;
 		this.to = to;
+		timeSinceLastUpdate = 0;
+		isAttackOver = false;
 	}
 	
-	public void decreaseDuration(int delta) {
-		if(duration > 0) {
-			//TODO: add correct implementation for relative timespan on attacks.
-			duration -= delta*10;
-		}
-		else {
-			duration = 0;
+	public void updateDuration(int delta) {
+		timeSinceLastUpdate += delta;
+		if(timeSinceLastUpdate > duration) {
+			isAttackOver = true;
 		}
 	}
 	
-	public int getRemainigDuration() {
-		return duration;
+	public boolean isAttackOver() {
+		return isAttackOver;
 	}
 	
 	public Position getFromPos() { 
