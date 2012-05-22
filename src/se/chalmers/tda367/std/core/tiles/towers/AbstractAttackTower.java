@@ -90,7 +90,7 @@ public abstract class AbstractAttackTower implements IAttackTower{
 
 	@Override
 	public int refund() {
-		return (int)(0.75 * (baseCost + (0.5*currentLevel*baseCost))); //TODO change calculation
+		return (int)(0.75 * (baseCost + (0.5*(currentLevel-1)*baseCost))); 
 	}
 
 	@Override
