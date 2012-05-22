@@ -236,7 +236,7 @@ public abstract class AbstractEnemy implements IEnemy {
 	public int compareTo(Attackable o) {
 		if(o instanceof IEnemy){
 			IEnemy tmp = (IEnemy)o;
-			return Float.compare(distanceTraveled, tmp.getDistanceTraveled());
+			return Float.compare(tmp.getDistanceTraveled(), distanceTraveled);
 		}
 		return 0;
 	}

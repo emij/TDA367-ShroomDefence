@@ -15,6 +15,11 @@ import se.chalmers.tda367.std.utilities.Position;
 import se.chalmers.tda367.std.utilities.SpriteCreator;
 import se.chalmers.tda367.std.tests.NativeDummySprite;
 
+/**
+ * Unit test for {@link se.chalmers.tda367.std.core.tiles.towers.BasicEnemy}.
+ * @author Johan Andersson
+ * @date   22 may 2012
+ */
 public class TestBasicEnemy {
 	private IEnemy enemy;
 	

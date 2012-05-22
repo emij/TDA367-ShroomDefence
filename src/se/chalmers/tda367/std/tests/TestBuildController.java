@@ -1,5 +1,5 @@
 package se.chalmers.tda367.std.tests;
-
+/*
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -16,9 +16,15 @@ import se.chalmers.tda367.std.core.exported.BasicAttackTower;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
 import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.SpriteCreator;
-
+*/ 
+/**
+ * Unit test for {@link se.chalmers.tda367.std.core.tiles.towers.BuildController}.
+ * @author Johan Andersson
+ * @date   22 may 2012
+ */
+// To test BuildController you will need to change it to a public class
 public class TestBuildController {
-
+/*
 	GameBoard board;
 	Player player;
 	BuildController buildControl;
@@ -127,21 +133,5 @@ public class TestBuildController {
 		assertFalse(buildControl.isTowerPosition(BoardPosition.valueOf(5, 5)));
 		assertTrue(buildControl.isTowerPosition(BoardPosition.valueOf(1, 1)));
 	
-	}
-	
-	
-
-	
-	
-	
-	
-	
-	
-
-
-
-	
-	
-	
-
+	} */
 }
