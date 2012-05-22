@@ -49,9 +49,4 @@ public class TestWaveController {
 		Wave w = createBasicWave(3);
 		wCont.startWave(w);
 	}
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
-
 }
