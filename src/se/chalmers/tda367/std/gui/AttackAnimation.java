@@ -12,32 +12,50 @@ import se.chalmers.tda367.std.utilities.Position;
  */
 class AttackAnimation {
 	private int duration;
+	private int timeSinceLastUpdate;
+	private boolean isAttackOver;
 	private Position from, to;
 	
 	public AttackAnimation(Position from, Position to, int duration) {
 		this.duration = duration;
 		this.from = from;
 		this.to = to;
+		timeSinceLastUpdate = 0;
+		isAttackOver = false;
 	}
 	
-	public void decreaseDuration(int delta) {
-		if(duration > 0) {
-			//TODO: add correct implementation for relative timespan on attacks.
-			duration -= delta*10;
+	/**
+	 * Updates the attacks duration with the time since last update.
+	 * If the accumulated duration is longer than the duration of the attack it will signal the attack as over.
+	 * @param delta the time since last update in milliseconds.
+	 */
+	public void updateDuration(int delta) {
+		timeSinceLastUpdate += delta;
+		if(timeSinceLastUpdate > duration) {
+			isAttackOver = true;
 		}
-		else {
-			duration = 0;
-		}
 	}
 	
-	public int getRemainigDuration() {
-		return duration;
+	/**
+	 * Checks to see if the attack is over or still going.
+	 * @return true if the attack is over, false otherwise.
+	 */
+	public boolean isAttackOver() {
+		return isAttackOver;
 	}
 	
+	/**
+	 * Get the position from where the attack was fired.
+	 * @return position from where the attack was fired.
+	 */
 	public Position getFromPos() { 
 		return from;
 	}
 	
+	/**
+	 * Get the position from where the attack landed.
+	 * @return position from where the attack landed.
+	 */
 	public Position getToPos() {
 		return to;
 	}

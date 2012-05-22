@@ -15,7 +15,6 @@ import com.google.common.eventbus.Subscribe;
 import se.chalmers.tda367.std.core.*;
 import se.chalmers.tda367.std.core.anno.Tower;
 import se.chalmers.tda367.std.core.events.*;
-import se.chalmers.tda367.std.core.tiles.*;
 import se.chalmers.tda367.std.core.tiles.towers.*;
 import se.chalmers.tda367.std.utilities.BoardPosition;
 import se.chalmers.tda367.std.utilities.EventBus;
@@ -75,7 +74,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		towerIsChoosen = false;
 		optionsScreenIsOpen = false;
 		gameOver = false;
-		
 		
 		gameRenderer = new GameplayRenderer(gameControl, input);
 		guiRenderer = new GameplayGUIRenderer(gameControl, nifty);
@@ -165,6 +163,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		
 		if(!gameOver && !optionsScreenIsOpen) {
 			gameControl.updateGameState(delta);
+			gameRenderer.updateAttackTimers(delta);
 			
 			checkForMovement(delta);
 			checkForInput();
@@ -230,29 +229,25 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	}
 	
 	/**
-	 * Listener to all primary mouse click events from elements which has an id that starts with "close".
+	 * Listener to all primary mouse click events from elements which has an id that starts with "closePopup".
 	 * It will then depending on what element which caused the event act accordingly.
 	 * @param id of the element that has published the event.
 	 * @param event instance of {@code NiftyMousePrimaryClickedEvent} class provided by nifty.
 	 */
-	@NiftyEventSubscriber(pattern="close.*")
-	public void onClick(String id, NiftyMousePrimaryClickedEvent event) {
+	@NiftyEventSubscriber(pattern="closePopup.*")
+	public void onClosePopup(String id, NiftyMousePrimaryClickedEvent event) {
+		guiRenderer.closePopup();
 		if(optionsPopup.findElementByName(id) != null) {
-			if(optionsScreenIsOpen) {
-				guiRenderer.closePopup(optionsPopup.getId());
-			}
-			else {
-				guiRenderer.showPopup(optionsPopup.getId());
-			}
-			optionsScreenIsOpen = !optionsScreenIsOpen;
+			optionsScreenIsOpen = false;
 		}
-		else if(towerPopup.findElementByName(id) != null) {
-			guiRenderer.closePopup(towerPopup.getId());
-		}
-		else if(gameOverPopup.findElementByName(id) != null) {
-			guiRenderer.closePopup(gameOverPopup.getId());
-			endGame();
-		}
+	}
+	
+	/**
+	 * Opens the options menu and set the optionsScreenIsOpen to true.
+	 */
+	public void openOptionsMenu() {
+		guiRenderer.showPopup(optionsPopup.getId());
+		optionsScreenIsOpen = true;
 	}
 	
 	
@@ -271,7 +266,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	 * When called the last selected tower will be sold.
 	 */
 	public void sellTower() {
-		nifty.closePopup(towerPopup.getId());
+		guiRenderer.closePopup();
 		gameControl.sellTower(selectedTower, towerPos);
 	}
 	
@@ -313,7 +308,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		} catch (ClassNotFoundException | IOException e1) {
 			System.out.println(e1.getMessage());
 		}
-		guiRenderer.closePopup(gameOverPopup.getId());
+		guiRenderer.closePopup();
 		state.enterState(STDGame.MAINMENUSTATE);
 	}
 
@@ -373,19 +368,22 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		
 		if(mouseX < tileScale*board.getWidth() && mouseY < tileScale*board.getHeight()
 				 && input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			
 			int x = mouseX / tileScale;
 			int y = mouseY / tileScale;
 			BoardPosition p = BoardPosition.valueOf(x, y);
-			if(towerIsChoosen && board.getTileAt(p) instanceof IBuildableTile) {
+			if(towerIsChoosen && gameControl.isBuildableSpot(p)) {
 				gameControl.buildTower(choosenTower, p);
 				towerIsChoosen = false;
 				guiRenderer.setDefaultFocus();
 			}
-			else if(board.getTileAt(p) instanceof IAttackTower && !towerIsChoosen) {
-				selectedTower = (IAttackTower)board.getTileAt(p);
-				towerPos = p;
-				guiRenderer.updateTowerPopup(selectedTower, towerPopup);
-				guiRenderer.showPopup(towerPopup.getId());
+			else if(!towerIsChoosen && gameControl.isTowerPosition(p)) {
+				if(nifty.getTopMostPopup() == null) {
+					selectedTower = (IAttackTower)board.getTileAt(p);
+					towerPos = p;
+					guiRenderer.updateTowerPopup(selectedTower, towerPopup);
+					guiRenderer.showPopup(towerPopup.getId());
+				}
 			}
     	}
 	}

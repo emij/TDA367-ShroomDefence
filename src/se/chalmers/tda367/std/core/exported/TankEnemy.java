@@ -15,10 +15,10 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @author Johan Gustafsson
  * @date   19 apr 2012
  */
-@Enemy(name = "Sherman", description = "Represents a slow but hard tank enemy which moves slow but have lots of health.", enemyStrength = 5)
+@Enemy(name = "Sherman", description = "Represents a slow but hard tank enemy which moves slow but have lots of health.", enemyStrength = 3)
 public class TankEnemy extends AbstractEnemy {
-	//TODO: change sprite for the tank enemy.
-	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");
+	
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/tank_enemy.png");
 
 	/**
 	 *  Creates a tank enemy.

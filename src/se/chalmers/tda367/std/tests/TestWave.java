@@ -62,41 +62,12 @@ public class TestWave {
 		assertTrue(null == w.getNext());
 	}
 	
-	
 	@Test
-	public void testGetNumberOfEnemies(){
+	public void testSize(){
 		Wave w = createBasicWave(3);
-		assertTrue(w.getNumberOfEnemies() == 3);
-		
+		assertTrue(w.size() == 3);
 		w = createBasicWave(0);
-		assertTrue(w.getNumberOfEnemies() == 0);
+		assertTrue(w.size() == 0);
 	}
-	
-	@Test
-	public void testGetWaveLootValue(){
-		Wave w = createBasicWave(1);
-		assertTrue(w.getWaveLootValue() == BASIC_ENEMY_LOOT_VALUE);
-		
-		w = createBasicWave(3);
-		assertTrue(w.getWaveLootValue() == (BASIC_ENEMY_LOOT_VALUE*3));
-		
-		w = createBasicWave(0);
-		assertTrue(w.getWaveLootValue() == 0);
-		
-	}
-	
-	@Test
-	public void testGetWaveHealthValue(){
-		Wave w = createBasicWave(1);
-		assertTrue(w.getHealthValue() == BASIC_ENEMY_HEALTH);
-		
-		w = createBasicWave(3);
-		assertTrue(w.getHealthValue() == (BASIC_ENEMY_HEALTH*3));
-		
-		w = createBasicWave(0);
-		assertTrue(w.getHealthValue() == 0);
-		
-	}
-
 
 }
