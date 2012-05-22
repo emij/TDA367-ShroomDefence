@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import se.chalmers.tda367.std.core.DynamicLoader;
-import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.exported.BasicEnemy;
 import se.chalmers.tda367.std.utilities.Position;
@@ -29,12 +28,15 @@ public class TestIEnemy {
 	}
 	
 	
+	@SuppressWarnings("rawtypes") // JUnit expects a list of objects. Save to ignore.
 	@Parameterized.Parameters
 	public static Collection testEnemies(){
 		SpriteCreator.setNativeSpriteClass(NativeDummySprite.class);
-		ArrayList<IEnemy> enemiesToBeTested = new ArrayList<IEnemy>();
+		
+		List<IEnemy> enemiesToBeTested = new ArrayList<IEnemy>();
 		List<Class<IEnemy>> enemies = DynamicLoader.getEnemies();
-		for(Class<IEnemy> e:enemies){
+		
+		for(Class<IEnemy> e : enemies){
 			enemiesToBeTested.add(DynamicLoader.createInstance(e));
 		}
 		

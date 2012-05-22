@@ -25,6 +25,9 @@ public class GameBoard implements IGameBoard {
 	private final int width;
 	private final int height;
 	
+	/** Create a new game board with the specified map as a base.
+	 * @param map - base the game board on this map.
+	 */
 	public GameBoard(Map map) {
 		EventBus.INSTANCE.register(this);
 		
@@ -85,6 +88,8 @@ public class GameBoard implements IGameBoard {
 		return (IPlayerBase) getTileAt(playerBasePos);
 	}
 	
+	
+	/** Event handler for when enemy enters the base */
 	@Subscribe
 	public void enemyEnteredBase(EnemyEnteredBaseEvent e) {
 		getPlayerBase().decreaseHealth();
