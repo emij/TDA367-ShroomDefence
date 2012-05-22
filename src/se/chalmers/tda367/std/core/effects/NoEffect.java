@@ -38,6 +38,7 @@ public class NoEffect implements IEffect, Cloneable {
 		this.timePassed  = 0;
 	}
 	
+	/** Returns a shared instance of the {@code NoEffect} with no interval and no duration. */
 	public static NoEffect getInstance() {
 		if(instance == null) 
 			instance = new NoEffect();

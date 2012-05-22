@@ -32,7 +32,7 @@ public interface IEffect extends Cloneable {
 	
 	/**
 	 * Method that modifies the speed.
-	 * @return a double representing the new modified speed
+	 * @return a float representing the new modified speed
 	 */
 	public float modifySpeed(float baseSpeed);
 	

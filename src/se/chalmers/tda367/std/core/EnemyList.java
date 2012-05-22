@@ -23,6 +23,11 @@ public final class EnemyList implements Iterable<IEnemy> {
 	private final Position enemyStartPosition;
 	private final List<Position> baseWaypoints;
 	
+	/**
+	 * Create a new enemy list with the specified enemy start position and a list of waypoints from the map.
+	 * @param enemyStartPos - the position where enemies should be inserted on the game board.
+	 * @param baseWaypoints - all waypoints on the map/game board.
+	 */
 	public EnemyList(Position enemyStartPos, List<Position> baseWaypoints) {
 		EventBus.INSTANCE.register(this);
 		
@@ -36,15 +41,18 @@ public final class EnemyList implements Iterable<IEnemy> {
 		return enemies.iterator();
 	}
 	
+	/** Remove an enemy from the list */
 	public void remove(IEnemy enemy) {
 		enemies.remove(enemy);
 	}
 	
+	/** Add an enemy to the list */
 	public void add(IEnemy enemy) {
 		enemy.placeOnBoard(enemyStartPosition, new ArrayList<Position>(baseWaypoints));
 		enemies.add(enemy);
 	}
 	
+	/** Whether or not the list is empty */
 	public boolean isEmpty() {
 		return enemies.isEmpty();
 	}
@@ -57,6 +65,7 @@ public final class EnemyList implements Iterable<IEnemy> {
 		enemies.remove(e.getDeadEnemy());
 	}
 	
+	/** Event handler for when an enemy entered the player base */
 	@Subscribe
 	public void enemyEnteredBase(EnemyEnteredBaseEvent e) {
 		remove(e.getOffendingEnemy());
