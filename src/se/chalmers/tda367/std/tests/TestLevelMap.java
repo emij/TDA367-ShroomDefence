@@ -54,10 +54,10 @@ public class TestLevelMap {
 	public void testGetPlayerBasePos(){
 
 		map.setMapItem(0, 0, PlaceableTile.PLAYER_BASE_TILE);
-		assertTrue(map.getPlayerBasePos().getX() == 0 * scale && map.getPlayerBasePos().getY() == 0 * scale);
+		assertTrue(map.getPlayerBasePos().getX() == 0 && map.getPlayerBasePos().getY() == 0);
 		
 		map.setMapItem(1, 1, PlaceableTile.PLAYER_BASE_TILE);
-		assertTrue(map.getPlayerBasePos().getX() == 1 * scale && map.getPlayerBasePos().getY() == 1 * scale);
+		assertTrue(map.getPlayerBasePos().getX() == 1 && map.getPlayerBasePos().getY() == 1);
 	}
 	
 	@Test
@@ -85,7 +85,7 @@ public class TestLevelMap {
 		assertTrue(map.getEnemyStartPos().getX() == 0 && map.getEnemyStartPos().getY() == 0);
 		
 		map.setMapItem(1, 1, PlaceableTile.ENEMY_START_TILE);
-		assertTrue(map.getPlayerBasePos().getX() == 1 && map.getEnemyStartPos().getY() == 1);
+		assertTrue(map.getEnemyStartPos().getX() == 1 && map.getEnemyStartPos().getY() == 1);
 	}
 	
 }

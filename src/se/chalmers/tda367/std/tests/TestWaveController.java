@@ -1,7 +1,5 @@
 package se.chalmers.tda367.std.tests;
 
-import static org.junit.Assert.*;
-
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.junit.Before;
