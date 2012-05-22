@@ -89,7 +89,10 @@ public class GameBoard implements IGameBoard {
 	}
 	
 	
-	/** Event handler for when enemy enters the base */
+	/** 
+	 * Event handler for when enemy enters the base 
+	 * @param e - the event.
+	 */
 	@Subscribe
 	public void enemyEnteredBase(EnemyEnteredBaseEvent e) {
 		getPlayerBase().decreaseHealth();

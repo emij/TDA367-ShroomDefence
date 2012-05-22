@@ -16,6 +16,13 @@ class AttackAnimation {
 	private boolean isAttackOver;
 	private Position from, to;
 	
+	/**
+	 * Create a new attack animation holder from the given from position,
+	 * to position and from position.
+	 * @param from Position from where the attack was fired.
+	 * @param to Position the attack was fired upon.
+	 * @param duration - the duration of the attack.
+	 */
 	public AttackAnimation(Position from, Position to, int duration) {
 		this.duration = duration;
 		this.from = from;

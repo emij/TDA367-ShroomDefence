@@ -10,18 +10,28 @@ import java.io.Serializable;
  * Position coordinates ranging from {@code Float.MIN_VALUE} to {@code Float.MAX_VALUE}
  * @author Emil Johansson
  * @modified Emil Edholm (Apr 28, 2012), Johan Andersson (Mar 28, 2012)
+ * @modified Johan Gustafsson(2012-05-22)
  * @date Mar 22, 2012
  */
 public class Position implements Serializable {
 	private static final long serialVersionUID = -1002505327189491904L;
 	private transient float x, y;
 	
+	/**
+	 * Creates a new {@code Position} from given x and y values.
+	 * @param x the value that is going to be used as x coordinate.
+	 * @param y the value that is going to be used as y coordinate.
+	 */
 	public Position(float x, float y){
 		this.x = x;
 		this.y = y;
 		
 	}
 	
+	/**
+	 * Creates a new copy {@code Position} of the given {@code Position}
+	 * @param copyFrom this is the position which will be copied.
+	 */
 	public Position(Position copyFrom){
 		this.x = copyFrom.x;
 		this.y = copyFrom.y;
@@ -62,33 +72,20 @@ public class Position implements Serializable {
 		return y;
 	}
 	
+	/**
+	 * Sets the x coordinate of the Position.
+	 * @param x - the coordinate to set the position to.
+	 */
 	public void setX(float x) {
 		this.x = x;
 	}
 	
+	/**
+	 * Sets the y coordinate of the Position.
+	 * @param y - the coordinate to set the position to.
+	 */
 	public void setY(float y) {
 		this.y = y;
-	}
-	
-	public void incrementX() {
-		this.x += 1;
-	}
-	
-	public void incrementY() {
-		this.y += 1;
-	}
-	
-	public void decrementX() {
-		this.x -= 1;
-	}
-	
-	public void decrementY() {
-		this.y -= 1;
-	}
-	
-	public void copyFromPosition(Position p) {
-		this.x = p.getX();
-		this.y = p.getY();
 	}
 	
 	@Override
@@ -118,6 +115,11 @@ public class Position implements Serializable {
 				Float.floatToIntBits(y) == Float.floatToIntBits(p.y);
 	}
 	
+	/**
+	 * Moves the x and y coordinates of the position with given values.
+	 * @param dx the amount to change the x value with.
+	 * @param dy the amount to change the y value with.
+	 */
 	public void move(float dx, float dy){
 		x = x + dx;
 		y = y + dy;
@@ -146,6 +148,7 @@ public class Position implements Serializable {
 		s.writeFloat(x);
 		s.writeFloat(y);
 	}
+	
 	
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
 		s.defaultReadObject();
