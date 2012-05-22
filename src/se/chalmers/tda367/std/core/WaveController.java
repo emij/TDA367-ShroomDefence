@@ -23,7 +23,7 @@ import se.chalmers.tda367.std.utilities.Position;
  * @modified Johan Gustafsson (May 12, 2012)
  * @date Apr 22, 2012
  */
-class WaveController {
+public class WaveController {
 
 	/** The delay (in milliseconds) before the first enemy is placed on the game board */
 	private static final int INITIAL_WAVE_DELAY = 100;

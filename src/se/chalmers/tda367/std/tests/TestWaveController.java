@@ -18,6 +18,7 @@ import se.chalmers.tda367.std.core.*;
 
 /**
  * Unit test for {@link se.chalmers.tda367.std.core.WaveController}.
+ * Remember to change WaveController to public to be able to test it
  * @author Emil Johansson
  * @date   27 mar 2012
  */
@@ -25,7 +26,7 @@ import se.chalmers.tda367.std.core.*;
 public class TestWaveController {
 	// To test the wave-controller, change access level from package-private to public.
 
-	/*private Wave createBasicWave(int n){
+	private Wave createBasicWave(int n){
 		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();	
 		for(int i = 0; i<n; i++){
 			q.add(new WaveItem(DynamicLoader.createInstance(BasicEnemy.class), i+1));
@@ -35,7 +36,7 @@ public class TestWaveController {
 	private GameBoardFactory gameBoardFactory = new GameBoardFactory();
 	private Player player = new Player();
 	private WaveController wCont;
-	private GameBoard gameBoard;
+	private IGameBoard gameBoard;
 
 	@Before
 	public void before(){
@@ -47,14 +48,10 @@ public class TestWaveController {
 	public void testStartWave() throws Exception {
 		Wave w = createBasicWave(3);
 		wCont.startWave(w);
-		
-
-
 	}
-
 	@Test
 	public void test() {
 		fail("Not yet implemented");
-	}*/
+	}
 
 }
