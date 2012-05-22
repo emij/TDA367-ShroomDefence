@@ -13,6 +13,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import se.chalmers.tda367.std.core.DynamicLoader;
+
+import se.chalmers.tda367.std.core.Shot;
+import se.chalmers.tda367.std.core.effects.IEffect;
+import se.chalmers.tda367.std.core.effects.NoEffect;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
 import se.chalmers.tda367.std.core.exported.BasicEnemy;
 import se.chalmers.tda367.std.utilities.Position;
@@ -61,12 +65,16 @@ public class TestIEnemy {
 		assertTrue(enemy.getArmor() == enemy.getBaseArmor());
 		
 		//0.0 in armor modifier
-//		IEffect effect = new DummyEffectSecond();
-//		enemy.addEffect(effect);
+		Shot testShot = new TestShot(new NoEffect());
+		enemy.receiveShot(testShot);
+		assertTrue(enemy.getArmor() == enemy.getBaseArmor());
 		
-		enemy = DynamicLoader.createInstance(BasicEnemy.class);
+		enemy = DynamicLoader.createInstance(enemy.getClass());
+		
 		//2.0 in armor modifier
-//		enemy.addEffect(new DummyArmorIncEffect());
+		testShot = new TestShot(new CustomTestEffect(5000, 1,  1.0F, 1.0F, 2.0F));
+		enemy.receiveShot(testShot);
+		
 		assertTrue(enemy.getArmor() == enemy.getBaseArmor() * 2);
 		
 	}
@@ -127,5 +135,23 @@ public class TestIEnemy {
 		assertTrue(enemy.compareTo(enemy2) > 0);
 		assertTrue(enemy2.compareTo(enemy) < 0);
 		
+	}
+	
+	private static class TestShot implements Shot {
+		private IEffect effect;
+		
+		public TestShot(IEffect effect){
+			this.effect = effect;
+		}
+		@Override
+		public int getDamage() {
+			return 0;
+		}
+
+		@Override
+		public IEffect getEffect() {
+			return effect;
+		}
+
 	}
 }
