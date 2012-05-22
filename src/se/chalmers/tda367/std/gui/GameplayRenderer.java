@@ -149,7 +149,6 @@ public class GameplayRenderer {
 	
 	/**Render attacks from the tower attacking to the enemy being attacked. Uses inner class {@code AttackAnimationDuration}.*/
 	public void renderAttacks(Graphics g) {
-		//List<AttackAnimation> tmpList = new LinkedList<AttackAnimation>(attacksList);
 		
 		for(AttackAnimation attack : attacksList) {
 			Position from = attack.getFromPos();
