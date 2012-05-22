@@ -49,7 +49,7 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 		this.state = state;
 		nifty = this.getNifty();
 		try {
-			Highscore hs = IO.loadObject(Highscore.class, properties.getHighscore());
+			Highscore hs = IO.loadObject(Highscore.class, properties.getHighscoreFile());
 			updateHighscoreList(hs);
 		} catch (ClassNotFoundException | IOException e1) {
 			System.out.println(e1.getMessage());
@@ -111,9 +111,9 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 	 */
 	public void clearHighscore() {
 		try {
-			Highscore hs = IO.loadObject(Highscore.class, properties.getHighscore());
+			Highscore hs = IO.loadObject(Highscore.class, properties.getHighscoreFile());
 			hs.resetHighscore();
-			IO.saveObject(hs, properties.getHighscore());
+			IO.saveObject(hs, properties.getHighscoreFile());
 			updateHighscoreList(hs);
 		} catch (ClassNotFoundException | IOException e1) {
 			System.out.println(e1.getMessage());

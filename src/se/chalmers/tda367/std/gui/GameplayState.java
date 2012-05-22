@@ -302,9 +302,9 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 		}
 		int score = gameControl.getPlayer().getCurrentScore();
 		try {
-			Highscore hs = IO.loadObject(Highscore.class, properties.getHighscore());
+			Highscore hs = IO.loadObject(Highscore.class, properties.getHighscoreFile());
 			hs.addScore(new Score(playerName, score));
-			IO.saveObject(hs, properties.getHighscore());
+			IO.saveObject(hs, properties.getHighscoreFile());
 		} catch (ClassNotFoundException | IOException e1) {
 			System.out.println(e1.getMessage());
 		}

@@ -21,9 +21,6 @@ import se.chalmers.tda367.std.utilities.SpriteCreator;
  */
 public class TestWave {
 	
-	private final int BASIC_ENEMY_LOOT_VALUE = 50;
-	private final int BASIC_ENEMY_HEALTH = 100;
-	
 	private Wave createBasicWave(int n){
 		ConcurrentLinkedQueue<WaveItem> q = new ConcurrentLinkedQueue<WaveItem>();	
 		for(int i = 0; i<n; i++){

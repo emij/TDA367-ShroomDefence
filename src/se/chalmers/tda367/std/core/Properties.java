@@ -16,20 +16,19 @@ public enum Properties {
 	}
 	// Some needed constants goes here
 	
-	public File getHighscore() {
+	/**
+	 * Getter for highscore file.
+	 * @return File containing the highscores for the game.
+	 */
+	public File getHighscoreFile() {
 		return new File("data/highscore.bin");
 	}
 	
+	/**
+	 * Return integer representing the scale used by tiles on the gameboard.
+	 * @return integer representing the scale of the tiles.
+	 */
 	public int getTileScale() {
 		return 32;
 	}
-	
-	public int getDefaultBoardWidth(){
-		return 25;
-	}
-	
-	public int getDefaultBoardHeight(){
-		return 20;
-	}
-
 }
