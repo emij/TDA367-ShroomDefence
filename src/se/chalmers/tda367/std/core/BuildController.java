@@ -79,8 +79,8 @@ class BuildController {
 	 */
 	public boolean upgradeTower(ITower tower){
 		if(playerCanAffordUpgrade(tower)){
-			tower.upgrade();
 			player.removeMoney(tower.getUpgradeCost());
+			tower.upgrade();
 			return true;
 		} else {
 			return false;
