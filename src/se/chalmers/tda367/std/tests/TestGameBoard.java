@@ -37,21 +37,21 @@ public class TestGameBoard {
 	//TODO: Test getAttackables()
 	
 	@Test
-	public void getWidth() {
+	public void TestGetWidth() {
 		GameBoard testBoard = new GameBoard(buildableOnlyMap);
 		
 		assertTrue(testBoard.getWidth() == 25);
 	}
 	
 	@Test
-	public void getHeight() {
+	public void TestGetHeight() {
 		GameBoard testBoard = new GameBoard(buildableOnlyMap);
 		
 		assertTrue(testBoard.getHeight() == 20);
 	}
 	
 	@Test
-	public void posOnBoard() {
+	public void TestPosOnBoard() {
 		GameBoard testBoard = new GameBoard(buildableOnlyMap);
 		
 		for(int x = 0; x < testBoard.getWidth(); x++) {
@@ -66,8 +66,17 @@ public class TestGameBoard {
 		assertFalse(testBoard.posOnBoard(30, 30));
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void TestGetTileAtException() {
+		GameBoard testBoard = new GameBoard(buildableOnlyMap);
+		
+		testBoard.getTileAt(-1, -1);
+		testBoard.getTileAt(-1, 5);
+		testBoard.getTileAt(5, -1);
+	}
+	
 	@Test
-	public void getEndPos() {
+	public void TestGetEndPos() {
 		GameBoard testBoard = new GameBoard(buildableOnlyMap);
 		
 		assertTrue(testBoard.getEndPos().getX() == 24);
@@ -75,7 +84,7 @@ public class TestGameBoard {
 	}
 	
 	@Test
-	public void getTileAt() {
+	public void TestGetTileAt() {
 		GameBoard testBoard = new GameBoard(buildableOnlyMap);
 		
 		for(int x = 0; x < testBoard.getWidth(); x++) {
