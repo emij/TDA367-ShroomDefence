@@ -22,7 +22,7 @@ xsi:schemaLocation="http://niftygui.sourceforge.net/nifty-1.3.xsd http://nifty-g
                         <control name="label" text="Score: " width="*" height="100%" align="center" textHAlign="center"/>
                     </panel>
                     <panel height="100%" width="25%" childLayout="horizontal" visibleToMouse="true">
-                        <control name="label" text="Current level: " width="*" height="100%" align="center" textHAlign="center"/>
+                        <control name="label" text="Current wave: " width="*" height="100%" align="center" textHAlign="center"/>
                     </panel>
                     <panel height="100%" width="25%" childLayout="horizontal" visibleToMouse="true">
                         <control name="label" text="Player money: " width="*" height="100%" align="center" textHAlign="center"/>
