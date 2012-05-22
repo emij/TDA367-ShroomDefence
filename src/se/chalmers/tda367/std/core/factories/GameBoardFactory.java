@@ -30,7 +30,7 @@ public class GameBoardFactory implements IFactory<IGameBoard, Integer> {
 			map = IO.loadObject(LevelMap.class, f);
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-		} //TODO Throw error if map == null
+		} 
 		
 		if(map == null)
 			return null;

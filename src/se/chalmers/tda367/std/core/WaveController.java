@@ -23,7 +23,7 @@ import se.chalmers.tda367.std.utilities.Position;
  * @modified Johan Gustafsson (May 12, 2012)
  * @date Apr 22, 2012
  */
-public class WaveController {
+final class WaveController {
 
 	/** The delay (in milliseconds) before the first enemy is placed on the game board */
 	private static final int INITIAL_WAVE_DELAY = 100;
@@ -114,12 +114,14 @@ public class WaveController {
 	 * Towers fires at enemies in range.
 	 * @param delta - the amount of time (in milliseconds) since the last update.
 	 */
-	private void shootAtEnemiesInRange(final int delta){ // TODO: Use AttackEntity instead
+	private void shootAtEnemiesInRange(final int delta) {
 		int tileScale = Properties.INSTANCE.getTileScale();
 		IPlayerCharacter character = player.getCharacter();
+		
 		for(int x = 0; x < board.getWidth(); x++){
 			for(int y = 0; y <board.getHeight(); y++){
 				IBoardTile tile = board.getTileAt(x, y);
+				
 				if(tile instanceof IAttackTower){
 					IAttackTower attackTower = (IAttackTower) tile;
 					if(attackTower.isAttackReady(delta)) {

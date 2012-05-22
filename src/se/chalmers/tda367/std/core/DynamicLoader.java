@@ -25,7 +25,7 @@ import se.chalmers.tda367.std.utilities.Filter;
  * @date   Apr 22, 2012
  */
 public final class DynamicLoader {
-	// TODO: Change the following path to something more "release" friendly. Debuging purposes only.
+	// TODO: Change the following path to jar exporting-friendly.
 	private static final Path exportedFolderPath = Paths.get("bin", "se", "chalmers", "tda367", "std", "core", "exported");
 	
 	// No need to be able to create an instance.

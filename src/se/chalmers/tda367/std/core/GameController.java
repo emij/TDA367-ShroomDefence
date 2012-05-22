@@ -98,7 +98,7 @@ public class GameController implements IGame {
 	/** Tries to load the map corresponding to the next level */
 	private void tryChangeMap() {
 		List<File> maps = FileScanner.getFiles(Paths.get("maps"));
-		if(maps.size() < level) // TODO: Assumes only maps resides in the folder.
+		if(maps.size() < level) // TODO: Assumes only maps resides in the folder. Add extension filter to getFiles(...)
 			return;
 		
 		init();

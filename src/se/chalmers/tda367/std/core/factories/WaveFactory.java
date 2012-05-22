@@ -26,7 +26,6 @@ public class WaveFactory implements IFactory<Wave, Integer> {
 		List<WaveItem> waveList = new ArrayList<WaveItem>();
 		
 		// TODO: Tweak and balance the algorithm a little.
-		// TODO: Remove System.out.println...
 		
 		Random rnd = new Random();
 		Enemy enemyAnno = null;
