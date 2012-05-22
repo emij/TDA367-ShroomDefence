@@ -21,7 +21,11 @@ public class PlayerCharacter implements IPlayerCharacter {
 	private float movementSpd;
 	
 	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");
-
+	
+	/**
+	 * Creates a new player character on the given position.
+	 * @param pos - the position the player will use as a start position.
+	 */
 	public PlayerCharacter(Position pos) {
 		this.pos = pos;
 		attackDmg = 10;
