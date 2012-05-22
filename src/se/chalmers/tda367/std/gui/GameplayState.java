@@ -44,6 +44,7 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	private int stateID, tileScale;
 	private boolean towerIsChoosen, optionsScreenIsOpen, gameOver;
 	private Properties properties = Properties.INSTANCE;
+	private GUIResourceManager resourceMng = GUIResourceManager.INSTANCE;
 	
 	private IGame gameControl;
 	private ITower choosenTower;
@@ -134,13 +135,13 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	}
 	
 	private void initSound() throws SlickException {
-		backgroundMusic = new Music(getResourcePath("/audio/main_menu/music.wav"));
+		backgroundMusic = new Music(resourceMng.getResourcePath("/audio/main_menu/music.wav"));
 	}
 	
 	@Override
 	protected void prepareNifty(Nifty nifty, StateBasedGame state) {
-		nifty.fromXml(getResourcePath("/gameplay_gui.xml"), "start", this);
-		nifty.getSoundSystem().addMusic("backgroundmusic", getResourcePath("/audio/main_menu/music.wav"));
+		nifty.fromXml(resourceMng.getResourcePath("/gameplay_gui.xml"), "start", this);
+		nifty.getSoundSystem().addMusic("backgroundmusic", resourceMng.getResourcePath("/audio/main_menu/music.wav"));
 		optionsPopup = nifty.createPopup("optionsPopup");
 		gameOverPopup = nifty.createPopup("gameOverPopup");
 		towerPopup = nifty.createPopup("towerSelectedPopup");
@@ -173,11 +174,6 @@ public class GameplayState extends NiftyOverlayBasicGameState implements ScreenC
 	@Override
 	public int getID() {
 		return stateID;
-	}
-	
-	/**Helper method to get correct path to files.*/
-	private String getResourcePath(String path){
-		return getClass().getResource(path).getPath();
 	}
 	
 	@Override

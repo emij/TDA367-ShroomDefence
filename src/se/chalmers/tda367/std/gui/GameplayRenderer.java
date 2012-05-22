@@ -19,7 +19,6 @@ import se.chalmers.tda367.std.core.IGameBoard;
 import se.chalmers.tda367.std.core.IPlayerCharacter;
 import se.chalmers.tda367.std.core.Properties;
 import se.chalmers.tda367.std.core.enemies.IEnemy;
-import se.chalmers.tda367.std.core.events.EnemyEnteredBaseEvent;
 import se.chalmers.tda367.std.core.events.TowerShootingEvent;
 import se.chalmers.tda367.std.core.tiles.IBoardTile;
 import se.chalmers.tda367.std.core.tiles.towers.ITower;
@@ -40,6 +39,7 @@ public class GameplayRenderer {
 	private Animation explosionAnimation;
 	private List<AttackAnimation> attacksList;
 	
+	private GUIResourceManager resourceMng = GUIResourceManager.INSTANCE;
 	private Properties prop = Properties.INSTANCE;
 	private int tileScale;
 	
@@ -61,17 +61,12 @@ public class GameplayRenderer {
 	
 	/**Creates {@code Animation} which will be used by game renderer*/
 	private void initAnimations() throws SlickException {
-		Image exp_1 = new Image(getResourcePath("/animations/explosion_1.png"));
-		Image exp_2 = new Image(getResourcePath("/animations/explosion_2.png"));
+		Image exp_1 = new Image(resourceMng.getResourcePath("/animations/explosion_1.png"));
+		Image exp_2 = new Image(resourceMng.getResourcePath("/animations/explosion_2.png"));
 		Image[] explosion = new Image[2];
 		explosion[0] = exp_1;
 		explosion[1] = exp_2;
 		explosionAnimation = new Animation(explosion, 500);
-	}
-	
-	/**Helper method to get correct path to files.*/
-	private String getResourcePath(String path){
-		return getClass().getResource(path).getPath();
 	}
 	
 	public void renderGame(Graphics g) {
@@ -182,11 +177,5 @@ public class GameplayRenderer {
 				}
 			}
 		}
-	}
-	
-	
-	@Subscribe
-	public void enemyHasEnteredBase(EnemyEnteredBaseEvent e) {
-		// TODO: Implement
 	}
 }
