@@ -20,7 +20,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
 public final class BasicEnemy extends AbstractEnemy {
 	
 	//TODO: change sprite for the basic enemy.
-	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/enemy.png");
+	private final static Sprite sprite = SpriteCreator.create("/images/gameplay/snail_sprite.png");
 	
 	/**
 	 * Creates a basic enemy.

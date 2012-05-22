@@ -114,8 +114,8 @@ public class GameplayRenderer {
 		IPlayerCharacter character = gameControl.getPlayer().getCharacter();
 		NativeSprite image = character.getSprite().getNativeSprite();
 		
-		image.draw(character.getPos().getX() - tileScale/2, 
-				character.getPos().getY() - tileScale/2, tileScale, tileScale);
+		image.draw(character.getPos().getX() - tileScale, 
+				character.getPos().getY() - tileScale, tileScale*2, tileScale*2);
 	}
 	
 	
