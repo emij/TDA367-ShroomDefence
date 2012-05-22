@@ -5,7 +5,7 @@ package se.chalmers.tda367.std.core.effects;
  * Any sub-classes should Override {@code clone()} and always use {@code ready()} 
  * when overriding one of the modify-methods.
  * 
- * @see se.chalmers.tda367.std.core.effects.NoEffect.ready()
+ * @see {@link se.chalmers.tda367.std.core.effects.NoEffect.ready()}
  * @author Emil Edholm
  * @date   May 16, 2012
  */
@@ -15,20 +15,11 @@ public class NoEffect implements IEffect, Cloneable {
 	private int duration, timePassed;
 	private final int initialDuration, interval;
 	
+	private final boolean alwaysReady;
+	
 	/** Create a new {@code NoEffect} with no duration and no interval*/
 	public NoEffect() {
-		initialDuration = 0;
-		duration = 0;
-		interval = 1;
-	}
-	
-	public static NoEffect getInstance() {
-		if(instance == null) 
-			instance = new NoEffect();
-		
-		// This class can share instances since in it's default
-		// state it is not mutable.
-		return instance;
+		this(0, 0);
 	}
 	
 	/**
@@ -42,8 +33,18 @@ public class NoEffect implements IEffect, Cloneable {
 		this.duration        = duration;
 		
 		// Remove the possibility of NaN and negative numbers.
-		this.interval        = (interval > 0) ? interval : 1;
-		this.timePassed      = interval + 1; // Makes it ready the first time.
+		this.interval    = (interval > 0) ? interval : 0;
+		this.alwaysReady = (interval == 0) ? true : false;
+		this.timePassed  = 0;
+	}
+	
+	public static NoEffect getInstance() {
+		if(instance == null) 
+			instance = new NoEffect();
+		
+		// This class can share instances since in it's default
+		// state it is not mutable.
+		return instance;
 	}
 	
 	@Override
@@ -51,8 +52,7 @@ public class NoEffect implements IEffect, Cloneable {
 
 	@Override
 	public void resetDuration() {
-		if(duration > 0)
-			duration = initialDuration;
+		duration = initialDuration;
 	}
 	
 	/**
@@ -63,13 +63,13 @@ public class NoEffect implements IEffect, Cloneable {
 	 * @return true if ready to be applied, else false.
 	 */
 	protected boolean ready() {
-		if(timePassed <= interval || duration == 0)
+		if(duration == 0 || timePassed < interval )
 			return false;
 		
-		if(interval == 1)
+		if(alwaysReady)
 			return true;
 		
-		if(timePassed > interval) {
+		if(timePassed >= interval) {
 			timePassed = 0;
 		}
 		return true;
@@ -77,10 +77,11 @@ public class NoEffect implements IEffect, Cloneable {
 	
 	@Override
 	public void decrementDuration(int millisec) {
-		if(millisec <= duration) {
-			duration -= millisec;
-			timePassed += millisec;
-		}
+		duration -= millisec;
+		timePassed += millisec;
+		
+		if(duration < 0)
+			duration = 0;
 	}
 
 	@Override

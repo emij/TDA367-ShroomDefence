@@ -69,5 +69,4 @@ public class TestWave {
 		w = createBasicWave(0);
 		assertTrue(w.size() == 0);
 	}
-
 }
