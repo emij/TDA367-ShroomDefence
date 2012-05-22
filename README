@@ -1,2 +1,8 @@
 The Shroom Tower Defense game written in Java for the TDA367 class at
 Chalmers University of Technology.
+
+How to use:
+First clone the repo:
+$ git clone git://github.com/emij/TDA367-ShroomDefence.git
+
+After repo has been cloned, import the project into eclipse and run.
