@@ -2,6 +2,7 @@ package se.chalmers.tda367.std.core;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -142,6 +143,7 @@ final class WaveController {
 	private void shoot(IAttackTower tile, Position pos) {
 		int radius = tile.getRadius() * Properties.INSTANCE.getTileScale();
 		List<Attackable> enemies = board.getAttackables(pos, radius);
+		Collections.sort(enemies);
 		tile.shoot(enemies, pos);
 	}
 

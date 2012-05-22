@@ -14,7 +14,7 @@ import se.chalmers.tda367.std.utilities.Sprite;
  * @modified Emil Edholm (May 16, 2012)
  * @date Mar 25, 2012
  */
-public interface IEnemy extends Comparable<IEnemy>, Attackable {
+public interface IEnemy extends Attackable {
 	
 	/**
 	 * Returns the base health of the enemy, enemy health without any effects on it.
@@ -86,10 +86,4 @@ public interface IEnemy extends Comparable<IEnemy>, Attackable {
 	
 	@Override
 	public String toString();
-	
-	/**
-	 * Compares two enemy to see which one is closest to the base
-	 * @return the difference between two enemies's distance traveled
-	 */
-	public int compareTo(IEnemy o);
 }

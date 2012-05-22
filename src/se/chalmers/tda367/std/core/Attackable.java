@@ -7,8 +7,9 @@ import se.chalmers.tda367.std.utilities.Position;
  * Represents a attackable entity, such as an enemy.
  * @author Emil Edholm
  * @date   May 19, 2012
+ * @modified by Emil Johansson (May 22, 2012)
  */
-public interface Attackable {
+public interface Attackable extends Comparable<Attackable>{
 	
 	/** @return a defensive copy of the {@code Attackable} position. */
 	public Position getPosition();
@@ -27,4 +28,10 @@ public interface Attackable {
 	 * @return true if any effect of type {@code type} is applied.
 	 */
 	public boolean hasEffect(Class<? extends IEffect> type);
+	
+	/**
+	 * Compares two Attackables to see which one is closest to the base
+	 * @return the difference between two Attackable distance traveled
+	 */
+	public int compareTo(Attackable o);
 }

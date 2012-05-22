@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import se.chalmers.tda367.std.core.Attackable;
 import se.chalmers.tda367.std.core.Shot;
 import se.chalmers.tda367.std.core.effects.IEffect;
 import se.chalmers.tda367.std.core.effects.PoisonEffect;
@@ -24,7 +25,7 @@ public abstract class AbstractEnemy implements IEnemy {
 	private final Position position;
 	private float distanceTraveled;
 	private List<Position> waypointsLeft;
-	
+
 	private final int baseHealth;
 	private final int baseArmor;
 	private final int lootValue;
@@ -38,7 +39,7 @@ public abstract class AbstractEnemy implements IEnemy {
 	public AbstractEnemy(int startHealth, float speed, int armor, int lootValue, Sprite sprite){
 		this.position         = Position.valueOf(0, 0);
 		this.distanceTraveled = 0;
-		
+
 		this.baseHealth    = startHealth;
 		this.currentHealth = this.baseHealth;
 		this.baseSpeed     = speed;
@@ -46,24 +47,24 @@ public abstract class AbstractEnemy implements IEnemy {
 		this.lootValue     = lootValue;
 		this.sprite        = sprite;
 	}
-	
+
 	/** Apply the health effects, based on {@code delta}, which is the time since the last game update */
 	private void applyHealthEffects(int delta) {
 		for(IEffect effect : effects) {
 			// Uses the difference to calculate dmg
 			int dmg = currentHealth - effect.modifyHealth(currentHealth); 
-			
+
 			boolean ignoreArmor = effect instanceof PoisonEffect;
 			decreaseHealth(dmg, ignoreArmor); 
 		}
 	}
-	
+
 	/** Update the duration and remove any expired effects. */ 
 	private void updateEffectDuration(int delta) {
 		Iterator<IEffect> it = effects.iterator();
 		while(it.hasNext()) {
 			IEffect effect = it.next();
-			
+
 			effect.decrementDuration(delta);
 			if(effect.getDuration() == 0) {
 				it.remove();
@@ -94,13 +95,13 @@ public abstract class AbstractEnemy implements IEnemy {
 		}
 		return speed;
 	}
-	
+
 	@Override 
 	public void receiveShot(Shot s) {
 		addEffect(s.getEffect());
 		decreaseHealth(s.getDamage(), false);
 	}
-	
+
 	/**
 	 * Damage the enemy with the specified base damage.
 	 * The enemy may mitigate the damage based on it's properties, such as shield or armor.
@@ -110,7 +111,7 @@ public abstract class AbstractEnemy implements IEnemy {
 	private void decreaseHealth(final int dmg, boolean ignoreArmor) {
 		int newDmg = (!ignoreArmor) ? dmg - this.getArmor() : dmg;
 		newDmg = (newDmg > 0) ? newDmg : 0; // Remove possibility of negative dmg.
-		
+
 		if(newDmg >= getHealth()) {
 			currentHealth = 0;
 			EventBus.INSTANCE.post(new EnemyDeadEvent(this));
@@ -124,7 +125,7 @@ public abstract class AbstractEnemy implements IEnemy {
 	public Sprite getSprite() {
 		return sprite;
 	}
-	
+
 	@Override
 	public int getBaseHealth() {
 		return baseHealth;
@@ -148,25 +149,25 @@ public abstract class AbstractEnemy implements IEnemy {
 	public int getBaseArmor() {
 		return baseArmor;
 	}
-	
+
 	@Override
 	public void placeOnBoard(Position start, List<Position> waypoints) {
 		position.setX(start.getX());
 		position.setY(start.getY());
-		
+
 		this.waypointsLeft = waypoints;
 	}
-	
+
 	@Override
 	public void moveTowardsWaypoint(int delta) {
 		updateEffectDuration(delta);
 		applyHealthEffects(delta);
-		
+
 		if(waypointsLeft == null || waypointsLeft.isEmpty()) {
 			EventBus.INSTANCE.post(new EnemyEnteredBaseEvent(this));
 			return;
 		}
-		
+
 		Position waypoint = waypointsLeft.get(0);
 		if(!minorDifference(waypoint, position)) {
 			float speedDelta = getSpeed() * delta;
@@ -175,7 +176,7 @@ public abstract class AbstractEnemy implements IEnemy {
 			float y = position.getY();
 			float wayX = waypoint.getX();
 			float wayY = waypoint.getY();
-			
+
 			if(!minorDifference(wayX, x)) {
 				if(wayX > x) {
 					position.move(speedDelta, 0);
@@ -191,30 +192,30 @@ public abstract class AbstractEnemy implements IEnemy {
 				else {
 					position.move(0, -speedDelta);
 				}
-				
+
 			}
 			if (minorDifference(waypoint, position)) {
 				waypointsLeft.remove(0);
 			}
 		}
 	}
-	
+
 	@Override
 	public Position getPosition(){
 		return Position.valueOf(position.getX(), position.getY());
 	}
-	
+
 	@Override
 	public float getDistanceTraveled() {
 		return distanceTraveled;
 	}
-	
+
 	/** Decides if the difference between two values are negligible */
 	private boolean minorDifference(float f1, float f2) {
 		float diff = f1 - f2;
 		return Math.abs(diff) < 5F;
 	}
-	
+
 	private boolean minorDifference(Position p1, Position p2) {
 		return minorDifference(p1.getX(), p2.getX()) && minorDifference(p1.getY(), p2.getY());
 	}
@@ -230,12 +231,16 @@ public abstract class AbstractEnemy implements IEnemy {
 		// concrete implementation to do that and add their specific values.
 
 	}
-	
+
 	@Override
-	public int compareTo(IEnemy o) {
-		return Float.compare(distanceTraveled, o.getDistanceTraveled());
+	public int compareTo(Attackable o) {
+		if(o instanceof IEnemy){
+			IEnemy tmp = (IEnemy)o;
+			return Float.compare(distanceTraveled, tmp.getDistanceTraveled());
+		}
+		return 0;
 	}
-	
+
 	@Override
 	public boolean hasEffect(Class<? extends IEffect> type) {
 		for(IEffect e : effects) {
@@ -243,7 +248,7 @@ public abstract class AbstractEnemy implements IEnemy {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
