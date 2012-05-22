@@ -132,8 +132,8 @@ public class TestIEnemy {
 		assertTrue(enemy.compareTo(enemy2) == 0);
 		
 		enemy.moveTowardsWaypoint(1000);
-		assertTrue(enemy.compareTo(enemy2) > 0);
-		assertTrue(enemy2.compareTo(enemy) < 0);
+		assertTrue(enemy.compareTo(enemy2) < 0);
+		assertTrue(enemy2.compareTo(enemy) > 0);
 		
 	}
 	
