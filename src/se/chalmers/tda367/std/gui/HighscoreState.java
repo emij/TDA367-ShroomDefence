@@ -31,6 +31,7 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 	private Nifty nifty;
 	private Element playerPanel, scorePanel;
 	private Properties properties = Properties.INSTANCE;
+	private GUIResourceManager resourceMng = GUIResourceManager.INSTANCE;
 	
 	public HighscoreState(int stateID) {
 		this.stateID = stateID;
@@ -38,7 +39,7 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 
 	@Override
 	protected void prepareNifty(Nifty nifty, StateBasedGame state) {
-		nifty.fromXml(getResourcePath("/highscore_gui.xml"), "start", this);
+		nifty.fromXml(resourceMng.getResourcePath("/highscore_gui.xml"), "start", this);
 		playerPanel = nifty.getCurrentScreen().findElementByName("playerPanel");
 		scorePanel = nifty.getCurrentScreen().findElementByName("scorePanel");
 	}
@@ -54,11 +55,6 @@ public class HighscoreState extends NiftyBasicGameState implements ScreenControl
 		} catch (ClassNotFoundException | IOException e1) {
 			System.out.println(e1.getMessage());
 		}
-	}
-	
-	/** Helper method to get resource path*/
-	private String getResourcePath(String path) {
-		return getClass().getResource(path).getPath();
 	}
 	
 	@Override

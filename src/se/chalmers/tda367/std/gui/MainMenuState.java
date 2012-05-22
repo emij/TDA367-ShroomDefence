@@ -21,6 +21,7 @@ public class MainMenuState extends NiftyBasicGameState implements ScreenControll
 	private int stateID;
 	private StateBasedGame state;
 	private GameContainer container;
+	private GUIResourceManager resourceMng = GUIResourceManager.INSTANCE;
 	
 	public MainMenuState(int stateID) {
 		this.stateID = stateID;
@@ -28,7 +29,7 @@ public class MainMenuState extends NiftyBasicGameState implements ScreenControll
 	
 	@Override
 	protected void prepareNifty(Nifty nifty, StateBasedGame state) {
-		nifty.fromXml(getResourcePath("/mainmenu_gui.xml"), "start", this);
+		nifty.fromXml(resourceMng.getResourcePath("/mainmenu_gui.xml"), "start", this);
 	}
 	
 	@Override
@@ -36,11 +37,6 @@ public class MainMenuState extends NiftyBasicGameState implements ScreenControll
 		super.enterState(container, state);
 		this.container = container;
 		this.state = state;
-	}
-	
-	/** Helper method to get resource path */
-	private String getResourcePath(String path) {
-		return getClass().getResource(path).getPath();
 	}
 	
 	/** 
